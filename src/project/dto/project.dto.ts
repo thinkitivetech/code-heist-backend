@@ -22,7 +22,7 @@ export class CreateProject {
     public endDate: string;
 }
 
-export class reqProject {
+export class ReqProject {
 
     @IsOptional()
     public projectId: number;

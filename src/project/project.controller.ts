@@ -1,7 +1,7 @@
 import { Controller, Get, HttpStatus, Param, Query, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { UserRequestDto } from 'src/user/dto/userModel/create-user.dto';
-import { reqProject } from './dto/project.dto';
+import { ReqProject } from './dto/project.dto';
 import { ProjectService } from './project.service';
 
 @Controller('/api/project')
@@ -10,8 +10,8 @@ export class ProjectController {
     }
     @UseGuards(AuthGuard('jwt'))
     @Get()
-    public async getUsers(
-      @Query() req: reqProject,
+    public async getProject(
+      @Query() req: ReqProject,
       @Res() response: any) {
       try {
         this.projectService.getAllProject(req, response);
@@ -32,7 +32,7 @@ export class ProjectController {
       @Res() response: any
     ) {
       try {
-        // this.userService.getUserById(id, response);
+        this.projectService.getProjects(id, response);
       } catch (err) {
         return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
           success: false,

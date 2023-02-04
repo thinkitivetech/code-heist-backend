@@ -196,8 +196,10 @@ export class TimeSheetService {
                 data: {}
             });
         }
+
         const userDetails = await this.userRepo.findOne({ where: { id: timeSheetReq.assignedTo } })
         const loggedInUser = applyPassportStrategy();
+
         let lastEditedBy: any = userDetails?.name;
         if (!(userDetails?.email === loggedInUser.email)) {
             lastEditedBy = await this.userRepo.findOne({ where: { id: timeSheetReq.assignedTo } })

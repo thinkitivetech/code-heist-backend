@@ -1,4 +1,4 @@
-import { IsEmail, ValidateNested, IsNumber, IsOptional, IsString } from "@nestjs/class-validator";
+import { IsNumber, IsOptional, IsString } from "@nestjs/class-validator";
 import { IsEnum } from "class-validator";
 
 export enum ORDER {
@@ -117,7 +117,6 @@ export class GetTimeSheetReq {
 }
 
 
-
 export class TaskDetailModel {
     @IsNumber()
     @IsOptional()
@@ -131,11 +130,18 @@ export class TaskDetailModel {
 
     @IsString()
     public task: string;
+
+    @IsOptional()
+    @IsString()
+    public notes: string;
+
+    @IsOptional()
+    @IsString()
+    public status: string;
 }
 
 export class PatchTimeSheetReq {
 
-    @ValidateNested()
     @IsOptional()
     public taskDetail: TaskDetailModel[];
 
@@ -146,5 +152,21 @@ export class PatchTimeSheetReq {
     @IsOptional()
     @IsNumber()
     public teamLeadId: number;
+
+    @IsString()
+    @IsOptional()
+    public name: string;
+
+    @IsString()
+    @IsOptional()
+    public projectDetail: string;
+
+    @IsString()
+    @IsOptional()
+    public status: string;
+
+    @IsNumber()
+    @IsOptional()
+    public assignedTo: number;
 
 }

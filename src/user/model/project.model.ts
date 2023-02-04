@@ -4,6 +4,19 @@ import { ManagerModel } from "./manager.model";
 import { ProfileModel } from "./profile.model";
 import { TeamLeadModel } from "./teamLead.model";
 import { TimeSheetModel } from "./timeSheet.model";
+export class assignedTo {
+  @IsString()
+  @IsOptional()
+  manger: string;
+
+  @IsString()
+  @IsOptional()
+  teamLead: string;
+
+  @IsString()
+  @IsOptional()
+  engineer: string;
+}
 
 export class ProjectModel {
   @IsNumber()
@@ -55,16 +68,3 @@ export class ProjectModel {
   public profileDetails: ProfileModel[];
 }
 
-export class assignedTo {
-  @IsString()
-  @IsOptional()
-  manger: string;
-
-  @IsString()
-  @IsOptional()
-  teamLead: string;
-
-  @IsString()
-  @IsOptional()
-  engineer: string;
-}

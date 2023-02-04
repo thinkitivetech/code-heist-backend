@@ -19,13 +19,15 @@ export const applyPassportStrategy = () => {
   passport.use(new Strategy(
     options, function (payload, done) {
       if (payload) {
-
+        Object.assign(options, payload)
         return done(null, {
           email: payload.email,
           roles: payload.role
+  
         })
       }
       return done(null, false)
     }
   ))
+  return options
 }

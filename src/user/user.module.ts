@@ -8,14 +8,14 @@ import { JWTAuthMiddleware } from 'src/security/JWTMiddleware';
 import { LoginModule } from 'src/login/login.module';
 import { TaskController } from '../task/task.controller';
 import { TaskModule } from '../task/task.module';
-import { TaskService } from '../task/task.service';
 import { UserEntity } from './entity/user.entity';
 import { TaskSheetEntity } from 'src/entities/taskTimeSheet.entity';
 import { ProjectEntity } from 'src/entities/project.entity';
+import { TaskService } from 'src/task/task.service';
 @Module({
-  controllers: [UserController, TaskController],
-  providers: [UserService ,TaskService],
-  imports: [ TypeOrmModule.forFeature([UserEntity , TaskSheetEntity , ProjectEntity]), NestjsWinstonLoggerModule.forRoot({
+  controllers: [UserController,TaskController],
+  providers: [UserService,TaskService],
+  imports: [ TypeOrmModule.forFeature([UserEntity,TaskSheetEntity , ProjectEntity]), NestjsWinstonLoggerModule.forRoot({
     format: format.combine(
       format.timestamp({ format: 'isoDateTime' }),
       format.json(),

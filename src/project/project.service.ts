@@ -56,36 +56,36 @@ export class ProjectService {
         try {
 
             this.logger.log(`Got request to fetch project details by params`)
-            let loggedInUser:any;
-            if(!reqProject.userId){
-                loggedInUser  = applyPassportStrategy();
-            }
-            let user :  any;
-            if(loggedInUser && loggedInUser.email || reqProject.userId){
-            if(reqProject.userId !== undefined){
-                user = await this.userRepo.findOne({ where: { id: reqProject.userId } });
-            }else if (user){
-            user = await this.userRepo.findOne({ where: { email: loggedInUser.email } });
-            }
-            }
-            if(!user){
-                this.logger.error(`User not found for email ${loggedInUser.email}`);
-                throw new Error('No Project has been found`');
-
-            }
-
-            if(user.role === UserRoles.TEAM_LEAD){
-                reqProject.filter.teamLeadId = user.id;
-            }
-            if(user.role=== UserRoles.MANAGER){
-                reqProject.filter.mangerId = user.id;
-            }
-            if(user.role=== UserRoles.ENGINEER){
-                reqProject.filter.engineerId = user.id;
-            }
-            if(user.role=== UserRoles.SALES){
-                reqProject.filter.salesId = user.id;
-            }
+//             let loggedInUser:any;
+//             if(!reqProject.userId){
+//                 loggedInUser  = applyPassportStrategy();
+//             }
+//             let user :  any;
+//             if(loggedInUser && loggedInUser.email || reqProject.userId){
+//             if(reqProject.userId !== undefined){
+//                 user = await this.userRepo.findOne({ where: { id: reqProject.userId } });
+//             }else if (user){
+//             user = await this.userRepo.findOne({ where: { email: loggedInUser.email } });
+//             }
+//             }
+//             if(!user){
+//                 this.logger.error(`User not found for email ${loggedInUser.email}`);
+//                 throw new Error('No Project has been found`');
+//
+//             }
+//
+//             if(user.role === UserRoles.TEAM_LEAD){
+//                 reqProject.filter.teamLeadId = user.id;
+//             }
+//             if(user.role=== UserRoles.MANAGER){
+//                 reqProject.filter.mangerId = user.id;
+//             }
+//             if(user.role=== UserRoles.ENGINEER){
+//                 reqProject.filter.engineerId = user.id;
+//             }
+//             if(user.role=== UserRoles.SALES){
+//                 reqProject.filter.salesId = user.id;
+//             }
 
             let selectQuery = this.projectRepository.createQueryBuilder('project')
             .leftJoinAndSelect('project.engineerDetails', 'engineer')

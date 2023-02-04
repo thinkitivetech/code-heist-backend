@@ -17,7 +17,7 @@ export class TaskSheetEntity {
     @Column({ name: 'NOTES', type: 'longtext' })
     public notes: string;
 
-    @Column({ name: 'EdITED_BY', length: 500 })
+    @Column({ name: 'Edited_By', length: 500 })
     public editedBy: string;
 
     @Column({ name: 'PROFILE', length: 500 })

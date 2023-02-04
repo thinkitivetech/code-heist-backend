@@ -10,10 +10,11 @@ import { ConfigModule } from '@nestjs/config';
 import { LoginModule } from './login/login.module';
 import { UserService } from './user/user.service';
 import { ProjectModule } from './project/project.module';
+import { TimeSheetModule } from './time-sheet/time-sheet.module';
 
 @Module({
   controllers: [AppController],
-  imports: [UserModule, LoginModule, ProjectModule, TypeOrmModule.forRootAsync(typeOrmConfigAsync), ConfigModule.forRoot()],
+  imports: [UserModule,TimeSheetModule, LoginModule, ProjectModule, TypeOrmModule.forRootAsync(typeOrmConfigAsync), ConfigModule.forRoot()],
   providers: [AppService],
 
 })

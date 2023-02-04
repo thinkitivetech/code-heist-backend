@@ -1,20 +1,15 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { UserController } from './user.controller';
 import { NestjsWinstonLoggerModule } from 'nestjs-winston-logger';
 import { format, transports } from 'winston';
-import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JWTAuthMiddleware } from 'src/security/JWTMiddleware';
 import { LoginModule } from 'src/login/login.module';
-import { TaskController } from './task/task.controller';
-import { TaskModule } from './task/task.module';
-import { TaskService } from './task/task.service';
-import { UserEntity } from './entity/user.entity';
+import { TaskService } from './task.service';
+import { UserModule } from '../user.module';
 import { TaskSheetEntity } from 'src/entities/taskTimeSheet.entity';
+
 @Module({
-  controllers: [UserController, TaskController],
-  providers: [UserService ,TaskService],
-  imports: [ TypeOrmModule.forFeature([UserEntity , TaskSheetEntity]), NestjsWinstonLoggerModule.forRoot({
+  imports: [TypeOrmModule.forFeature([TaskSheetEntity]), NestjsWinstonLoggerModule.forRoot({
     format: format.combine(
       format.timestamp({ format: 'isoDateTime' }),
       format.json(),
@@ -25,14 +20,7 @@ import { TaskSheetEntity } from 'src/entities/taskTimeSheet.entity';
       new transports.File({ filename: 'combined.log' }),
       new transports.Console(),
     ],
-  }), TaskModule
-],
-exports: [UserService],
-
+  })],
+  providers: [TaskService]
 })
-export class UserModule implements NestModule {
-  configure(consumer: MiddlewareConsumer)  {
-    consumer.apply(JWTAuthMiddleware)
-    .forRoutes(UserController)
-  }
-}
+export class TaskModule {}

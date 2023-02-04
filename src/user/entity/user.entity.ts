@@ -24,6 +24,6 @@ export class UserEntity {
   @Column({ name: 'createdAt' })
   public createdAt: Date
 
-  @Column({ name: 'role' })
-  public role: string
+  @Column({ name: 'role', type: 'enum', enum: UserRoles, default: UserRoles.UNKNOWN })
+  public role: UserRoles
 }

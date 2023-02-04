@@ -23,6 +23,9 @@ export class GetTimeSheetReq {
     @IsOptional()
     public projectId: number;
 
+    @IsOptional()
+    public filter: FilterModel;
+
     @IsNumber()
     @IsOptional()
     public limit: number;
@@ -33,6 +36,65 @@ export class GetTimeSheetReq {
 
 }
 
+
+export class FilterModel {
+
+    @IsNumber()
+    @IsOptional()
+    public engineerId: number;
+
+    @IsString()
+    @IsOptional()
+    public engineerName: string;
+
+    @IsNumber()
+    @IsOptional()
+    public teamLeadId: number;
+
+    @IsString()
+    @IsOptional()
+    public teamLeadName: string;
+
+    @IsNumber()
+    @IsOptional()
+    public mangerId: number;
+
+    @IsString()
+    @IsOptional()
+    public managerName: string;
+
+    @IsNumber()
+    @IsOptional()
+    public projectId: number;
+
+    @IsString()
+    @IsOptional()
+    public projectName: string;
+
+    @IsNumber()
+    @IsOptional()
+    public salesId: number;
+
+    @IsString()
+    @IsOptional()
+    public salesName: string;
+
+    @IsNumber()
+    @IsOptional()
+    public companyId: number;
+
+    @IsOptional()
+    public status: STATUS;
+
+}
+
+export enum STATUS {
+    DRAFT = 'DRAFT',
+    IN_REVIEW = 'IN_REVIEW',
+    APPROVED = 'APPROVED',
+    REJECTED = 'REJECTED',
+    CLOSED = 'CLOSED'
+}
 export class TaskDetailModel {
     @IsNumber()
     @IsOptional()

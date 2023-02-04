@@ -72,9 +72,6 @@ export class TimeSheetService {
         try {
 
             this.logger.log(`Got request to fetch time sheet by params ${JSON.stringify(timeSheetRequest)}`)
-            if (!timeSheetRequest.userId) {
-
-            }
 
             const userExist = await this.userRepo.findOne({ where: { id: timeSheetRequest.userId } });
             if (!userExist) {
@@ -106,42 +103,19 @@ export class TimeSheetService {
             timeSheetRequest.timeSheetId ? selectQuery.where('timeSheet.id = :id', { id: timeSheetRequest.timeSheetId }) : selectQuery;
 
             if (timeSheetRequest && timeSheetRequest.filter) {
-                timeSheetRequest.filter.engineerId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('timeSheet.engineerId = :engineerId', { engineerId: timeSheetRequest.filter.engineerId })
-                        .orWhere('engineer.name like (:engineerName)', { engineerName: '%' + timeSheetRequest.filter.managerName + '%' })
-                })) : selectQuery;
+                timeSheetRequest.filter.engineerId ? selectQuery.andWhere('timeSheet.engineerId = :engineerId', { engineerId: timeSheetRequest.filter.engineerId }) : selectQuery;
 
-                timeSheetRequest.filter.teamLeadId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('timeSheet.teamLeadId = :teamLeadId', { teamLeadId: timeSheetRequest.filter.teamLeadId })
-                        .orWhere('teamLead.name like (:teamLeadName)', { teamLeadName: '%' + timeSheetRequest.filter.teamLeadName + '%' })
-                })) : selectQuery;
+                timeSheetRequest.filter.teamLeadId ? selectQuery.andWhere('timeSheet.teamLeadId = :teamLeadId', { teamLeadId: timeSheetRequest.filter.teamLeadId }) : selectQuery;
 
-                timeSheetRequest.filter.mangerId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('timeSheet.mangerId = :mangerId', { teamLeadId: timeSheetRequest.filter.mangerId })
-                        .orWhere('manager.name like (:managerName)', { managerName: '%' + timeSheetRequest.filter.managerName + '%' })
-                })) : selectQuery;
+                timeSheetRequest.filter.mangerId ? selectQuery.andWhere('timeSheet.mangerId = :mangerId', { teamLeadId: timeSheetRequest.filter.mangerId }) : selectQuery;
 
+                timeSheetRequest.filter.projectId ? selectQuery.andWhere('project.id = :projectId', { projectId: timeSheetRequest.filter.projectId }) : selectQuery;
 
-                timeSheetRequest.filter.projectId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('project.id = :projectId', { projectId: timeSheetRequest.filter.projectId })
-                        .orWhere('project.name like (:projectName)', { projectName: '%' + timeSheetRequest.filter.projectName + '%' })
-                })) : selectQuery;
+                timeSheetRequest.filter.salesId ? selectQuery.andWhere('sales.id = :salesId', { salesId: timeSheetRequest.filter.salesId }) : selectQuery;
 
+                timeSheetRequest.filter.companyId ? selectQuery.andWhere('sales.companyId = :companyId', { companyId: timeSheetRequest.filter.companyId }) : selectQuery;
 
-                timeSheetRequest.filter.salesId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('sales.id = :salesId', { salesId: timeSheetRequest.filter.salesId })
-                        .orWhere('sales.name like (:salesName)', { salesName: '%' + timeSheetRequest.filter.salesName + '%' })
-                })) : selectQuery;
-
-
-                timeSheetRequest.filter.companyId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('sales.companyId = :companyId', { companyId: timeSheetRequest.filter.companyId })
-                })) : selectQuery;
-
-
-                timeSheetRequest.filter.status ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('timeSheet.status = :status', { status: timeSheetRequest.filter.status })
-                })) : selectQuery;
+                timeSheetRequest.filter.status ? selectQuery.andWhere('timeSheet.status = :status', { status: timeSheetRequest.filter.status }) : selectQuery;
 
             }
 
@@ -151,14 +125,14 @@ export class TimeSheetService {
             if (timeSheetRequest.endTime) {
                 selectQuery.andWhere('timeSheet.createdAt <= :createdAt', { createdAt: timeSheetRequest.endTime })
             }
-            if (timeSheetRequest && timeSheetRequest.filter.order) {
-                if (timeSheetRequest.filter.order === 'DESC') {
-                    selectQuery.orderBy('timeSheet.createdAt', 'DESC');
-                }
-                if (timeSheetRequest.filter.order === 'ASC') {
-                    selectQuery.orderBy('timeSheet.createdAt', 'ASC');
-                }
-            }
+            // if (timeSheetRequest && timeSheetRequest.filter.order) {
+            //     if (timeSheetRequest.filter.order === 'DESC') {
+            //         selectQuery.orderBy('timeSheet.createdAt', 'DESC');
+            //     }
+            //     if (timeSheetRequest.filter.order === 'ASC') {
+            //         selectQuery.orderBy('timeSheet.createdAt', 'ASC');
+            //     }
+            // }
             if (timeSheetRequest && timeSheetRequest.limit && timeSheetRequest.page) {
                 selectQuery.skip(timeSheetRequest.limit * (timeSheetRequest.page - 1)).take(timeSheetRequest.limit);
             } else {
@@ -194,7 +168,6 @@ export class TimeSheetService {
         }
 
         const userDetails = await this.userRepo.findOne({ where: { id: timeSheetReq.assignedTo } })
-
         let lastEditedBy: any = userDetails?.name;
 
         let taskSheetObject: any[] = []

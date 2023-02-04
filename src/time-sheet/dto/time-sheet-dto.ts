@@ -24,47 +24,39 @@ export enum TIME_SHEET_STATUS {
 
 export class FilterModel {
 
-    @IsNumber()
     @IsOptional()
     public engineerId: number;
 
-    @IsString()
     @IsOptional()
     public engineerName: string;
 
-    @IsNumber()
     @IsOptional()
     public teamLeadId: number;
 
-    @IsString()
+    @IsOptional()
+    public timeSheetId: number;
+
     @IsOptional()
     public teamLeadName: string;
 
-    @IsNumber()
     @IsOptional()
     public mangerId: number;
 
-    @IsString()
     @IsOptional()
     public managerName: string;
 
-    @IsNumber()
     @IsOptional()
     public projectId: number;
 
-    @IsString()
     @IsOptional()
     public projectName: string;
 
-    @IsNumber()
     @IsOptional()
     public salesId: number;
 
-    @IsString()
     @IsOptional()
     public salesName: string;
 
-    @IsNumber()
     @IsOptional()
     public companyId: number;
 
@@ -79,38 +71,30 @@ export class FilterModel {
 export class GetTimeSheetReq {
 
 
-    @IsNumber()
     @IsOptional()
     public engineerId: number;
 
-    @IsNumber()
     @IsOptional()
     public timeSheetId: number;
 
-    @IsString()
     @IsOptional()
     public startTime: string;
 
-    @IsString()
     @IsOptional()
     public endTime: string;
 
-    @IsNumber()
     @IsOptional()
     public projectId: number;
 
     @IsOptional()
     public filter: FilterModel;
 
-    @IsNumber()
     @IsOptional()
     public limit: number;
 
-    @IsNumber()
     @IsOptional()
     public userId: number;
 
-    @IsNumber()
     @IsOptional()
     public page: number;
 

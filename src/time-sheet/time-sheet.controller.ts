@@ -24,6 +24,23 @@ export class UserController {
     }
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Get()
+  public async getAllTimeSheet(
+    @Query() timeSheetRequest: GetTimeSheetReq,
+    @Res() response: any) {
+    try {
+      this.timeSheetService.getAllTimeSheet(timeSheetRequest, response);
+    } catch (err) {
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: 'It seems there is some technical glitch at our end, Unable to fetch Time sheet.',
+        error_code: HttpStatus.INTERNAL_SERVER_ERROR,
+        data: err.message
+      });
+    }
+  }
+
   @Patch('/:id')
   async updateTimeSheet(@Body() timeSheetReq: PatchTimeSheetReq, @Res() response: any) {
     try {

@@ -9,7 +9,7 @@ import { ProjectEntity } from 'src/entities/project.entity';
 @Module({
   controllers: [ProjectController],
   providers: [ProjectService],
-  imports: [ 
+  imports: [
     TypeOrmModule.forFeature([ProjectEntity]), NestjsWinstonLoggerModule.forRoot({
         format: format.combine(
         format.timestamp({ format: 'isoDateTime' }),

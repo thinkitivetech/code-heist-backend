@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JWTAuthMiddleware } from 'src/security/JWTMiddleware';
 import { LoginModule } from 'src/login/login.module';
 import { TaskService } from './task.service';
-import { UserModule } from '../user.module';
+import { UserModule } from '../user/user.module';
 import { TaskSheetEntity } from 'src/entities/taskTimeSheet.entity';
 
 @Module({

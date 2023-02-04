@@ -1,6 +1,6 @@
 import { Controller, Get, HttpStatus, Param, Query, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { UserRequestDto } from '../dto/userModel/create-user.dto';
+import { UserRequestDto } from '../user/dto/userModel/create-user.dto';
 import { TaskService } from './task.service';
 
 @Controller('task')

@@ -6,6 +6,7 @@ import { ProfileEntity } from './profile.entity';
 import { TeamLeadEntity } from './teamLead.entity';
 import { TimeSheetEntity } from './timesheet.entity';
 import { EngineerEntity } from './engineer.entity';
+import { SalesEntity } from './sales.entity';
 
 @Entity({ name: 'PROJECT' })
 export class ProjectEntity {
@@ -24,10 +25,10 @@ export class ProjectEntity {
   @Column({ name: 'CLIENT_NAME' })
   public clientName: string;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @CreateDateColumn({ name: 'CREATED_AT' })
   public createdAt: Date;
 
-  @CreateDateColumn({ name: 'updated_at' })
+  @CreateDateColumn({ name: 'UPDATED_AT' })
   public updatedAt: Date;
 
   @Column({ name: 'ENGINEER_ID',  nullable: true  })
@@ -45,6 +46,19 @@ export class ProjectEntity {
     referencedColumnName: 'id',
   })
   public manger: ManagerEntity;
+
+  @Column({ name: 'SALES_ID', nullable: true  })
+  public salesId: number;
+
+  @Column({ name: 'COMPANY_ID', nullable: true  })
+  public companyId: number;
+
+  @ManyToOne(() => SalesEntity, { nullable: true })
+  @JoinColumn({
+    name: 'SALES_ID',
+    referencedColumnName: 'id',
+  })
+  public sales: SalesEntity;
 
   @OneToOne(() => TimeSheetEntity, timeSheet => timeSheet.project, {
     cascade: true,

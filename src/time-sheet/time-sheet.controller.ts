@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Patch, Query, Res, UseGuards, Post, Param } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { GetTimeSheetReq, PatchTimeSheetReq, Status } from './dto/time-sheet-dto';
+import { GetTimeSheetReq, PatchTimeSheetReq, TimeSheetStatusReq } from './dto/time-sheet-dto';
 import { TimeSheetService } from './time-sheet.service';
 
 @Controller('/api/time-sheet')
@@ -76,7 +76,11 @@ export class TimeSheetController {
 
   @Patch('/status')
   async status(
+<<<<<<< HEAD
+  @Body() timeSheetReq: TimeSheetStatusReq,
+=======
   @Body() timeSheetReq: any,
+>>>>>>> e5bbcd3aaa854342f28447f88ae2d2a5ceaa73d8
   @Res() response: any) {
     try {
 

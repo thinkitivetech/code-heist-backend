@@ -16,8 +16,9 @@ export class LoginService {
         const jwtSecretKey = String(process.env.JWT_SECRET_KEY)
         const match = await bcrypt.compare(loginDetails.password, userDetails.hashedPassword)
         let loginResponse = {} as LoginResponse;
-        loginResponse.userRole = userDetails.role as UserRoles
-        loginResponse.email = loginDetails.email
+        loginResponse.userRole = userDetails.role
+        loginResponse.email = loginDetails.email;
+        loginResponse.userId = userDetails.id
         if (!match) {
             return '';
         } else {

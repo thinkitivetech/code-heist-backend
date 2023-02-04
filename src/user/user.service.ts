@@ -5,15 +5,15 @@ import { HttpError } from 'routing-controllers';
 import { paginateResponse } from 'src/utils/common';
 import { Like, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/userModel/create-user.dto';
-import { User } from './entity/user.entity';
+import { UserEntity } from './entity/user.entity';
 
 
 @Injectable()
 export class UserService {
 
     constructor(
-        @InjectRepository(User)
-        private userRepository: Repository<User>,
+        @InjectRepository(UserEntity)
+        private userRepository: Repository<UserEntity>,
         @InjectLogger() private logger: NestjsWinstonLoggerService,
 
     ) { }
@@ -82,7 +82,7 @@ export class UserService {
                 data: {}
             })
         }
-        const userDetail = {} as User;
+        const userDetail = {} as UserEntity;
         Object.assign(userDetail, createUserDto)
         userDetail.createdAt = new Date();
         const savedUser = await this.userRepository.save(userDetail);
@@ -95,7 +95,7 @@ export class UserService {
         });
 
     }
-    async getUserByEmail(email: string): Promise<User> {
+    async getUserByEmail(email: string): Promise<UserEntity> {
         const existingUser = await this.userRepository.findOne({ where: { email } });
         if (!existingUser) {
             throw new HttpError(HttpStatus.UNAUTHORIZED, `User with emailId ${email} not found`);

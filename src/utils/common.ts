@@ -13,3 +13,19 @@ export const paginateResponse = ((data: any, page: number, limit: number): any =
         lastPage: lastPage,
     };
 });
+
+
+export const convertHourstoMinute = (hourMinuteString: string) => {
+    const hour: any = hourMinuteString.split(':')[0];
+    const minute = hourMinuteString.split(':')[1];
+    return Math.floor(hour * 60) + parseInt(minute);
+}
+
+export const toHoursAndMinutes = (totalMinutes: number) => {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${padToTwoDigits(hours)}:${padToTwoDigits(minutes)}`;
+}
+function padToTwoDigits(num: number) {
+    return num.toString().padStart(2, '0');
+}

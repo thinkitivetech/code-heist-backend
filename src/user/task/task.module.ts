@@ -5,8 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { JWTAuthMiddleware } from 'src/security/JWTMiddleware';
 import { LoginModule } from 'src/login/login.module';
 import { TaskService } from './task.service';
-import { TaskSheetEntity } from '../entity/taskTimeSheet.entity';
 import { UserModule } from '../user.module';
+import { TaskSheetEntity } from 'src/entities/taskTimeSheet.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TaskSheetEntity]), NestjsWinstonLoggerModule.forRoot({

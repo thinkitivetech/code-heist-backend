@@ -1,11 +1,11 @@
 import { JoinColumn, OneToOne } from 'typeorm';
 import { ManyToOne } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
-import { EngineeringEntity } from './engineering.entity';
 import { ManagerEntity } from './manager.entity';
 import { ProfileEntity } from './profile.entity';
 import { TeamLeadEntity } from './teamLead.entity';
 import { TimeSheetEntity } from './timesheet.entity';
+import { EngineerEntity } from './engineer.entity';
 
 @Entity({ name: 'PROJECT' })
 export class ProjectEntity {
@@ -49,12 +49,12 @@ export class ProjectEntity {
   })
   public teamLead: TeamLeadEntity;
 
-  @ManyToOne(() => EngineeringEntity, { nullable: true })
+  @ManyToOne(() => EngineerEntity, { nullable: true })
   @JoinColumn({
     name: 'ENGINEER_ID',
     referencedColumnName: 'id',
   })
-  public engineerDetails: EngineeringEntity;
+  public engineerDetails: EngineerEntity;
 
   @OneToMany(() => ProfileEntity, profileDetails => profileDetails.profile, { cascade: true, eager: true, orphanedRowAction: 'delete' })
   public profileDetails: ProfileEntity[];

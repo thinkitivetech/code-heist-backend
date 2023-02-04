@@ -1,9 +1,9 @@
 import { HttpStatus, Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectLogger, NestjsWinstonLoggerService } from 'nestjs-winston-logger';
+import { TaskSheetEntity } from 'src/entities/taskTimeSheet.entity';
 import { paginateResponse } from 'src/utils/common';
 import { Repository } from 'typeorm';
-import { TaskSheetEntity } from '../entity/taskTimeSheet.entity';
 
 @Injectable()
 export class TaskService {

@@ -9,9 +9,10 @@ import { typeOrmConfigAsync } from './config/typeorm.config';
 import { ConfigModule } from '@nestjs/config';
 import { LoginModule } from './login/login.module';
 import { UserService } from './user/user.service';
+import { PdfController } from './pdf/pdf.controller';
 
 @Module({
-  controllers: [AppController],
+  controllers: [AppController, PdfController],
   imports: [UserModule, LoginModule, TypeOrmModule.forRootAsync(typeOrmConfigAsync), ConfigModule.forRoot()],
   providers: [AppService],
 

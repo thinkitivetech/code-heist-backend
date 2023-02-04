@@ -48,6 +48,7 @@
     "nestjs-winston-logger": "^1.1.11",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
+    "pdfkit-table": "^0.1.99",
     "redis": "^4.5.1",
     "reflect-metadata": "^0.1.13",
     "routing-controllers": "^0.10.1",

@@ -75,9 +75,10 @@ export class TimeSheetController {
 
   @Patch('/status')
   async status(
-  @Body() timeSheetReq: Status,
+  @Body() timeSheetReq: any,
   @Res() response: any) {
     try {
+
       await this.timeSheetService.updateStatus(timeSheetReq, response);
     } catch (err) {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({

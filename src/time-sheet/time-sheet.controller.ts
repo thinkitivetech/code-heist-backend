@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { GetTimeSheetReq, PatchTimeSheetReq } from './dto/time-sheet-dto';
 import { TimeSheetService } from './time-sheet.service';
 
-@Controller('/time-sheet')
+@Controller('/api/time-sheet')
 export class TimeSheetController {
   constructor(private timeSheetService: TimeSheetService) {
   }
@@ -14,6 +14,23 @@ export class TimeSheetController {
     @Res() response: any) {
     try {
       this.timeSheetService.getTimeSheet(timeSheetRequest, response);
+    } catch (err) {
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: 'It seems there is some technical glitch at our end, Unable to fetch Time sheet.',
+        error_code: HttpStatus.INTERNAL_SERVER_ERROR,
+        data: err.message
+      });
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/all')
+  public async getAllTimeSheet(
+    @Query() timeSheetRequest: GetTimeSheetReq,
+    @Res() response: any) {
+    try {
+      this.timeSheetService.getAllTimeSheet(timeSheetRequest, response);
     } catch (err) {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         success: false,

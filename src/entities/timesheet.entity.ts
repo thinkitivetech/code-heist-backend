@@ -2,9 +2,11 @@ import { EngineerEntity } from 'src/entities/engineer.entity';
 import { JoinColumn, OneToOne } from 'typeorm';
 import { ManyToOne } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
+import { ManagerEntity } from './manager.entity';
 import { ProfileEntity } from './profile.entity';
 import { ProjectEntity } from './project.entity';
 import { TaskSheetEntity } from './taskTimeSheet.entity';
+import { TeamLeadEntity } from './teamLead.entity';
 
 @Entity({ name: 'TIME_SHEET' })
 export class TimeSheetEntity {
@@ -45,6 +47,26 @@ export class TimeSheetEntity {
     })
     public engineer: EngineerEntity;
 
-    @OneToMany(() => TaskSheetEntity, taskSheet => taskSheet.timeSheet, { cascade: true, eager: true, orphanedRowAction: 'delete' })
-    public taskSheet: TaskSheetEntity[];
+    @Column({ name: 'TEAM_LEAD_ID', nullable: true })
+    public teamLeadId: number;
+
+    @ManyToOne(() => TeamLeadEntity, { nullable: true })
+    @JoinColumn({
+        name: 'TEAM_LEAD_ID',
+        referencedColumnName: 'id',
+    })
+    public teamLead: TeamLeadEntity;
+
+    @Column({ name: 'MANAGER_ID', nullable: true })
+    public managerId: number;
+
+    @ManyToOne(() => ManagerEntity, { nullable: true })
+    @JoinColumn({
+        name: 'MANAGER_ID',
+        referencedColumnName: 'id',
+    })
+    public manager: ManagerEntity;
+
+    @OneToMany(() => TaskSheetEntity, taskDetails => taskDetails, { cascade: true, eager: true, orphanedRowAction: 'delete' })
+    public taskDetails: TaskSheetEntity[];
 }

@@ -3,6 +3,7 @@ import { LoginDetails, LoginResponse } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt'
 import * as jwt from 'jsonwebtoken'
 import { UserService } from 'src/user/user.service';
+import { UserRoles } from 'src/user/dto/userModel/user-model';
 
 @Injectable()
 export class LoginService {
@@ -15,7 +16,7 @@ export class LoginService {
         const jwtSecretKey = String(process.env.JWT_SECRET_KEY)
         const match = await bcrypt.compare(loginDetails.password, userDetails.hashedPassword)
         let loginResponse = {} as LoginResponse;
-        loginResponse.userRole = userDetails.role
+        loginResponse.userRole = userDetails.role as UserRoles
         loginResponse.email = loginDetails.email
         if (!match) {
             return '';

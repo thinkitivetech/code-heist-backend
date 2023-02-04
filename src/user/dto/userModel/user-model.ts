@@ -3,7 +3,7 @@ export enum UserRoles {
     ACCOUNT = 'ACCOUNT',
     CLIENT = 'CLIENT',
     MANAGER = 'MANAGER',
-    TEAM_LEAD = 'TEAMLEAD',
+    TEAM_LEAD = 'TEAM_LEAD',
     ENGINEER = 'ENGINEER',
     UNKNOWN = 'UNKNOWN'
 }

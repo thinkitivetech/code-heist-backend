@@ -2,6 +2,7 @@ import { OneToMany } from 'typeorm';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
 import { ProjectEntity } from './project.entity';
 import { TeamLeadEntity } from './teamLead.entity';
+import { TimeSheetEntity } from './timesheet.entity';
 
 @Entity({ name: 'MANAGER' })
 export class ManagerEntity {
@@ -32,5 +33,8 @@ export class ManagerEntity {
 
     @OneToMany(() => TeamLeadEntity, teamLead => teamLead.manger, { cascade: true, eager: true, orphanedRowAction: 'delete' })
     public teamLeadDetails: TeamLeadEntity[];
+
+    @OneToMany(() => TimeSheetEntity, timeSheetDetails => timeSheetDetails.manager, { cascade: true, eager: true, orphanedRowAction: 'delete' })
+    public timeSheetDetails: TimeSheetEntity[];
 
 }

@@ -11,7 +11,7 @@ export default class TypeOrmConfig {
             database: configService.get('TYPEORM_DATABASE'),
             entities: ['dist/**/*.entity.js'],
             synchronize: configService.get('TYPEORM_SYNCHRONIZE'),
-            logging: true,
+            logging: false,
         };
     }
 }

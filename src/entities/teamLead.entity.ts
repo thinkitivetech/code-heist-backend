@@ -4,6 +4,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } f
 import { ProjectEntity } from './project.entity';
 import { EngineerEntity } from './engineer.entity';
 import { ManagerEntity } from './manager.entity';
+import { TimeSheetEntity } from './timesheet.entity';
 
 @Entity({ name: 'TEAM_LEAD' })
 export class TeamLeadEntity {
@@ -40,5 +41,8 @@ export class TeamLeadEntity {
 
     @OneToMany(() => ProjectEntity, projectDetails => projectDetails.teamLead, { cascade: true, eager: true, orphanedRowAction: 'delete' })
     public projectDetails: ProjectEntity[];
+
+    @OneToMany(() => TimeSheetEntity, timeSheetDetails => timeSheetDetails.teamLead, { cascade: true, eager: true, orphanedRowAction: 'delete' })
+    public timeSheetDetails: TimeSheetEntity[];
 
 }

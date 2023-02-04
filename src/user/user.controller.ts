@@ -4,7 +4,7 @@ import { CreateUserDto, UserRequestDto } from './dto/userModel/create-user.dto';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 
-@Controller('user')
+@Controller('/api/user')
 export class UserController {
   constructor(private userService: UserService) {
   }

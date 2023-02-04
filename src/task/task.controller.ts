@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserRequestDto } from '../user/dto/userModel/create-user.dto';
 import { TaskService } from './task.service';
 
-@Controller('task')
+@Controller('/api/task')
 export class TaskController {
     constructor(
         private taskService: TaskService) {

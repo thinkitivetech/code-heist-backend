@@ -1,5 +1,82 @@
-import { IsEmail, ValidateNested, IsNumber, IsOptional, IsString, IsEnum } from "@nestjs/class-validator";
+import { IsNumber, IsOptional, IsString } from "@nestjs/class-validator";
+import { IsEnum } from "class-validator";
 
+export enum ORDER {
+
+    ASC = 'ASC',
+    DESC = 'DESC',
+}
+
+export enum STATUS {
+    DRAFT = 'DRAFT',
+    IN_REVIEW = 'IN_REVIEW',
+    APPROVED = 'APPROVED',
+    REJECTED = 'REJECTED',
+    CLOSED = 'CLOSED',
+    SEND_TO_APPROVAL_BY_TL = 'SEND_TO _APPROVAL_BY_TL',
+    SEND_TO_APPROVAL_BY_MANAGER = 'SEND_TO_APPROVAL_BY_MANAGER',
+    APPROVED_APPROVAL_BY_TL = 'APPROVED_APPROVAL_BY_TL',
+    APPROVED_APPROVAL_BY_MANAGER = 'APPROVED_APPROVAL_BY_MANAGER',
+    REJECTED_TO_APPROVAL_BY_TL = 'REJECTED_TO_APPROVAL_BY_TL',
+    REJECTED_TO_APPROVAL_BY_MANAGER = 'REJECTED_TO_APPROVAL_BY_MANAGER'
+
+}
+
+
+export class FilterModel {
+
+    @IsNumber()
+    @IsOptional()
+    public engineerId: number;
+
+    @IsString()
+    @IsOptional()
+    public engineerName: string;
+
+    @IsNumber()
+    @IsOptional()
+    public teamLeadId: number;
+
+    @IsString()
+    @IsOptional()
+    public teamLeadName: string;
+
+    @IsNumber()
+    @IsOptional()
+    public mangerId: number;
+
+    @IsString()
+    @IsOptional()
+    public managerName: string;
+
+    @IsNumber()
+    @IsOptional()
+    public projectId: number;
+
+    @IsString()
+    @IsOptional()
+    public projectName: string;
+
+    @IsNumber()
+    @IsOptional()
+    public salesId: number;
+
+    @IsString()
+    @IsOptional()
+    public salesName: string;
+
+    @IsNumber()
+    @IsOptional()
+    public companyId: number;
+
+    @IsOptional()
+    public status: STATUS;
+
+    @IsOptional()
+    @IsEnum(ORDER)
+    public order: ORDER;
+
+}
 export class GetTimeSheetReq {
 
 
@@ -23,6 +100,9 @@ export class GetTimeSheetReq {
     @IsOptional()
     public projectId: number;
 
+    @IsOptional()
+    public filter: FilterModel;
+
     @IsNumber()
     @IsOptional()
     public limit: number;
@@ -32,6 +112,7 @@ export class GetTimeSheetReq {
     public page: number;
 
 }
+
 
 export class TaskDetailModel {
     @IsNumber()

@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { NestjsWinstonLoggerModule } from 'nestjs-winston-logger';
 import { format } from 'path';
-import { DatabaseModule } from 'src/app.database.module';
 import { User } from 'src/user/entity/user.entity';
 import { UserModule } from 'src/user/user.module';
 import { UserService } from 'src/user/user.service';

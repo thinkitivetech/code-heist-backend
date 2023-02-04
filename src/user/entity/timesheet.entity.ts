@@ -43,6 +43,6 @@ export class TimeSheetEntity {
     })
     public engineer: EngineeringEntity;
 
-    @OneToMany(() => TaskSheetEntity, taskDetails => taskDetails, { cascade: true, eager: true, orphanedRowAction: 'delete' })
+    @OneToMany(() => TaskSheetEntity, taskDetails => taskDetails.timeSheet, { cascade: true, eager: true, orphanedRowAction: 'delete' })
     public taskDetails: TaskSheetEntity[];
 }

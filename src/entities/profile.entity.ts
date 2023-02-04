@@ -43,7 +43,7 @@ export class ProfileEntity {
         name: 'PROJECT_ID',
         referencedColumnName: 'id',
     })
-    public profile: ProjectEntity;
+    public project: ProjectEntity;
 
     @OneToOne(() => TimeSheetEntity, timeSheet => timeSheet.profile, {
         cascade: true,

@@ -1,4 +1,4 @@
-import { IsEmail, ValidateNested, IsNumber, IsOptional, IsString } from "@nestjs/class-validator";
+import { IsEmail, ValidateNested, IsNumber, IsOptional, IsString, IsEnum } from "@nestjs/class-validator";
 
 export class GetTimeSheetReq {
 
@@ -61,5 +61,17 @@ export class PatchTimeSheetReq {
     @IsOptional()
     @IsNumber()
     public teamLeadId: number;
+
+    @IsString()
+    @IsOptional()
+    public name: string;
+
+    @IsString()
+    @IsOptional()
+    public project: string;
+
+    @IsString()
+    @IsOptional()
+    public status: string;
 
 }

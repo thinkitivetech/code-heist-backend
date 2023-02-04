@@ -65,7 +65,7 @@ export class ProjectEntity {
   })
   public engineerDetails: EngineerEntity;
 
-  @OneToMany(() => ProfileEntity, profileDetails => profileDetails.profile, { cascade: true, eager: true, orphanedRowAction: 'delete' })
+  @OneToMany(() => ProfileEntity, profileDetails => profileDetails.project, { cascade: true, eager: true, orphanedRowAction: 'delete' })
   public profileDetails: ProfileEntity[];
 
 }

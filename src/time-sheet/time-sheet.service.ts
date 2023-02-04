@@ -60,8 +60,8 @@ export class TimeSheetService {
 
     }
 
-    public async createTimeSheet(timeSheetReq: PatchTimeSheetReq, @Res() response: any) {
-        const timeSheetEntity = this.timeSheetMapper.toTimeSheetEntity(timeSheetReq);
+    public async createTimeSheet(timeSheetReq: PatchTimeSheetReq, assignedTo: string, @Res() response: any) {
+        const timeSheetEntity = this.timeSheetMapper.toTimeSheetEntity(timeSheetReq, assignedTo);
 
     }
 

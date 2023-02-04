@@ -1,5 +1,7 @@
-import { Controller, Get, Param, Post, Query } from '@nestjs/common';
-import { createUserDto } from './dto/userModel/create-user.dto';
+import { Body, Controller, Get, HttpStatus, Param, Post, Query, Res, UseInterceptors } from '@nestjs/common';
+import { SignUpInterceptor } from 'src/security/SignUpInterceptor';
+import { CreateUserDto, UserRequestDto } from './dto/userModel/create-user.dto';
+import { User } from './entity/user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -8,8 +10,9 @@ export class UserController {
     }
 
     @Get()
-    public async getUsers(): Promise<any[]> {
-        const data = this.userService.getUsers(undefined);
+    public async getUsers(
+        @Query() req: UserRequestDto): Promise<any[]> {
+        const data = this.userService.getUsers(req);
         return data;
     }
 
@@ -20,11 +23,19 @@ export class UserController {
         const data = this.userService.getUser(id);
         return data;
     }
-
     @Post()
-    public async createdUser(req: createUserDto): Promise<any> {
-        const data = this.userService.createUser(req);
-        return data;
+    @UseInterceptors(SignUpInterceptor)
+    async createUser(@Res() response: any, @Body() createUserDto: CreateUserDto) {
+      try {
+        await this.userService.createUser(createUserDto, response);
+      } catch (err) {
+        return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+          success: false,
+          message: 'It seems there is some technical glitch at our end, Unable to create user.',
+          error_code: HttpStatus.INTERNAL_SERVER_ERROR,
+          data: err.message
+        });
+      }
     }
-
+  
 }

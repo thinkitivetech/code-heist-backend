@@ -1,6 +1,6 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsString, IsStrongPassword } from "class-validator";
+import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, IsStrongPassword } from "class-validator";
 
-export class createUserDto {
+export class CreateUserDto {
 
     @IsNotEmpty()
     @IsString()
@@ -14,4 +14,25 @@ export class createUserDto {
     @IsStrongPassword()
     @IsNotEmpty()
     public password: string;
+    @IsString()
+    @IsOptional()
+    public hashedPassword: string;
+}
+
+export class UserRequestDto {
+
+    @IsOptional()
+    public page: number;
+    @IsOptional()
+    public limit: number;
+    @IsString()
+    @IsOptional()
+    public name: string;
+    @IsEmail()
+    @IsOptional()
+    public email: string;
+    @IsNumber()
+    @IsOptional()
+    public mobileNo: number;
+
 }

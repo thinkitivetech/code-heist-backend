@@ -9,10 +9,11 @@ import { typeOrmConfigAsync } from './config/typeorm.config';
 import { ConfigModule } from '@nestjs/config';
 import { LoginModule } from './login/login.module';
 import { UserService } from './user/user.service';
+import { ProjectModule } from './project/project.module';
 
 @Module({
   controllers: [AppController],
-  imports: [UserModule, LoginModule, TypeOrmModule.forRootAsync(typeOrmConfigAsync), ConfigModule.forRoot()],
+  imports: [UserModule, LoginModule, ProjectModule, TypeOrmModule.forRootAsync(typeOrmConfigAsync), ConfigModule.forRoot()],
   providers: [AppService],
 
 })

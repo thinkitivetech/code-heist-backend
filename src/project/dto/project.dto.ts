@@ -1,5 +1,6 @@
 import { IsNumber, IsOptional, IsString } from "class-validator";
 import { ManagerController } from "src/manager/manager.controller";
+import { FilterModel } from "src/time-sheet/dto/time-sheet-dto";
 
 export class CreateProject {
 
@@ -21,18 +22,47 @@ export class CreateProject {
     public endDate: string;
 }
 
-//
-// Creation -->
-//     projetc name
-//     RTCSessionDescription
-//     client name
-//     start Date
-//     end Date
-//
-//     sale person can onliy assign to manager
-// Assign -->
-//     Manager--> dropdwoan
-//
-//
-//     Manger will se then this project
-//     he can assign both team lead and enginner
+export class reqProject {
+
+    @IsOptional()
+    public projectId: number;
+
+    @IsString()
+    @IsOptional()
+    public projectName: string;
+
+    @IsOptional()
+    @IsString()
+    public description: string;
+
+    @IsOptional()
+    @IsString()
+    public clientName: string;
+
+    @IsOptional()
+    public startDate: string;
+
+    @IsOptional()
+    public endDate: string;
+
+    @IsOptional()
+    public filter: FilterModel;
+
+    @IsString()
+    @IsOptional()
+    public startTime: string;
+
+    @IsString()
+    @IsOptional()
+    public endTime: string;
+
+    @IsOptional()
+    public limit: number;
+
+    @IsOptional()
+    public userId: number;
+
+    @IsOptional()
+    public page: number;
+
+}

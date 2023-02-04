@@ -6,11 +6,12 @@ import { ProjectService } from './project.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JWTAuthMiddleware } from 'src/security/JWTMiddleware';
 import { ProjectEntity } from 'src/entities/project.entity';
+import { UserEntity } from 'src/user/entity/user.entity';
 @Module({
   controllers: [ProjectController],
   providers: [ProjectService],
   imports: [
-    TypeOrmModule.forFeature([ProjectEntity]), NestjsWinstonLoggerModule.forRoot({
+    TypeOrmModule.forFeature([ProjectEntity, UserEntity]), NestjsWinstonLoggerModule.forRoot({
         format: format.combine(
         format.timestamp({ format: 'isoDateTime' }),
         format.json(),

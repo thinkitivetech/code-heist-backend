@@ -21,42 +21,6 @@ export enum STATUS {
     REJECTED_TO_APPROVAL_BY_MANAGER = 'REJECTED_TO_APPROVAL_BY_MANAGER'
 
 }
-export class GetTimeSheetReq {
-
-
-    @IsNumber()
-    @IsOptional()
-    public engineerId: number;
-
-    @IsNumber()
-    @IsOptional()
-    public timeSheetId: number;
-
-    @IsString()
-    @IsOptional()
-    public startTime: string;
-
-    @IsString()
-    @IsOptional()
-    public endTime: string;
-
-    @IsNumber()
-    @IsOptional()
-    public projectId: number;
-
-    @IsOptional()
-    public filter: FilterModel;
-
-    @IsNumber()
-    @IsOptional()
-    public limit: number;
-
-    @IsNumber()
-    @IsOptional()
-    public page: number;
-
-}
-
 
 export class FilterModel {
 
@@ -112,6 +76,48 @@ export class FilterModel {
     public order: ORDER;
 
 }
+export class GetTimeSheetReq {
+
+
+    @IsNumber()
+    @IsOptional()
+    public engineerId: number;
+
+    @IsNumber()
+    @IsOptional()
+    public timeSheetId: number;
+
+    @IsString()
+    @IsOptional()
+    public startTime: string;
+
+    @IsString()
+    @IsOptional()
+    public endTime: string;
+
+    @IsNumber()
+    @IsOptional()
+    public projectId: number;
+
+    @IsOptional()
+    public filter: FilterModel;
+
+    @IsNumber()
+    @IsOptional()
+    public limit: number;
+
+    @IsNumber()
+    @IsOptional()
+    public userId: number;
+
+    @IsNumber()
+    @IsOptional()
+    public page: number;
+
+}
+
+
+
 export class TaskDetailModel {
     @IsNumber()
     @IsOptional()

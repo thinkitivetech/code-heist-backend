@@ -66,6 +66,9 @@ export class TimeSheetService {
         try {
 
             this.logger.log(`Got request to fetch time sheet by params ${JSON.stringify(timeSheetRequest)}`)
+            if(!timeSheetRequest.userId){
+
+            }
             const loggedInUser:any = applyPassportStrategy();
             let user;
             if(loggedInUser && loggedInUser.email){
@@ -73,7 +76,7 @@ export class TimeSheetService {
             }
             if(!user){
                 this.logger.error(`User not found for email ${loggedInUser.email}`);
-                throw new HttpError(404 , `No user has been found`);
+                throw new Error('No User has been found`');
             }
 
             if(user.role === UserRoles.TEAM_LEAD){
@@ -169,7 +172,7 @@ export class TimeSheetService {
             });
         } catch (err) {
             this.logger.error(`Error while fetching user for id ${timeSheetRequest} Err as ${err}`);
-            throw new HttpError(404 , `Error while fetching timeSheet ${err}`);
+            throw new Error(`error while fetching timeSheet ${err}`);
         }
     }
 

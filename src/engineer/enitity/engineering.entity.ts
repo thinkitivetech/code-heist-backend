@@ -1,7 +1,7 @@
 import { TeamLeadEntity } from 'src/team-lead/entity/teamLead.entity';
 import { TimeSheetEntity } from 'src/time-sheet/entity/timesheet.entity';
 import { ProfileEntity } from 'src/user/entity/profile.entity';
-import { ProjectEntity } from 'src/user/entity/project.entity';
+import { ProjectEntity } from 'src/project/entity/project.entity';
 import { JoinColumn } from 'typeorm';
 import { ManyToOne } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';

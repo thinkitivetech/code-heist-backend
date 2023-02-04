@@ -2,7 +2,7 @@ import { JoinColumn, OneToOne } from 'typeorm';
 import { ManyToOne } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
 import { ManagerEntity } from '../../manager/entity/manager.entity';
-import { ProjectEntity } from './project.entity';
+import { ProjectEntity } from '../../project/entity/project.entity';
 import { TimeSheetEntity } from '../../time-sheet/entity/timesheet.entity';
 import { EngineeringEntity } from 'src/engineer/enitity/engineering.entity';
 

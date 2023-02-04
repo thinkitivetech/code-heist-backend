@@ -10,7 +10,7 @@ export const databaseProviders = [
         port: 3306,
         username: 'root',
         password: 'password',
-        database: 'aaa',
+        database: 'code_heist_db',
         entities: ["dist/**/*.entity.js"],
         synchronize: true,
       });

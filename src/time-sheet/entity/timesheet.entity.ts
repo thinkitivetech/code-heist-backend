@@ -4,7 +4,7 @@ import { ManyToOne } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
 import { ManagerEntity } from '../../manager/entity/manager.entity';
 import { ProfileEntity } from '../../user/entity/profile.entity';
-import { ProjectEntity } from '../../user/entity/project.entity';
+import { ProjectEntity } from '../../project/entity/project.entity';
 import { TaskSheetEntity } from './taskTimeSheet.entity';
 
 @Entity({ name: 'TIME_SHEET' })

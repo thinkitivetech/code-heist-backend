@@ -3,7 +3,7 @@ import { JoinColumn } from 'typeorm';
 import { ManyToOne } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
 import { ManagerEntity } from '../../manager/entity/manager.entity';
-import { ProjectEntity } from '../../user/entity/project.entity';
+import { ProjectEntity } from '../../project/entity/project.entity';
 
 @Entity({ name: 'TEAM_LEAD' })
 export class TeamLeadEntity {

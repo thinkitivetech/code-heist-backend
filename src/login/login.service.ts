@@ -1,7 +1,6 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { LoginDetails, LoginResponse } from './dto/login-user.dto';
 import * as bcrypt from 'bcrypt'
-import { HttpError } from 'routing-controllers';
 import * as jwt from 'jsonwebtoken'
 import { UserService } from 'src/user/user.service';
 

@@ -1,4 +1,4 @@
-import { Inject, NestMiddleware } from "@nestjs/common";
+import { NestMiddleware } from "@nestjs/common";
 import { NextFunction } from "express";
 import { Strategy, ExtractJwt } from 'passport-jwt'
 import * as passport from "passport";
@@ -14,7 +14,6 @@ export class JWTAuthMiddleware implements NestMiddleware {
 
 export const applyPassportStrategy = () => {
   const options = {} as any;
-
   options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
   options.secretOrKey = process.env.JWT_SECRET_KEY;
   passport.use(new Strategy(
@@ -22,7 +21,7 @@ export const applyPassportStrategy = () => {
       if (payload) {
 
         return done(null, {
-          emailId: payload.emailId,
+          email: payload.email,
           roles: payload.role
         })
       }

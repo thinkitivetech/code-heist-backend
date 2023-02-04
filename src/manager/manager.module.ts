@@ -1,4 +1,33 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { ManagerController } from './manager.controller';
+import { NestjsWinstonLoggerModule } from 'nestjs-winston-logger';
+import { format, transports } from 'winston';
+import { ManagerService } from './manager.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { JWTAuthMiddleware } from 'src/security/JWTMiddleware';
+import { ManagerEntity } from 'src/entities/manager.entity';
+@Module({
+  controllers: [ManagerController],
+  providers: [ManagerService],
+  imports: [ 
+    TypeOrmModule.forFeature([ManagerEntity]), NestjsWinstonLoggerModule.forRoot({
+        format: format.combine(
+        format.timestamp({ format: 'isoDateTime' }),
+        format.json(),
+        format.colorize({ all: true })
+    ),
+    transports: [
+      new transports.File({ filename: 'error.log', level: 'error' }),
+      new transports.File({ filename: 'combined.log' }),
+      new transports.Console(),
+    ]
+  })
+]
+})
 
-@Module({})
-export class ManagerModule {}
+export class ManagerModule implements NestModule {
+  configure(consumer: MiddlewareConsumer)  {
+    consumer.apply(JWTAuthMiddleware)
+    .forRoutes(ManagerController)
+  }
+}

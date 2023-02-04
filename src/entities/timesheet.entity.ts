@@ -2,8 +2,8 @@ import { EngineerEntity } from 'src/entities/engineer.entity';
 import { JoinColumn, OneToOne } from 'typeorm';
 import { ManyToOne } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
-import { ProfileEntity } from '../user/entity/profile.entity';
-import { ProjectEntity } from '../user/entity/project.entity';
+import { ProfileEntity } from './profile.entity';
+import { ProjectEntity } from './project.entity';
 import { TaskSheetEntity } from './taskTimeSheet.entity';
 
 @Entity({ name: 'TIME_SHEET' })

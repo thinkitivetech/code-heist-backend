@@ -4,13 +4,13 @@ import { NestjsWinstonLoggerModule } from 'nestjs-winston-logger';
 import { format, transports } from 'winston';
 import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entity/user.entity';
 import { JWTAuthMiddleware } from 'src/security/JWTMiddleware';
 import { LoginModule } from 'src/login/login.module';
+import { UserEntity } from './entity/user.entity';
 @Module({
   controllers: [UserController],
   providers: [UserService],
-  imports: [ TypeOrmModule.forFeature([User]), NestjsWinstonLoggerModule.forRoot({
+  imports: [ TypeOrmModule.forFeature([UserEntity]), NestjsWinstonLoggerModule.forRoot({
     format: format.combine(
       format.timestamp({ format: 'isoDateTime' }),
       format.json(),

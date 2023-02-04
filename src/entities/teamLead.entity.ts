@@ -1,7 +1,7 @@
 import { JoinColumn } from 'typeorm';
 import { ManyToOne } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
-import { ProjectEntity } from '../user/entity/project.entity';
+import { ProjectEntity } from './project.entity';
 import { EngineerEntity } from './engineer.entity';
 import { ManagerEntity } from './manager.entity';
 

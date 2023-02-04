@@ -1,10 +1,10 @@
 import { HttpStatus, Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectLogger, NestjsWinstonLoggerService } from 'nestjs-winston-logger';
+import { TimeSheetEntity } from 'src/entities/timesheet.entity';
 import { paginateResponse } from 'src/utils/common';
 import { Repository } from 'typeorm';
 import { GetTimeSheetReq } from './dto/time-sheet-dto';
-import { TimeSheetEntity } from './entity/timesheet.entity';
 
 @Injectable()
 export class TimeSheetService {

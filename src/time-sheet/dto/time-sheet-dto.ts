@@ -170,3 +170,18 @@ export class PatchTimeSheetReq {
     public assignedTo: number;
 
 }
+
+export class Status {
+
+    @IsOptional()
+    public status: STATUS;
+
+    @IsOptional()
+    public userId: number;
+
+    @IsOptional()
+    public note: string;
+
+    @IsOptional()
+    public id: number;
+}

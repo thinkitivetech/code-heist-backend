@@ -30,6 +30,15 @@ export class ProjectEntity {
   @CreateDateColumn({ name: 'updated_at' })
   public updatedAt: Date;
 
+  @Column({ name: 'ENGINEER_ID',  nullable: true  })
+  public engineerId: number;
+
+  @Column({ name: 'TEAM_LEAD_ID', nullable: true  })
+  public teamLeadId: number;
+
+  @Column({ name: 'MANAGER_ID', nullable: true  })
+  public managerId: number;
+
   @ManyToOne(() => ManagerEntity, { nullable: true })
   @JoinColumn({
     name: 'MANAGER_ID',
@@ -56,7 +65,7 @@ export class ProjectEntity {
   })
   public engineerDetails: EngineerEntity;
 
-  @OneToMany(() => ProfileEntity, profileDetails => profileDetails.profile, { cascade: true, eager: true, orphanedRowAction: 'delete' })
+  @OneToMany(() => ProfileEntity, profileDetails => profileDetails.project, { cascade: true, eager: true, orphanedRowAction: 'delete' })
   public profileDetails: ProfileEntity[];
 
 }

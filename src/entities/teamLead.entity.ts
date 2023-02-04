@@ -25,6 +25,9 @@ export class TeamLeadEntity {
     @CreateDateColumn({ name: 'UPDATED_AT' })
     public updatedAt: Date;
 
+    @Column({ name: 'MANAGER_ID', nullable: true })
+    public managerId: number;
+
     @ManyToOne(() => ManagerEntity, { nullable: true })
     @JoinColumn({
         name: 'MANAGER_ID',

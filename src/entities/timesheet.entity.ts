@@ -35,15 +35,15 @@ export class TimeSheetEntity {
     @OneToOne(() => ProfileEntity, profile => profile.timeSheet)
     public profile: ProfileEntity;
 
+    @Column({ name: 'ENGINEER_ID', nullable: true })
+    public engineerId: number;
+
     @ManyToOne(() => EngineerEntity, { nullable: true })
     @JoinColumn({
         name: 'ENGINEER_ID',
         referencedColumnName: 'id',
     })
     public engineer: EngineerEntity;
-
-    @OneToMany(() => ProfileEntity, profileDetails => profileDetails.profile, { cascade: true, eager: true, orphanedRowAction: 'delete' })
-    public profileDetails: ProfileEntity[];
 
     @OneToMany(() => TaskSheetEntity, taskDetails => taskDetails, { cascade: true, eager: true, orphanedRowAction: 'delete' })
     public taskDetails: TaskSheetEntity[];

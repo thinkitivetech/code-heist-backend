@@ -25,6 +25,12 @@ export class ProfileEntity {
     @CreateDateColumn({ name: 'UPDATED_AT' })
     public updatedAt: Date;
 
+    @Column({ name: 'ENGINEER_ID', nullable: true })
+    public engineerId: number;
+
+    @Column({ name: 'PROJECT_ID', nullable: true })
+    public projectId: number;
+
     @ManyToOne(() => EngineerEntity, { nullable: true })
     @JoinColumn({
         name: 'ENGINEER_ID',
@@ -37,9 +43,9 @@ export class ProfileEntity {
         name: 'PROJECT_ID',
         referencedColumnName: 'id',
     })
-    public profile: ProjectEntity;
+    public project: ProjectEntity;
 
-    @OneToOne(() => TimeSheetEntity, timeSheet => timeSheet.profile , {
+    @OneToOne(() => TimeSheetEntity, timeSheet => timeSheet.profile, {
         cascade: true,
     })
     public timeSheet: TimeSheetEntity;

@@ -1,4 +1,5 @@
-import { Controller, Get, HttpStatus, Query, Res } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Param, Query, Res, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { UserRequestDto } from '../dto/userModel/create-user.dto';
 import { TaskService } from './task.service';
 
@@ -24,11 +25,20 @@ export class TaskController {
       }
     }
 
-
-    // @Get('/id')
-    // public async getUser(
-    //     @Query() id: number): Promise<any> {
-    //     const data = this.taskService.getUser(id);
-    //     return data;
-    // }
+    @Get('/id')
+    public async getUser(
+      @Query() id: number,
+      @Res() response: any
+    ) {
+      try {
+        this.taskService.getTaskById(id, response);
+      } catch (err) {
+        return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+          success: false,
+          message: 'It seems there is some technical glitch at our end, Unable to fetch user Id.',
+          error_code: HttpStatus.INTERNAL_SERVER_ERROR,
+          data: err.message
+        });
+      }
+    }
 }

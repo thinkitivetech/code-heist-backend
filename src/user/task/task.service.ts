@@ -44,23 +44,25 @@ export class TaskService {
         }
     }
 
-    // public async getUserById(id: number, @Res() response: any): Promise<any> {
-    //     try {
-    //         this.logger.log(`Got request to find by id ${id}`);
-    //         const userDetail = await this.userRepository.findOne({ where: { id: id } });
-    //         return response.status(HttpStatus.CREATED).json({
-    //             success: true,
-    //             message: 'User fetched successfully',
-    //             data: userDetail,
-    //         });
-    //     } catch (err) {
-    //         this.logger.error(`Error while fetching user for id ${id} Err as ${err}`);
-    //         return response.status(HttpStatus.BAD_REQUEST).json({
-    //             success: false,
-    //             message: `User already exist with emailId ${id}`,
-    //             error_code: HttpStatus.BAD_REQUEST,
-    //             data: {}
-    //         })
-    //     }
-    // }
+
+    public async getTaskById(id: number, @Res() response: any): Promise<any> {
+        try {
+            this.logger.log(`Got request to find by id ${id}`);
+            const taskDetail = await this.taskRepository.findOne({ where: { id: id } });
+            return response.status(HttpStatus.CREATED).json({
+                success: true,
+                message: 'User fetched successfully',
+                data: taskDetail,
+            });
+        } catch (err) {
+            this.logger.error(`Error while fetching user for id ${id} Err as ${err}`);
+            return response.status(HttpStatus.BAD_REQUEST).json({
+                success: false,
+                error_code: HttpStatus.BAD_REQUEST,
+                data: {}
+            })
+        }
+    }
+
+
 }

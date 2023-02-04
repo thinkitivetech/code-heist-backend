@@ -76,11 +76,7 @@ export class TimeSheetController {
 
   @Patch('/status')
   async status(
-<<<<<<< HEAD
   @Body() timeSheetReq: TimeSheetStatusReq,
-=======
-  @Body() timeSheetReq: any,
->>>>>>> e5bbcd3aaa854342f28447f88ae2d2a5ceaa73d8
   @Res() response: any) {
     try {
 

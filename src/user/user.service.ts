@@ -1,6 +1,7 @@
 import { HttpStatus, Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectLogger, NestjsWinstonLoggerService } from 'nestjs-winston-logger';
+import { response } from 'passport-strategy/node_modules/@types/express';
 import { HttpError } from 'routing-controllers';
 import { paginateResponse } from 'src/utils/common';
 import { Like, Repository } from 'typeorm';
@@ -14,14 +15,14 @@ export class UserService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
-        // @InjectLogger() private logger: NestjsWinstonLoggerService,s
+        @InjectLogger() private logger: NestjsWinstonLoggerService,
 
     ) { }
 
-    public async getUsers(req: any): Promise<any[]> {
+    public async getUsers(req: any, @Res() response: any): Promise<any[]> {
         try {
 
-            // this.logger.log(`Got request to fetch user by type`)
+            this.logger.log(`Got request to fetch user by type`)
 
             let selectQuery = this.userRepository.createQueryBuilder('user');
             if (req) {
@@ -38,25 +39,40 @@ export class UserService {
             }
 
             const data = await selectQuery.getManyAndCount();
-            console.log(data);
-            return paginateResponse(data, req.limit, req.page)
+            const paginatedResponse = paginateResponse(data, req.limit, req.page);
+            return response.status(HttpStatus.CREATED).json({
+                success: true,
+                message: 'User has been created successfully',
+                data: paginatedResponse,
+            });
         } catch (err) {
-            // this.logger.error(`Error while fetching user for id ${req} Err as ${err}`);
+            this.logger.error(`Error while fetching user for id ${req} Err as ${err}`);
             throw new Error
         }
     }
 
-    public async getUserById(id: number): Promise<any> {
+    public async getUserById(id: number, @Res() response: any): Promise<any> {
         try {
-            // this.logger.log(`Got request to fine one user by id ${id}`);
-            return await this.userRepository.findOne({ where: { id: id } });
+            this.logger.log(`Got request to find by id ${id}`);
+            const userDetail = await this.userRepository.findOne({ where: { id: id } });
+            return response.status(HttpStatus.CREATED).json({
+                success: true,
+                message: 'User fetched successfully',
+                data: userDetail,
+            });
         } catch (err) {
-            // this.logger.error(`Error while fetching user for id ${id} Err as ${err}`);
+            this.logger.error(`Error while fetching user for id ${id} Err as ${err}`);
+            return response.status(HttpStatus.BAD_REQUEST).json({
+                success: false,
+                message: `User already exist with emailId ${id}`,
+                error_code: HttpStatus.BAD_REQUEST,
+                data: {}
+            })
         }
     }
 
     async createUser(createUserDto: CreateUserDto, @Res() response: any): Promise<any> {
-        // this.logger.log(`Got request to create user ${JSON.stringify(createUserDto)}`);
+        this.logger.log(`Got request to create user ${JSON.stringify(createUserDto)}`);
         const userExists = await this.userRepository.findOne({ where: { email: createUserDto.email } });
 
         if (userExists) {
@@ -87,6 +103,5 @@ export class UserService {
         }
         return existingUser;
     }
-
 
 }

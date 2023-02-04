@@ -22,8 +22,8 @@ export class User {
   public hashedPassword: string;
 
   @Column({name: 'created_at'})
-  public createdAt: string
+  public createdAt: Date
 
-  @Column({ name: 'USER_ROLE', enum: UserRoles})
-  public userRole: UserRoles
+  @Column({ name: 'ROLE', enum: UserRoles, type: 'enum', default: UserRoles.UNKNOWN})
+  public role: UserRoles
 }

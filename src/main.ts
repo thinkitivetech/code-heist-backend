@@ -11,6 +11,7 @@ import {
 import { AppModule } from './app.module';
 import { format, transports } from 'winston';
 import helmet from 'helmet';
+import * as passport from 'passport';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -32,7 +33,7 @@ async function bootstrap() {
   // append id to identify request
   app.use(appendIdToRequest);
   app.use(appendRequestIdToLogger(globalLogger));
-
+  app.use(passport.initialize());
   app.use(morganRequestLogger(globalLogger));
   app.use(morganResponseLogger(globalLogger));
   app.useGlobalInterceptors(new LoggingInterceptor(globalLogger));

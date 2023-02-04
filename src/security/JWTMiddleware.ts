@@ -16,13 +16,13 @@ export const applyPassportStrategy = () => {
   const options = {} as any;
 
   options.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-  options.secretOrKey = process.env.JWT_SECRET_KEY;
+  options.secretOrKey = 'heist_util';
   passport.use(new Strategy(
     options, function (payload, done) {
       if (payload) {
 
         return done(null, {
-          emailId: payload.emailId,
+          email: payload.email,
           roles: payload.role
         })
       }

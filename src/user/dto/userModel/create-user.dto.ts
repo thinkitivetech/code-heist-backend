@@ -1,4 +1,5 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, IsStrongPassword } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsStrongPassword } from "class-validator";
+import { UserRoles } from "./user-model";
 
 export class CreateUserDto {
 
@@ -17,6 +18,8 @@ export class CreateUserDto {
     @IsString()
     @IsOptional()
     public hashedPassword: string;
+    @IsEnum(UserRoles)
+    public role: UserRoles
 }
 
 export class UserRequestDto {

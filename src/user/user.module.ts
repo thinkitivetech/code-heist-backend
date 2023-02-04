@@ -7,10 +7,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entity/user.entity';
 import { JWTAuthMiddleware } from 'src/security/JWTMiddleware';
 import { LoginModule } from 'src/login/login.module';
+import { TaskController } from './task/task.controller';
+import { TaskModule } from './task/task.module';
+import { TaskService } from './task/task.service';
+import { TaskSheetEntity } from './entity/taskTimeSheet.entity';
 @Module({
-  controllers: [UserController],
-  providers: [UserService],
-  imports: [ TypeOrmModule.forFeature([User]), NestjsWinstonLoggerModule.forRoot({
+  controllers: [UserController, TaskController],
+  providers: [UserService ,TaskService],
+  imports: [ TypeOrmModule.forFeature([User , TaskSheetEntity]), NestjsWinstonLoggerModule.forRoot({
     format: format.combine(
       format.timestamp({ format: 'isoDateTime' }),
       format.json(),
@@ -21,7 +25,7 @@ import { LoginModule } from 'src/login/login.module';
       new transports.File({ filename: 'combined.log' }),
       new transports.Console(),
     ],
-  })
+  }), TaskModule
 ],
 exports: [UserService],
 

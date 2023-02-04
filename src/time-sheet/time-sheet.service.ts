@@ -132,14 +132,14 @@ export class TimeSheetService {
             if (timeSheetRequest.endTime) {
                 selectQuery.andWhere('timeSheet.createdAt <= :createdAt', { createdAt: timeSheetRequest.endTime })
             }
-            if (timeSheetRequest && timeSheetRequest.filter.order) {
-                if (timeSheetRequest.filter.order === 'DESC') {
-                    selectQuery.orderBy('timeSheet.createdAt', 'DESC');
-                }
-                if (timeSheetRequest.filter.order === 'ASC') {
-                    selectQuery.orderBy('timeSheet.createdAt', 'ASC');
-                }
-            }
+            // if (timeSheetRequest && timeSheetRequest.filter.order) {
+            //     if (timeSheetRequest.filter.order === 'DESC') {
+            //         selectQuery.orderBy('timeSheet.createdAt', 'DESC');
+            //     }
+            //     if (timeSheetRequest.filter.order === 'ASC') {
+            //         selectQuery.orderBy('timeSheet.createdAt', 'ASC');
+            //     }
+            // }
             if (timeSheetRequest && timeSheetRequest.limit && timeSheetRequest.page) {
                 selectQuery.skip(timeSheetRequest.limit * (timeSheetRequest.page - 1)).take(timeSheetRequest.limit);
             } else {

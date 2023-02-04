@@ -15,9 +15,6 @@ export class UserEntity {
   @Column('int', { name: 'mobileNo' })
   public mobileNo: number;
 
-  @Column({ name: 'password' })
-  public password: string;
-
   @Column({ name: 'hashedPassword' })
   public hashedPassword: string;
 

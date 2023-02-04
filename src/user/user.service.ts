@@ -85,7 +85,7 @@ export class UserService {
         const userDetail = {} as UserEntity;
         Object.assign(userDetail, createUserDto)
         userDetail.createdAt = new Date();
-        const savedUser = await this.userRepository.save(userDetail);
+        const savedUser: any = await this.userRepository.save(userDetail);
         savedUser.password = 'xxxx'
         savedUser.hashedPassword = 'xxxx'
         return response.status(HttpStatus.CREATED).json({

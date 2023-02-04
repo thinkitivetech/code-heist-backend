@@ -9,7 +9,7 @@ import { UserRoles } from 'src/user/dto/userModel/user-model';
 import { UserEntity } from 'src/user/entity/user.entity';
 import { paginateResponse } from 'src/utils/common';
 import { Brackets, Repository } from 'typeorm';
-import { GetTimeSheetReq, PatchTimeSheetReq } from './dto/time-sheet-dto';
+import { GetTimeSheetReq, PatchTimeSheetReq, Status } from './dto/time-sheet-dto';
 import { TimeSheetMapper } from './mapper/time-sheet.mapper';
 import * as Bluebird from 'bluebird';
 import { TaskSheetEntity } from 'src/entities/taskTimeSheet.entity';
@@ -257,5 +257,42 @@ export class TimeSheetService {
         }
 
     }
+
+
+    public async updateStatus(timeSheetReq: Status, @Res() response: any) {
+        try {
+            const timeSheetId =  timeSheetReq.id;
+        const existingTimeSheet = await this.timeSheetRepo.findOne({ where: { id: timeSheetId } });
+        if (!existingTimeSheet) {
+            return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+                success: false,
+                message: 'Unable to update time-sheet, as there is no timesheet with provided Id.',
+                error_code: HttpStatus.INTERNAL_SERVER_ERROR,
+                data: {}
+            });
+        }
+        let userDetails : any;
+        let loggedInUser;
+        if(timeSheetReq && timeSheetReq.userId){
+            userDetails = await this.userRepo.findOne({ where: { id: timeSheetReq.userId } })
+        }else {
+            loggedInUser = applyPassportStrategy();
+        }
+        let lastEditedBy: any = userDetails?.name;
+        if (!(userDetails?.email === loggedInUser.email)) {
+            lastEditedBy = await this.userRepo.findOne({ where: { id: loggedInUser.email } })
+        }
+        lastEditedBy.name = userDetails?.name;
+        const nameData = userDetails && userDetails.name ? userDetails.name : '';
+        const updatedTimeSheetEntity = await this.timeSheetRepo.save({id: timeSheetId, status: timeSheetReq.status , name :nameData , note: timeSheetReq.note} as TimeSheetEntity);
+        return response.status(HttpStatus.OK).json({
+            success: true,
+            message: 'Time sheet has been updated successfully',
+            data: updatedTimeSheetEntity,
+        });
+    } catch(err){
+        throw new Error(`error while updating status ${err}`);
+    }
+}
 
 }

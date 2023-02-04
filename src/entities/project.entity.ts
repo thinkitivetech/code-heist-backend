@@ -19,8 +19,8 @@ export class ProjectEntity {
   @Column({ name: 'STATUS' })
   public status: string;
 
-  @Column('simple-json', { name: 'ASSIGNED_TO', nullable: true })
-  public assignedToDetails: { manger: string; teamLead: string, engineer: string };
+  @Column({ name: 'ASSIGNED_TO', nullable: true })
+  public assignedToDetails: string;
 
   @Column({ name: 'CLIENT_NAME' })
   public clientName: string;

@@ -10,7 +10,9 @@ COPY yarn.lock ./
 COPY .env ./
 
 # Install dependencies
+RUN npm install -g @nestjs/cli
 RUN yarn install
+
 
 # Copy the rest of the application code to the container
 COPY . .

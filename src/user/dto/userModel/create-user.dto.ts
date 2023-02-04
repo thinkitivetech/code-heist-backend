@@ -2,40 +2,30 @@ import { IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsStrongPa
 import { UserRoles } from "./user-model";
 
 export class CreateUserDto {
-
-    @IsNotEmpty()
-    @IsString()
-    public name: string;
-    @IsNotEmpty()
-    @IsEmail()
-    public email: string;
-    @IsNotEmpty()
-    @IsNumber()
-    public mobileNo: number;
-    @IsStrongPassword()
-    @IsNotEmpty()
-    public password: string;
-    @IsString()
-    @IsOptional()
-    public hashedPassword: string;
-    @IsEnum(UserRoles)
-    public role: UserRoles
+  @IsNotEmpty()
+  public name: string;
+  @IsNotEmpty()
+  public email: string;
+  @IsNotEmpty()
+  public mobileNo: number;
+  @IsStrongPassword()
+  @IsNotEmpty()
+  public password: string;
+  @IsOptional()
+  public hashedPassword: string;
+  @IsEnum(UserRoles)
+  public role: UserRoles;
 }
 
 export class UserRequestDto {
-
-    @IsOptional()
-    public page: number;
-    @IsOptional()
-    public limit: number;
-    @IsString()
-    @IsOptional()
-    public name: string;
-    @IsEmail()
-    @IsOptional()
-    public email: string;
-    @IsNumber()
-    @IsOptional()
-    public mobileNo: number;
-
+  @IsOptional()
+  public page: number;
+  @IsOptional()
+  public limit: number;
+  @IsOptional()
+  public name: string;
+  @IsOptional()
+  public email: string;
+  @IsOptional()
+  public mobileNo: number;
 }

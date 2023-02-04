@@ -1,9 +1,9 @@
-import { EngineeringEntity } from 'src/engineer/enitity/engineering.entity';
 import { JoinColumn } from 'typeorm';
 import { ManyToOne } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
-import { ManagerEntity } from '../../manager/entity/manager.entity';
-import { ProjectEntity } from '../../user/entity/project.entity';
+import { ProjectEntity } from '../user/entity/project.entity';
+import { EngineerEntity } from './engineer.entity';
+import { ManagerEntity } from './manager.entity';
 
 @Entity({ name: 'TEAM_LEAD' })
 export class TeamLeadEntity {
@@ -32,8 +32,8 @@ export class TeamLeadEntity {
     })
     public manger: ManagerEntity;
 
-    @OneToMany(() => EngineeringEntity, engineer => engineer.teamLead, { cascade: true, eager: true, orphanedRowAction: 'delete' })
-    public engineerDetails: EngineeringEntity[];
+    @OneToMany(() => EngineerEntity, engineer => engineer.teamLead, { cascade: true, eager: true, orphanedRowAction: 'delete' })
+    public engineerDetails: EngineerEntity[];
 
     @OneToMany(() => ProjectEntity, projectDetails => projectDetails.teamLead, { cascade: true, eager: true, orphanedRowAction: 'delete' })
     public projectDetails: ProjectEntity[];

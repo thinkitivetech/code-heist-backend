@@ -1,13 +1,13 @@
-import { TeamLeadEntity } from 'src/team-lead/entity/teamLead.entity';
-import { TimeSheetEntity } from 'src/time-sheet/entity/timesheet.entity';
-import { ProfileEntity } from 'src/user/entity/profile.entity';
-import { ProjectEntity } from 'src/user/entity/project.entity';
 import { JoinColumn } from 'typeorm';
 import { ManyToOne } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
+import { ProfileEntity } from './profile.entity';
+import { ProjectEntity } from './project.entity';
+import { TeamLeadEntity } from './teamLead.entity';
+import { TimeSheetEntity } from './timesheet.entity';
 
 @Entity({ name: 'ENGINEER' })
-export class EngineeringEntity {
+export class EngineerEntity {
     @PrimaryGeneratedColumn()
     public id: number;
 

@@ -11,8 +11,8 @@ export class TaskSheetEntity {
     @Column({ name: 'TASK', type: 'longtext' })
     public task: string;
 
-    @Column({ name: 'HOURS', length: 500 })
-    public hours: string;
+    @Column({ name: 'MINUTES',  })
+    public minutes: number;
 
     @Column({ name: 'NOTES', type: 'longtext' })
     public notes: string;

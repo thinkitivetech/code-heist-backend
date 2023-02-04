@@ -1,7 +1,7 @@
 import { OneToMany } from 'typeorm';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { ProjectEntity } from '../../user/entity/project.entity';
-import { TeamLeadEntity } from '../../team-lead/entity/teamLead.entity';
+import { ProjectEntity } from './project.entity';
+import { TeamLeadEntity } from './teamLead.entity';
 
 @Entity({ name: 'MANAGER' })
 export class ManagerEntity {

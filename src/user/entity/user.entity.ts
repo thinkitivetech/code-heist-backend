@@ -6,24 +6,24 @@ export class UserEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({ name: 'name', length: 500 , })
+  @Column({ name: 'name', length: 500, })
   public name: string;
 
-  @Column({ name: 'email'})
+  @Column({ name: 'email' })
   public email: string;
 
-  @Column('int',{ name: 'mobileNo'})
+  @Column('int', { name: 'mobileNo' })
   public mobileNo: number;
 
-  @Column({ name: 'password'})
+  @Column({ name: 'password' })
   public password: string;
 
-  @Column({ name: 'hashedPassword'})
+  @Column({ name: 'hashedPassword' })
   public hashedPassword: string;
 
-  @Column({name: 'createdAt'})
+  @Column({ name: 'createdAt' })
   public createdAt: Date
 
-  @Column({ name: 'role', enum: UserRoles, type: 'enum', default: UserRoles.UNKNOWN})
-  public role: UserRoles
+  @Column({ name: 'role' })
+  public role: string
 }

@@ -2,7 +2,7 @@ import { Controller, Get, HttpStatus, Param, Query, Res, UseGuards } from '@nest
 import { AuthGuard } from '@nestjs/passport';
 import { UserRequestDto } from 'src/user/dto/userModel/create-user.dto';
 
-@Controller('project')
+@Controller('/api/project')
 export class ProjectController {
     // @UseGuards(AuthGuard('jwt'))
     // @Get()

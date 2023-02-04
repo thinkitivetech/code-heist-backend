@@ -86,11 +86,6 @@ export class ProjectService {
             }
 
             let selectQuery = this.projectRepository.createQueryBuilder('project')
-                .leftJoinAndSelect('project.engineerDetails', 'engineer')
-                .leftJoinAndSelect('project.sales', 'sales')
-                .leftJoinAndSelect('project.profileDetails', 'profile')
-                .leftJoinAndSelect('project.teamLead', 'teamLead')
-                .leftJoinAndSelect('project.manager', 'manager')
 
             if (reqProject && reqProject.filter) {
                 reqProject.filter.engineerId ? selectQuery.andWhere(new Brackets(obj => {
@@ -113,7 +108,6 @@ export class ProjectService {
 
                 reqProject.filter.salesId ? selectQuery.andWhere(new Brackets(obj => {
                     obj.where('project.salesId = :salesId', { salesId: reqProject.filter.salesId })
-                        .orWhere('sales.name like (:salesName)', { salesName: '%' + reqProject.filter.salesName + '%' })
                 })) : selectQuery;
 
 
@@ -134,14 +128,14 @@ export class ProjectService {
             if (reqProject.endTime) {
                 selectQuery.andWhere('project.createdAt <= :createdAt', { createdAt: reqProject.endTime })
             }
-            if (reqProject && reqProject.filter && reqProject.filter.order) {
-                if (reqProject.filter.order === 'DESC') {
-                    selectQuery.orderBy('project.createdAt', 'DESC');
-                }
-                if (reqProject.filter.order === 'ASC') {
-                    selectQuery.orderBy('project.createdAt', 'ASC');
-                }
-            }
+            // if (reqProject && reqProject.filter && reqProject.filter.order) {
+            //     if (reqProject.filter.order === 'DESC') {
+            //         selectQuery.orderBy('project.createdAt', 'DESC');
+            //     }
+            //     if (reqProject.filter.order === 'ASC') {
+            //         selectQuery.orderBy('project.createdAt', 'ASC');
+            //     }
+            // }
             if (reqProject && reqProject.limit && reqProject.page) {
                 selectQuery.skip(reqProject.limit * (reqProject.page - 1)).take(reqProject.limit);
             } else {

@@ -1,10 +1,18 @@
-// import { Module } from '@nestjs/common';
-// import { DatabaseModule } from 'src/app.database.module';
-// import { LoginController } from './login.controller';
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { NestjsWinstonLoggerModule } from 'nestjs-winston-logger';
+import { format } from 'path';
+import { DatabaseModule } from 'src/app.database.module';
+import { User } from 'src/user/entity/user.entity';
+import { UserModule } from 'src/user/user.module';
+import { UserService } from 'src/user/user.service';
+import { LoginController } from './login.controller';
+import { LoginService } from './login.service';
 
-// @Module({
-//   controllers: [LoginController],
-//   providers: [LoginService],
-//   imports: [DatabaseModule],
-// })
-// export class UserModule {}
+@Module({
+    controllers: [LoginController],
+    providers: [LoginService],
+    imports: [DatabaseModule, UserModule]
+})
+export class LoginModule { }

@@ -6,7 +6,7 @@ import { UserRoles } from "src/user/dto/userModel/user-model";
 
 export class LoginDetails {
     @IsEmail({}, { message: userMessages.invalidEmail })
-    public emailId: string;
+    public email: string;
 
     @IsString()
     @IsNotEmpty({ message: userMessages.requiredPassword })
@@ -14,6 +14,15 @@ export class LoginDetails {
     @MaxLength(20, { message: userMessages.maxPassword })
     @Matches(passwordRegex, { message: userMessages.invalidPassword })
     public password: string;
+
+    @IsOptional()
+    @IsEnum(UserRoles)
+    public userRole: UserRoles
+}
+
+export class LoginResponse {
+    @IsEmail({}, { message: userMessages.invalidEmail })
+    public email: string;
 
     @IsOptional()
     @IsEnum(UserRoles)

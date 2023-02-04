@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { UserRoles } from '../dto/userModel/user-model';
 
 @Entity()
 export class User {
@@ -16,4 +17,13 @@ export class User {
 
   @Column({ name: 'password'})
   public password: string;
+
+  @Column({ name: 'hashedPassword'})
+  public hashedPassword: string;
+
+  @Column({name: 'created_at'})
+  public createdAt: Date
+
+  @Column({ name: 'ROLE', enum: UserRoles, type: 'enum', default: UserRoles.UNKNOWN})
+  public role: UserRoles
 }

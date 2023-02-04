@@ -42,8 +42,8 @@ export class TimeSheetEntity {
     })
     public engineer: EngineerEntity;
 
-    @OneToMany(() => ProfileEntity, profileDetails => profileDetails.profile, { cascade: true, eager: true, orphanedRowAction: 'delete' })
-    public profileDetails: ProfileEntity[];
+    // @OneToMany(() => ProfileEntity, profileDetails => profileDetails.profile, { cascade: true, eager: true, orphanedRowAction: 'delete' })
+    // public profileDetails: ProfileEntity[];
 
     @OneToMany(() => TaskSheetEntity, taskDetails => taskDetails, { cascade: true, eager: true, orphanedRowAction: 'delete' })
     public taskDetails: TaskSheetEntity[];

@@ -34,8 +34,8 @@ export class TaskSheetEntity {
 
     @ManyToOne(() => TimeSheetEntity, { nullable: true })
     @JoinColumn({
-        name: 'TASK_SHEET_ID',
+        name: 'TIME_SHEET_ID',
         referencedColumnName: 'id',
     })
-    public teamLead: TimeSheetEntity;
+    public timeSheet: TimeSheetEntity;
 }

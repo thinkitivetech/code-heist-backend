@@ -46,11 +46,18 @@ export class TaskDetailModel {
 
     @IsString()
     public task: string;
+
+    @IsOptional()
+    @IsString()
+    public notes: string;
+
+    @IsOptional()
+    @IsString()
+    public status: string;
 }
 
 export class PatchTimeSheetReq {
 
-    @ValidateNested()
     @IsOptional()
     public taskDetail: TaskDetailModel[];
 
@@ -68,10 +75,14 @@ export class PatchTimeSheetReq {
 
     @IsString()
     @IsOptional()
-    public project: string;
+    public projectDetail: string;
 
     @IsString()
     @IsOptional()
     public status: string;
+
+    @IsNumber()
+    @IsOptional()
+    public assignedTo: number;
 
 }

@@ -6,15 +6,14 @@ import { UserService } from './user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JWTAuthMiddleware } from 'src/security/JWTMiddleware';
 import { LoginModule } from 'src/login/login.module';
-import { TaskController } from './task/task.controller';
-import { TaskModule } from './task/task.module';
-import { TaskService } from './task/task.service';
+import { TaskController } from '../task/task.controller';
+import { TaskModule } from '../task/task.module';
 import { UserEntity } from './entity/user.entity';
 import { TaskSheetEntity } from 'src/entities/taskTimeSheet.entity';
 @Module({
-  controllers: [UserController, TaskController],
-  providers: [UserService ,TaskService],
-  imports: [ TypeOrmModule.forFeature([UserEntity , TaskSheetEntity]), NestjsWinstonLoggerModule.forRoot({
+  controllers: [UserController],
+  providers: [UserService],
+  imports: [ TypeOrmModule.forFeature([UserEntity]), NestjsWinstonLoggerModule.forRoot({
     format: format.combine(
       format.timestamp({ format: 'isoDateTime' }),
       format.json(),

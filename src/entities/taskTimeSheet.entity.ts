@@ -17,7 +17,7 @@ export class TaskSheetEntity {
     @Column({ name: 'NOTES', type: 'longtext' })
     public notes: string;
 
-    @Column({ name: 'EdITED_BY', length: 500 })
+    @Column({ name: 'Edited_By', length: 500 })
     public editedBy: string;
 
     @Column({ name: 'PROFILE', length: 500 })
@@ -32,13 +32,13 @@ export class TaskSheetEntity {
     @CreateDateColumn({ name: 'UPDATED_AT' })
     public updatedAt: Date;
 
-    @Column({ name: 'TASK_SHEET_ID', nullable: true })
-    public taskSheetId: number;
+    @Column({ name: 'TIME_SHEET_ID', nullable: true })
+    public timeSheetId: number;
 
     @ManyToOne(() => TimeSheetEntity, { nullable: true })
     @JoinColumn({
-        name: 'TASK_SHEET_ID',
+        name: 'TIME_SHEET_ID',
         referencedColumnName: 'id',
     })
-    public teamLead: TimeSheetEntity;
+    public timeSheet: TimeSheetEntity;
 }

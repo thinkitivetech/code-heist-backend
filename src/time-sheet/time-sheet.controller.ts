@@ -1,10 +1,10 @@
-import { Body, Controller, Get, HttpStatus, Patch, Query, Res, UseGuards, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Patch, Query, Res, UseGuards, Post, Param } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GetTimeSheetReq, PatchTimeSheetReq } from './dto/time-sheet-dto';
 import { TimeSheetService } from './time-sheet.service';
 
-@Controller('user')
-export class UserController {
+@Controller('/time-sheet')
+export class TimeSheetController {
   constructor(private timeSheetService: TimeSheetService) {
   }
   @UseGuards(AuthGuard('jwt'))
@@ -25,9 +25,11 @@ export class UserController {
   }
 
   @Patch('/:id')
-  async updateTimeSheet(@Body() timeSheetReq: PatchTimeSheetReq, @Res() response: any) {
+  async updateTimeSheet(@Body() timeSheetReq: PatchTimeSheetReq,
+  @Param('id') timeSheetId: number,
+  @Res() response: any) {
     try {
-      await this.timeSheetService.updateTimeSheet(timeSheetReq, response);
+      await this.timeSheetService.updateTimeSheet(timeSheetReq, timeSheetId, response);
     } catch (err) {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         success: false,
@@ -38,7 +40,7 @@ export class UserController {
     }
   }
 
-
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   async createTimeSheet(@Body() timeSheetReq: PatchTimeSheetReq, @Res() response: any) {
     try {

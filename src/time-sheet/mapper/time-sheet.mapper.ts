@@ -11,23 +11,41 @@ export class TimeSheetMapper {
     constructor(
 
     ) { }
-    public toTimeSheetEntity(timeSheetRequest: PatchTimeSheetReq, assignedTo: string, editedBy: string): TimeSheetEntity {
+    public toTimeSheetEntity(timeSheetRequest: PatchTimeSheetReq, assignedTo: any, editedBy: any): TimeSheetEntity {
         return Builder(TimeSheetEntity)
             .engineerId(timeSheetRequest.engineerId)
             .assignedTo(assignedTo ? assignedTo : '')
             .name(timeSheetRequest.name)
-            .project(timeSheetRequest.project)
+            .projectDetail(timeSheetRequest.projectDetail)
             .status(timeSheetRequest.status)
-            .taskDetails(timeSheetRequest.taskDetail.map(taskDetail => this.toTaskDetailEntity(taskDetail, editedBy)))
             .createdAt(new Date())
             .updatedAt(new Date())
             .build();
     }
 
-    public toTaskDetailEntity(taskDetail: TaskDetailModel, editedBy: string): TaskSheetEntity {
+    public toTaskDetailEntity(taskDetail: TaskDetailModel, editedBy: any, assignedTo: string, timeSheetId: number,): TaskSheetEntity {
         return Builder(TaskSheetEntity)
             .minutes(convertHourstoMinute(taskDetail.hourMinute))
-            .editedBy(taskDetail.)
+            .editedBy(editedBy)
+            .notes(taskDetail.notes)
+            .profile(assignedTo)
+            .createdAt(new Date())
+            .updatedAt(new Date())
+            .status(taskDetail.status)
+            .task(taskDetail.task)
+            .timeSheetId(timeSheetId)
             .build()
     }
+
+    public toUpdateTimeSheetEntity(timeSheetRequest: PatchTimeSheetReq, existingTimeSheet: TimeSheetEntity, assignedTo: any, editedBy: any): TimeSheetEntity {
+        return Builder(TimeSheetEntity)
+            .engineerId(timeSheetRequest.engineerId ? timeSheetRequest.engineerId : existingTimeSheet.engineerId)
+            .assignedTo(assignedTo ? assignedTo : existingTimeSheet.assignedTo)
+            .name(timeSheetRequest.name ? timeSheetRequest.name : existingTimeSheet.name)
+            .projectDetail(timeSheetRequest.projectDetail ? timeSheetRequest.projectDetail : existingTimeSheet.projectDetail)
+            .status(timeSheetRequest.status ? timeSheetRequest.status : existingTimeSheet.status)
+            .updatedAt(new Date())
+            .build();
+    }
+
 }

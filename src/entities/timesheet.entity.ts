@@ -14,8 +14,8 @@ export class TimeSheetEntity {
     @Column({ name: 'NAME', length: 500 })
     public name: string;
 
-    @Column({ name: 'PROJECT', length: 500 })
-    public project: string;
+    @Column({ name: 'PROJECT_DETAIL', length: 500 })
+    public projectDetail: string;
 
     @Column({ name: 'ASSIGNED_TO', length: 500 })
     public assignedTo: string;
@@ -45,9 +45,6 @@ export class TimeSheetEntity {
     })
     public engineer: EngineerEntity;
 
-    @OneToMany(() => ProfileEntity, profileDetails => profileDetails.project, { cascade: true, eager: true, orphanedRowAction: 'delete' })
-    public profileDetails: ProfileEntity[];
-
-    @OneToMany(() => TaskSheetEntity, taskDetails => taskDetails, { cascade: true, eager: true, orphanedRowAction: 'delete', nullable: true })
-    public taskDetails: TaskSheetEntity[];
+    @OneToMany(() => TaskSheetEntity, taskSheet => taskSheet.timeSheet, { cascade: true, eager: true, orphanedRowAction: 'delete' })
+    public taskSheet: TaskSheetEntity[];
 }

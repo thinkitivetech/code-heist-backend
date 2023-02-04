@@ -4,12 +4,11 @@ import { InjectLogger, NestjsWinstonLoggerService } from 'nestjs-winston-logger'
 import { response } from 'passport-strategy/node_modules/@types/express';
 import { HttpCode, HttpError } from 'routing-controllers';
 import { TimeSheetEntity } from 'src/entities/timesheet.entity';
-import { applyPassportStrategy } from 'src/security/JWTMiddleware';
 import { UserRoles } from 'src/user/dto/userModel/user-model';
 import { UserEntity } from 'src/user/entity/user.entity';
 import { paginateResponse } from 'src/utils/common';
 import { Brackets, Repository } from 'typeorm';
-import { GetTimeSheetReq, PatchTimeSheetReq, Status } from './dto/time-sheet-dto';
+import { GetTimeSheetReq, PatchTimeSheetReq, TimeSheetStatusReq } from './dto/time-sheet-dto';
 import { TimeSheetMapper } from './mapper/time-sheet.mapper';
 import * as Bluebird from 'bluebird';
 import { TaskSheetEntity } from 'src/entities/taskTimeSheet.entity';
@@ -73,31 +72,28 @@ export class TimeSheetService {
         try {
 
             this.logger.log(`Got request to fetch time sheet by params ${JSON.stringify(timeSheetRequest)}`)
-//             if(!timeSheetRequest.userId){
-//
-//             }
-//             const loggedInUser:any = applyPassportStrategy();
-//             let user;
-//             if (loggedInUser && loggedInUser.email) {
-//                 user = await this.userRepo.findOne({ where: { email: loggedInUser.email } });
-//             }
-//             if (!user) {
-//                 this.logger.error(`User not found for email ${loggedInUser.email}`);
-//                 throw new Error('No User has been found`');
-//             }
-//
-//             if (user.role === UserRoles.TEAM_LEAD) {
-//                 timeSheetRequest.filter.teamLeadId = user.id;
-//             }
-//             if (user.role === UserRoles.MANAGER) {
-//                 timeSheetRequest.filter.mangerId = user.id;
-//             }
-//             if (user.role === UserRoles.ENGINEER) {
-//                 timeSheetRequest.filter.engineerId = user.id;
-//             }
-//             if (user.role === UserRoles.SALES) {
-//                 timeSheetRequest.filter.salesId = user.id;
-//             }
+            if (!timeSheetRequest.userId) {
+
+            }
+
+            const userExist = await this.userRepo.findOne({ where: { id: timeSheetRequest.userId } });
+            if (!userExist) {
+                this.logger.error(`User not found for Id ${timeSheetRequest.userId}`);
+                throw new Error('No User has been found`');
+            }
+
+            if (userExist.role === UserRoles.TEAM_LEAD) {
+                timeSheetRequest.filter.teamLeadId = userExist.id;
+            }
+            if (userExist.role === UserRoles.MANAGER) {
+                timeSheetRequest.filter.mangerId = userExist.id;
+            }
+            if (userExist.role === UserRoles.ENGINEER) {
+                timeSheetRequest.filter.engineerId = userExist.id;
+            }
+            if (userExist.role === UserRoles.SALES) {
+                timeSheetRequest.filter.salesId = userExist.id;
+            }
 
             let selectQuery = this.timeSheetRepo.createQueryBuilder('timeSheet')
                 .leftJoinAndSelect('timeSheet.engineer', 'engineer')
@@ -198,12 +194,9 @@ export class TimeSheetService {
         }
 
         const userDetails = await this.userRepo.findOne({ where: { id: timeSheetReq.assignedTo } })
-        const loggedInUser = applyPassportStrategy();
 
         let lastEditedBy: any = userDetails?.name;
-        if (!(userDetails?.email === loggedInUser.email)) {
-            lastEditedBy = await this.userRepo.findOne({ where: { id: timeSheetReq.assignedTo } })
-        }
+
         let taskSheetObject: any[] = []
         lastEditedBy.name = userDetails?.name;
         let timeSheetEntity = this.timeSheetMapper.toUpdateTimeSheetEntity(timeSheetReq, existingTimeSheet, userDetails?.name, lastEditedBy.name);
@@ -226,13 +219,11 @@ export class TimeSheetService {
     public async createTimeSheet(timeSheetReq: PatchTimeSheetReq, @Res() response: any) {
         try {
             const userDetails = await this.userRepo.findOne({ where: { id: timeSheetReq.assignedTo } })
-            const loggedInUser = applyPassportStrategy();
+            const loggedInUser = await this.userRepo.findOne({ where: { id: timeSheetReq.userId } })
             let lastEditedBy: any = userDetails?.name;
-            if (!(userDetails?.email === loggedInUser.email)) {
-                lastEditedBy = await this.userRepo.findOne({ where: { id: timeSheetReq.assignedTo } })
-            }
-            lastEditedBy.name = userDetails?.name;
-            let timeSheetEntity = this.timeSheetMapper.toTimeSheetEntity(timeSheetReq, userDetails?.name, lastEditedBy.name);
+
+            lastEditedBy.name = loggedInUser?.name;
+            let timeSheetEntity = this.timeSheetMapper.toTimeSheetEntity(timeSheetReq, userDetails?.name, loggedInUser?.name);
             const timeSheetDetail = await this.timeSheetRepo.save(timeSheetEntity);
             let taskSheetObject: any[] = []
             await Bluebird.Promise.each(timeSheetReq.taskDetail, async (taskDetail) => {
@@ -259,40 +250,36 @@ export class TimeSheetService {
     }
 
 
-    public async updateStatus(timeSheetReq: Status, @Res() response: any) {
+    public async updateStatus(timeSheetReq: TimeSheetStatusReq, @Res() response: any) {
         try {
-            const timeSheetId =  timeSheetReq.id;
-        const existingTimeSheet = await this.timeSheetRepo.findOne({ where: { id: timeSheetId } });
-        if (!existingTimeSheet) {
-            return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-                success: false,
-                message: 'Unable to update time-sheet, as there is no timesheet with provided Id.',
-                error_code: HttpStatus.INTERNAL_SERVER_ERROR,
-                data: {}
+            const timeSheetId = timeSheetReq.id;
+            const existingTimeSheet = await this.timeSheetRepo.findOne({ where: { id: timeSheetId } });
+            if (!existingTimeSheet) {
+                return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+                    success: false,
+                    message: 'Unable to update time-sheet, as there is no timesheet with provided Id.',
+                    error_code: HttpStatus.INTERNAL_SERVER_ERROR,
+                    data: {}
+                });
+            }
+            let lastEditedBy: any;
+
+            let userDetails: any;
+            if (timeSheetReq && timeSheetReq.userId) {
+                lastEditedBy = await this.userRepo.findOne({ where: { id: timeSheetReq.userId } })
+            }
+
+            lastEditedBy.name = userDetails?.name;
+            const nameData = userDetails && userDetails.name ? userDetails.name : '';
+            const updatedTimeSheetEntity = await this.timeSheetRepo.save({ id: timeSheetId, status: timeSheetReq.status, name: nameData, note: timeSheetReq.note } as TimeSheetEntity);
+            return response.status(HttpStatus.OK).json({
+                success: true,
+                message: 'Time sheet has been updated successfully',
+                data: updatedTimeSheetEntity,
             });
+        } catch (err) {
+            throw new Error(`error while updating status ${err}`);
         }
-        let userDetails : any;
-        let loggedInUser;
-        if(timeSheetReq && timeSheetReq.userId){
-            userDetails = await this.userRepo.findOne({ where: { id: timeSheetReq.userId } })
-        }else {
-            loggedInUser = applyPassportStrategy();
-        }
-        let lastEditedBy: any = userDetails?.name;
-        if (!(userDetails?.email === loggedInUser.email)) {
-            lastEditedBy = await this.userRepo.findOne({ where: { id: loggedInUser.email } })
-        }
-        lastEditedBy.name = userDetails?.name;
-        const nameData = userDetails && userDetails.name ? userDetails.name : '';
-        const updatedTimeSheetEntity = await this.timeSheetRepo.save({id: timeSheetId, status: timeSheetReq.status , name :nameData , note: timeSheetReq.note} as TimeSheetEntity);
-        return response.status(HttpStatus.OK).json({
-            success: true,
-            message: 'Time sheet has been updated successfully',
-            data: updatedTimeSheetEntity,
-        });
-    } catch(err){
-        throw new Error(`error while updating status ${err}`);
     }
-}
 
 }

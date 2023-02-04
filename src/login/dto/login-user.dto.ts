@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional, IsString } from "@nestjs/class-validator";
+import { IsEnum, IsNumber, IsOptional, IsString } from "@nestjs/class-validator";
 import { IsEmail, IsNotEmpty, Matches, MaxLength, MinLength } from "class-validator";
 import userMessages from "src/lib/constant/messages/userMessages";
 import { passwordRegex } from "src/lib/constant/regex";
@@ -17,7 +17,7 @@ export class LoginDetails {
 
     @IsOptional()
     @IsEnum(UserRoles)
-    public userRole: UserRoles
+    public userRole: UserRoles;
 }
 
 export class LoginResponse {
@@ -26,5 +26,8 @@ export class LoginResponse {
 
     @IsOptional()
     @IsEnum(UserRoles)
-    public userRole: UserRoles
+    public userRole: UserRoles;
+
+    @IsNumber()
+    public userId: number;
 }

@@ -22,8 +22,9 @@ export const applyPassportStrategy = () => {
         Object.assign(options, payload)
         return done(null, {
           email: payload.email,
-          roles: payload.role
-  
+          roles: payload.role,
+          userId: payload.userId
+          
         })
       }
       return done(null, false)

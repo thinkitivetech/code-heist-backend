@@ -7,7 +7,7 @@ export enum ORDER {
     DESC = 'DESC',
 }
 
-export enum STATUS {
+export enum TIME_SHEET_STATUS {
     DRAFT = 'DRAFT',
     IN_REVIEW = 'IN_REVIEW',
     APPROVED = 'APPROVED',
@@ -69,7 +69,7 @@ export class FilterModel {
     public companyId: number;
 
     @IsOptional()
-    public status: STATUS;
+    public status: TIME_SHEET_STATUS;
 
     @IsOptional()
     @IsEnum(ORDER)
@@ -169,12 +169,21 @@ export class PatchTimeSheetReq {
     @IsOptional()
     public assignedTo: number;
 
+    @IsNumber()
+    @IsOptional()
+    public userId: number;
+
+    @IsString()
+    @IsOptional()
+    public note: string;
+
 }
 
-export class Status {
+export class TimeSheetStatusReq {
 
+    @IsEnum(TIME_SHEET_STATUS)
     @IsOptional()
-    public status: STATUS;
+    public status: TIME_SHEET_STATUS;
 
     @IsOptional()
     public userId: number;

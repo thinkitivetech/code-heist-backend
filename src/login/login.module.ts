@@ -13,6 +13,6 @@ import { LoginService } from './login.service';
 @Module({
     controllers: [LoginController],
     providers: [LoginService],
-    imports: [DatabaseModule, UserModule]
+    imports: [UserModule]
 })
 export class LoginModule { }

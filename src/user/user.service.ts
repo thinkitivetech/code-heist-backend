@@ -1,7 +1,6 @@
 import { HttpStatus, Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectLogger, NestjsWinstonLoggerService } from 'nestjs-winston-logger';
-import { response } from 'passport-strategy/node_modules/@types/express';
 import { HttpError } from 'routing-controllers';
 import { paginateResponse } from 'src/utils/common';
 import { Like, Repository } from 'typeorm';

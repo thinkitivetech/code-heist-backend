@@ -12,7 +12,7 @@ export class User {
   @Column({ name: 'email'})
   public email: string;
 
-  @Column('int',{ name: 'mobile_no'})
+  @Column('int',{ name: 'mobileNo'})
   public mobileNo: number;
 
   @Column({ name: 'password'})
@@ -21,9 +21,9 @@ export class User {
   @Column({ name: 'hashedPassword'})
   public hashedPassword: string;
 
-  @Column({name: 'created_at'})
+  @Column({name: 'createdAt'})
   public createdAt: Date
 
-  @Column({ name: 'ROLE', enum: UserRoles, type: 'enum', default: UserRoles.UNKNOWN})
+  @Column({ name: 'role', enum: UserRoles, type: 'enum', default: UserRoles.UNKNOWN})
   public role: UserRoles
 }

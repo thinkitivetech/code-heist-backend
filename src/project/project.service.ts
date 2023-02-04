@@ -55,70 +55,47 @@ export class ProjectService {
 
             this.logger.log(`Got request to fetch project details by params`)
 
-            if (!reqProject.userId) {
-            }
-            let user: any;
-            const loggedInUser = await applyPassportStrategy();
-            if (loggedInUser && loggedInUser.email || reqProject.userId) {
-                if (reqProject.userId !== undefined) {
-                    user = await this.userRepo.findOne({ where: { id: reqProject.userId } });
-                } else if (user) {
-                    user = await this.userRepo.findOne({ where: { email: loggedInUser.email } });
-                }
-            }
-            if (!user) {
-                this.logger.error(`User not found for email ${loggedInUser.email}`);
-                throw new Error('No Project has been found`');
-
-            }
-
-            if (user.role === UserRoles.TEAM_LEAD) {
-                reqProject.filter.teamLeadId = user.id;
-            }
-            if (user.role === UserRoles.MANAGER) {
-                reqProject.filter.mangerId = user.id;
-            }
-            if (user.role === UserRoles.ENGINEER) {
-                reqProject.filter.engineerId = user.id;
-            }
-            if (user.role === UserRoles.SALES) {
-                reqProject.filter.salesId = user.id;
-            }
+//             if (!reqProject.userId) {
+//             }
+//             let user: any;
+//             const loggedInUser = await applyPassportStrategy();
+//             if (loggedInUser && loggedInUser.email || reqProject.userId) {
+//                 if (reqProject.userId !== undefined) {
+//                     user = await this.userRepo.findOne({ where: { id: reqProject.userId } });
+//                 } else if (user) {
+//                     user = await this.userRepo.findOne({ where: { email: loggedInUser.email } });
+//                 }
+//             }
+//
+//             if (user.role === UserRoles.TEAM_LEAD) {
+//                 reqProject.filter.teamLeadId = user.id;
+//             }
+//             if (user.role === UserRoles.MANAGER) {
+//                 reqProject.filter.mangerId = user.id;
+//             }
+//             if (user.role === UserRoles.ENGINEER) {
+//                 reqProject.filter.engineerId = user.id;
+//             }
+//             if (user.role === UserRoles.SALES) {
+//                 reqProject.filter.salesId = user.id;
+//             }
 
             let selectQuery = this.projectRepository.createQueryBuilder('project')
 
             if (reqProject && reqProject.filter) {
-                reqProject.filter.engineerId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('project.engineerId = :engineerId', { engineerId: reqProject.filter.engineerId })
-                })) : selectQuery;
+                reqProject.filter.engineerId ? selectQuery.andWhere('project.engineerId = :engineerId', { engineerId: reqProject.filter.engineerId }): selectQuery;
 
-                reqProject.filter.teamLeadId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('project.teamLeadId = :teamLeadId', { teamLeadId: reqProject.filter.teamLeadId })
-                })) : selectQuery;
+                reqProject.filter.teamLeadId ? selectQuery.andWhere('project.teamLeadId = :teamLeadId', { teamLeadId: reqProject.filter.teamLeadId }) : selectQuery;
 
-                reqProject.filter.mangerId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('project.mangerId = :mangerId', { teamLeadId: reqProject.filter.mangerId })
-                })) : selectQuery;
+                reqProject.filter.mangerId ? selectQuery.andWhere('project.mangerId = :mangerId', { teamLeadId: reqProject.filter.mangerId }) : selectQuery;
 
+                reqProject.filter.projectId ? selectQuery.andWhere('project.id = :projectId', { projectId: reqProject.filter.projectId }): selectQuery;
 
-                reqProject.filter.projectId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('project.id = :projectId', { projectId: reqProject.filter.projectId })
-                })) : selectQuery;
+                reqProject.filter.salesId ? selectQuery.andWhere('project.salesId = :salesId', { salesId: reqProject.filter.salesId }): selectQuery;
 
+                reqProject.filter.companyId ? selectQuery.andWhere('project.companyId = :companyId', { companyId: reqProject.filter.companyId }) : selectQuery;
 
-                reqProject.filter.salesId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('project.salesId = :salesId', { salesId: reqProject.filter.salesId })
-                })) : selectQuery;
-
-
-                reqProject.filter.companyId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('project.companyId = :companyId', { companyId: reqProject.filter.companyId })
-                })) : selectQuery;
-
-
-                reqProject.filter.status ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('project.status = :status', { status: reqProject.filter.status })
-                })) : selectQuery;
+                reqProject.filter.status ? selectQuery.andWhere('project.status = :status', { status: reqProject.filter.status }) : selectQuery;
 
             }
 

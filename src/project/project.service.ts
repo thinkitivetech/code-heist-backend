@@ -1,15 +1,13 @@
-import { HttpStatus, Injectable, Res } from '@nestjs/common';
+import { HttpStatus, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectLogger, NestjsWinstonLoggerService } from 'nestjs-winston-logger';
-import { HttpError } from 'routing-controllers';
 import { ProjectEntity } from 'src/entities/project.entity';
-import { TaskSheetEntity } from 'src/entities/taskTimeSheet.entity';
 import { applyPassportStrategy } from 'src/security/JWTMiddleware';
 import { UserRoles } from 'src/user/dto/userModel/user-model';
 import { UserEntity } from 'src/user/entity/user.entity';
 import { paginateResponse } from 'src/utils/common';
 import { Brackets, Repository } from 'typeorm';
-import { reqProject } from './dto/project.dto';
+import { ReqProject } from './dto/project.dto';
 
 export class ProjectService {
     constructor(
@@ -52,40 +50,40 @@ export class ProjectService {
     }
 
 
-    public async getAllProject(reqProject: reqProject, @Res() response: any): Promise<any[]> {
+    public async getAllProject(reqProject: ReqProject, @Res() response: any): Promise<any[]> {
         try {
 
             this.logger.log(`Got request to fetch project details by params`)
-//             let loggedInUser:any;
-//             if(!reqProject.userId){
-//                 loggedInUser  = applyPassportStrategy();
-//             }
-//             let user :  any;
-//             if(loggedInUser && loggedInUser.email || reqProject.userId){
-//             if(reqProject.userId !== undefined){
-//                 user = await this.userRepo.findOne({ where: { id: reqProject.userId } });
-//             }else if (user){
-//             user = await this.userRepo.findOne({ where: { email: loggedInUser.email } });
-//             }
-//             }
-//             if(!user){
-//                 this.logger.error(`User not found for email ${loggedInUser.email}`);
-//                 throw new Error('No Project has been found`');
-//
-//             }
-//
-//             if(user.role === UserRoles.TEAM_LEAD){
-//                 reqProject.filter.teamLeadId = user.id;
-//             }
-//             if(user.role=== UserRoles.MANAGER){
-//                 reqProject.filter.mangerId = user.id;
-//             }
-//             if(user.role=== UserRoles.ENGINEER){
-//                 reqProject.filter.engineerId = user.id;
-//             }
-//             if(user.role=== UserRoles.SALES){
-//                 reqProject.filter.salesId = user.id;
-//             }
+
+            if (!reqProject.userId) {
+            }
+            let user: any;
+            const loggedInUser = await applyPassportStrategy();
+            if (loggedInUser && loggedInUser.email || reqProject.userId) {
+                if (reqProject.userId !== undefined) {
+                    user = await this.userRepo.findOne({ where: { id: reqProject.userId } });
+                } else if (user) {
+                    user = await this.userRepo.findOne({ where: { email: loggedInUser.email } });
+                }
+            }
+            if (!user) {
+                this.logger.error(`User not found for email ${loggedInUser.email}`);
+                throw new Error('No Project has been found`');
+
+            }
+
+            if (user.role === UserRoles.TEAM_LEAD) {
+                reqProject.filter.teamLeadId = user.id;
+            }
+            if (user.role === UserRoles.MANAGER) {
+                reqProject.filter.mangerId = user.id;
+            }
+            if (user.role === UserRoles.ENGINEER) {
+                reqProject.filter.engineerId = user.id;
+            }
+            if (user.role === UserRoles.SALES) {
+                reqProject.filter.salesId = user.id;
+            }
 
             let selectQuery = this.projectRepository.createQueryBuilder('project')
 

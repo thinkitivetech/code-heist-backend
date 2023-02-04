@@ -18,9 +18,7 @@ export class CreateProject {
   public endDate: string;
 }
 
-export class reqProject {
-  @IsOptional()
-  public projectId: number;
+export class ReqProject {
 
   @IsOptional()
   public projectName: string;

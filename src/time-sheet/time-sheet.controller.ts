@@ -41,6 +41,7 @@ export class TimeSheetController {
     }
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch('/:id')
   async updateTimeSheet(@Body() timeSheetReq: PatchTimeSheetReq,
   @Param('id') timeSheetId: number,
@@ -50,7 +51,7 @@ export class TimeSheetController {
     } catch (err) {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         success: false,
-        message: 'It seems there is some technical glitch at our end, Unable to create user.',
+        message: 'It seems there is some technical glitch at our end, Unable to update time sheet.',
         error_code: HttpStatus.INTERNAL_SERVER_ERROR,
         data: err.message
       });

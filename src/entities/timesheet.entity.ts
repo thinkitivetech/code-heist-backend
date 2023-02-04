@@ -16,7 +16,7 @@ export class TimeSheetEntity {
     @Column({ name: 'NAME', length: 500 })
     public name: string;
 
-    @Column({ name: 'PROJECT_DETAIL', length: 500 })
+    @Column({ name: 'PROJECT_DETAIL', length: 500, nullable: true })
     public projectDetail: string;
 
     @Column({ name: 'ASSIGNED_TO', length: 500 })

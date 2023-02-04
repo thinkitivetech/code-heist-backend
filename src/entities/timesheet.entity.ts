@@ -25,6 +25,9 @@ export class TimeSheetEntity {
     @Column({ name: 'STATUS', length: 500 })
     public status: string;
 
+    @Column({ name: 'NOTE', length: 500 })
+    public note: string;
+
     @CreateDateColumn({ name: 'CREATED_AT' })
     public createdAt: Date;
 

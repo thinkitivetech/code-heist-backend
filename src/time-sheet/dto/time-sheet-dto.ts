@@ -1,91 +1,67 @@
 import { IsEmail, ValidateNested, IsNumber, IsOptional, IsString } from "@nestjs/class-validator";
 
 export class GetTimeSheetReq {
+  @IsOptional()
+  public engineerId: number;
 
+  @IsOptional()
+  public timeSheetId: number;
 
-    @IsNumber()
-    @IsOptional()
-    public engineerId: number;
+  @IsOptional()
+  public startTime: string;
 
-    @IsNumber()
-    @IsOptional()
-    public timeSheetId: number;
+  @IsOptional()
+  public endTime: string;
 
-    @IsString()
-    @IsOptional()
-    public startTime: string;
+  @IsOptional()
+  public projectId: number;
 
-    @IsString()
-    @IsOptional()
-    public endTime: string;
+  @IsOptional()
+  public filter: FilterModel;
 
-    @IsNumber()
-    @IsOptional()
-    public projectId: number;
+  @IsOptional()
+  public limit: number;
 
-    @IsOptional()
-    public filter: FilterModel;
-
-    @IsNumber()
-    @IsOptional()
-    public limit: number;
-
-    @IsNumber()
-    @IsOptional()
-    public page: number;
-
+  @IsOptional()
+  public page: number;
 }
 
-
 export class FilterModel {
+  @IsOptional()
+  public engineerId: number;
 
-    @IsNumber()
-    @IsOptional()
-    public engineerId: number;
+  @IsOptional()
+  public engineerName: string;
 
-    @IsString()
-    @IsOptional()
-    public engineerName: string;
+  @IsOptional()
+  public teamLeadId: number;
 
-    @IsNumber()
-    @IsOptional()
-    public teamLeadId: number;
+  @IsOptional()
+  public teamLeadName: string;
 
-    @IsString()
-    @IsOptional()
-    public teamLeadName: string;
+  @IsOptional()
+  public mangerId: number;
 
-    @IsNumber()
-    @IsOptional()
-    public mangerId: number;
+  @IsOptional()
+  public managerName: string;
 
-    @IsString()
-    @IsOptional()
-    public managerName: string;
+  @IsOptional()
+  public projectId: number;
 
-    @IsNumber()
-    @IsOptional()
-    public projectId: number;
+  @IsOptional()
+  public projectName: string;
 
-    @IsString()
-    @IsOptional()
-    public projectName: string;
+  @IsOptional()
+  public salesId: number;
 
-    @IsNumber()
-    @IsOptional()
-    public salesId: number;
+  @IsOptional()
+  public salesName: string;
 
-    @IsString()
-    @IsOptional()
-    public salesName: string;
+  @IsOptional()
+  public companyId: number;
 
-    @IsNumber()
-    @IsOptional()
-    public companyId: number;
-
-    @IsOptional()
-    public status: STATUS;
-
+  @IsOptional()
+  public status: STATUS;
 }
 
 export enum STATUS {
@@ -96,32 +72,23 @@ export enum STATUS {
     CLOSED = 'CLOSED'
 }
 export class TaskDetailModel {
-    @IsNumber()
-    @IsOptional()
-    public id: number;
+  @IsOptional()
+  public id: number;
 
-    @IsString()
-    public date: string;
+  public date: string;
 
-    @IsString()
-    public hourMinute: string;
+  public hourMinute: string;
 
-    @IsString()
-    public task: string;
+  public task: string;
 }
 
 export class PatchTimeSheetReq {
+  @IsOptional()
+  public taskDetail: TaskDetailModel[];
 
-    @ValidateNested()
-    @IsOptional()
-    public taskDetail: TaskDetailModel[];
+  @IsOptional()
+  public engineerId: number;
 
-    @IsOptional()
-    @IsNumber()
-    public engineerId: number;
-
-    @IsOptional()
-    @IsNumber()
-    public teamLeadId: number;
-
+  @IsOptional()
+  public teamLeadId: number;
 }

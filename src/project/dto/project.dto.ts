@@ -2,23 +2,19 @@ import { IsNumber, IsOptional, IsString } from "class-validator";
 import { ManagerController } from "src/manager/manager.controller";
 
 export class CreateProject {
+  public projectName: string;
 
-    @IsString()
-    public projectName: string;
+  @IsOptional()
+  public description: string;
 
-    @IsOptional()
-    @IsString()
-    public description: string;
+  @IsOptional()
+  public clientName: string;
 
-    @IsOptional()
-    @IsString()
-    public clientName: string;
+  @IsOptional()
+  public startDate: string;
 
-    @IsOptional()
-    public startDate: string;
-
-    @IsOptional()
-    public endDate: string;
+  @IsOptional()
+  public endDate: string;
 }
 
 //

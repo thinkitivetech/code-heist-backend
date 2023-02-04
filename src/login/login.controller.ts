@@ -8,7 +8,7 @@ import {
 import { LoginDetails } from './dto/login-user.dto';
 import { LoginService } from './login.service';
 
-@Controller('/login')
+@Controller('/api/login')
 export class LoginController {
   constructor(private readonly loginService: LoginService) { }
 

@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
 
-@Controller('team-lead')
+@Controller('/api/team-lead')
 export class TeamLeadController {
 }

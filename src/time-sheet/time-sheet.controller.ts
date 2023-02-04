@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { GetTimeSheetReq, PatchTimeSheetReq } from './dto/time-sheet-dto';
 import { TimeSheetService } from './time-sheet.service';
 
-@Controller('user')
+@Controller('/api/user')
 export class UserController {
   constructor(private timeSheetService: TimeSheetService) {
   }
@@ -25,7 +25,7 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get()
+  @Get('/all')
   public async getAllTimeSheet(
     @Query() timeSheetRequest: GetTimeSheetReq,
     @Res() response: any) {

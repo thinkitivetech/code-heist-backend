@@ -11,7 +11,7 @@ export class TaskSheetEntity {
     @Column({ name: 'TASK', type: 'longtext' })
     public task: string;
 
-    @Column({ name: 'MINUTES',  })
+    @Column({ name: 'MINUTES', nullable: true })
     public minutes: number;
 
     @Column({ name: 'NOTES', type: 'longtext' })
@@ -31,6 +31,9 @@ export class TaskSheetEntity {
 
     @CreateDateColumn({ name: 'UPDATED_AT' })
     public updatedAt: Date;
+
+    @Column({ name: 'TASK_SHEET_ID', nullable: true })
+    public taskSheetId: number;
 
     @ManyToOne(() => TimeSheetEntity, { nullable: true })
     @JoinColumn({

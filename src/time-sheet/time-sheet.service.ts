@@ -1,10 +1,12 @@
 import { HttpStatus, Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectLogger, NestjsWinstonLoggerService } from 'nestjs-winston-logger';
+import { response } from 'passport-strategy/node_modules/@types/express';
 import { TimeSheetEntity } from 'src/entities/timesheet.entity';
 import { paginateResponse } from 'src/utils/common';
 import { Repository } from 'typeorm';
-import { GetTimeSheetReq } from './dto/time-sheet-dto';
+import { GetTimeSheetReq, PatchTimeSheetReq } from './dto/time-sheet-dto';
+import { TimeSheetMapper } from './mapper/time-sheet.mapper';
 
 @Injectable()
 export class TimeSheetService {
@@ -13,7 +15,7 @@ export class TimeSheetService {
         @InjectRepository(TimeSheetEntity)
         private timeSheetRepo: Repository<TimeSheetEntity>,
         @InjectLogger() private logger: NestjsWinstonLoggerService,
-
+        private timeSheetMapper: TimeSheetMapper,
     ) { }
 
     public async getTimeSheet(timeSheetRequest: GetTimeSheetReq, @Res() response: any): Promise<any[]> {
@@ -52,6 +54,15 @@ export class TimeSheetService {
             this.logger.error(`Error while fetching user for id ${timeSheetRequest} Err as ${err}`);
             throw new Error
         }
+    }
+
+    public async updateTimeSheet(timeSheetReq: PatchTimeSheetReq, @Res() response: any) {
+
+    }
+
+    public async createTimeSheet(timeSheetReq: PatchTimeSheetReq, @Res() response: any) {
+        const timeSheetEntity = this.timeSheetMapper.toTimeSheetEntity(timeSheetReq);
+
     }
 
 }

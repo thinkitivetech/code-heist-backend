@@ -1,10 +1,9 @@
 import { JoinColumn, OneToOne } from 'typeorm';
 import { ManyToOne } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
-import { EngineeringEntity } from './engineering.entity';
-import { ManagerEntity } from './manager.entity';
 import { ProjectEntity } from './project.entity';
 import { TimeSheetEntity } from './timesheet.entity';
+import { EngineerEntity } from './engineer.entity';
 
 @Entity({ name: 'PROFILE' })
 export class ProfileEntity {
@@ -26,12 +25,12 @@ export class ProfileEntity {
     @CreateDateColumn({ name: 'UPDATED_AT' })
     public updatedAt: Date;
 
-    @ManyToOne(() => EngineeringEntity, { nullable: true })
+    @ManyToOne(() => EngineerEntity, { nullable: true })
     @JoinColumn({
         name: 'ENGINEER_ID',
         referencedColumnName: 'id',
     })
-    public engineer: EngineeringEntity;
+    public engineer: EngineerEntity;
 
     @ManyToOne(() => ProjectEntity, { nullable: true })
     @JoinColumn({

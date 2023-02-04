@@ -1,7 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Param, Post, Query, Res, UseGuards, UseInterceptors } from '@nestjs/common';
 import { SignUpInterceptor } from 'src/security/SignUpInterceptor';
 import { CreateUserDto, UserRequestDto } from './dto/userModel/create-user.dto';
-import { User } from './entity/user.entity';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 

@@ -1,6 +1,5 @@
 import { OneToMany } from 'typeorm';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
-import { EngineeringEntity } from './engineering.entity';
 import { ProjectEntity } from './project.entity';
 import { TeamLeadEntity } from './teamLead.entity';
 

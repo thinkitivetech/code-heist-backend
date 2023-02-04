@@ -11,8 +11,8 @@ export class TaskSheetEntity {
     @Column({ name: 'TASK', type: 'longtext' })
     public task: string;
 
-    @Column({ name: 'HOURS', length: 500 })
-    public hours: string;
+    @Column({ name: 'MINUTES',  })
+    public minutes: number;
 
     @Column({ name: 'NOTES', type: 'longtext' })
     public notes: string;
@@ -34,8 +34,8 @@ export class TaskSheetEntity {
 
     @ManyToOne(() => TimeSheetEntity, { nullable: true })
     @JoinColumn({
-        name: 'TIME_SHEET_ID',
+        name: 'TASK_SHEET_ID',
         referencedColumnName: 'id',
     })
-    public timeSheet: TimeSheetEntity;
+    public teamLead: TimeSheetEntity;
 }

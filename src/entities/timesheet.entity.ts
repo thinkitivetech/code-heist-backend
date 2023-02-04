@@ -1,8 +1,7 @@
+import { EngineerEntity } from 'src/entities/engineer.entity';
 import { JoinColumn, OneToOne } from 'typeorm';
 import { ManyToOne } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
-import { EngineeringEntity } from './engineering.entity';
-import { ManagerEntity } from './manager.entity';
 import { ProfileEntity } from './profile.entity';
 import { ProjectEntity } from './project.entity';
 import { TaskSheetEntity } from './taskTimeSheet.entity';
@@ -19,7 +18,7 @@ export class TimeSheetEntity {
     public projects: string;
 
     @Column({ name: 'ASSIGNED_TO', length: 500 })
-    public assignedTO: string;
+    public assignedTo: string;
 
     @Column({ name: 'STATUS', length: 500 })
     public status: string;
@@ -36,13 +35,16 @@ export class TimeSheetEntity {
     @OneToOne(() => ProfileEntity, profile => profile.timeSheet)
     public profile: ProfileEntity;
 
-    @ManyToOne(() => EngineeringEntity, { nullable: true })
+    @ManyToOne(() => EngineerEntity, { nullable: true })
     @JoinColumn({
         name: 'ENGINEER_ID',
         referencedColumnName: 'id',
     })
-    public engineer: EngineeringEntity;
+    public engineer: EngineerEntity;
 
-    @OneToMany(() => TaskSheetEntity, taskDetails => taskDetails.timeSheet, { cascade: true, eager: true, orphanedRowAction: 'delete' })
+    @OneToMany(() => ProfileEntity, profileDetails => profileDetails.profile, { cascade: true, eager: true, orphanedRowAction: 'delete' })
+    public profileDetails: ProfileEntity[];
+
+    @OneToMany(() => TaskSheetEntity, taskDetails => taskDetails, { cascade: true, eager: true, orphanedRowAction: 'delete' })
     public taskDetails: TaskSheetEntity[];
 }

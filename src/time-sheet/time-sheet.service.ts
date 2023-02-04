@@ -73,31 +73,31 @@ export class TimeSheetService {
         try {
 
             this.logger.log(`Got request to fetch time sheet by params ${JSON.stringify(timeSheetRequest)}`)
-//             if(!timeSheetRequest.userId){
-//
-//             }
-//             const loggedInUser:any = applyPassportStrategy();
-//             let user;
-//             if (loggedInUser && loggedInUser.email) {
-//                 user = await this.userRepo.findOne({ where: { email: loggedInUser.email } });
-//             }
-//             if (!user) {
-//                 this.logger.error(`User not found for email ${loggedInUser.email}`);
-//                 throw new Error('No User has been found`');
-//             }
-//
-//             if (user.role === UserRoles.TEAM_LEAD) {
-//                 timeSheetRequest.filter.teamLeadId = user.id;
-//             }
-//             if (user.role === UserRoles.MANAGER) {
-//                 timeSheetRequest.filter.mangerId = user.id;
-//             }
-//             if (user.role === UserRoles.ENGINEER) {
-//                 timeSheetRequest.filter.engineerId = user.id;
-//             }
-//             if (user.role === UserRoles.SALES) {
-//                 timeSheetRequest.filter.salesId = user.id;
-//             }
+            //             if(!timeSheetRequest.userId){
+            //
+            //             }
+            //             const loggedInUser:any = applyPassportStrategy();
+            //             let user;
+            //             if (loggedInUser && loggedInUser.email) {
+            //                 user = await this.userRepo.findOne({ where: { email: loggedInUser.email } });
+            //             }
+            //             if (!user) {
+            //                 this.logger.error(`User not found for email ${loggedInUser.email}`);
+            //                 throw new Error('No User has been found`');
+            //             }
+            //
+            //             if (user.role === UserRoles.TEAM_LEAD) {
+            //                 timeSheetRequest.filter.teamLeadId = user.id;
+            //             }
+            //             if (user.role === UserRoles.MANAGER) {
+            //                 timeSheetRequest.filter.mangerId = user.id;
+            //             }
+            //             if (user.role === UserRoles.ENGINEER) {
+            //                 timeSheetRequest.filter.engineerId = user.id;
+            //             }
+            //             if (user.role === UserRoles.SALES) {
+            //                 timeSheetRequest.filter.salesId = user.id;
+            //             }
 
             let selectQuery = this.timeSheetRepo.createQueryBuilder('timeSheet')
                 .leftJoinAndSelect('timeSheet.engineer', 'engineer')
@@ -110,42 +110,19 @@ export class TimeSheetService {
             timeSheetRequest.timeSheetId ? selectQuery.where('timeSheet.id = :id', { id: timeSheetRequest.timeSheetId }) : selectQuery;
 
             if (timeSheetRequest && timeSheetRequest.filter) {
-                timeSheetRequest.filter.engineerId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('timeSheet.engineerId = :engineerId', { engineerId: timeSheetRequest.filter.engineerId })
-                        .orWhere('engineer.name like (:engineerName)', { engineerName: '%' + timeSheetRequest.filter.managerName + '%' })
-                })) : selectQuery;
+                timeSheetRequest.filter.engineerId ? selectQuery.andWhere('timeSheet.engineerId = :engineerId', { engineerId: timeSheetRequest.filter.engineerId }) : selectQuery;
 
-                timeSheetRequest.filter.teamLeadId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('timeSheet.teamLeadId = :teamLeadId', { teamLeadId: timeSheetRequest.filter.teamLeadId })
-                        .orWhere('teamLead.name like (:teamLeadName)', { teamLeadName: '%' + timeSheetRequest.filter.teamLeadName + '%' })
-                })) : selectQuery;
+                timeSheetRequest.filter.teamLeadId ? selectQuery.andWhere('timeSheet.teamLeadId = :teamLeadId', { teamLeadId: timeSheetRequest.filter.teamLeadId }) : selectQuery;
 
-                timeSheetRequest.filter.mangerId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('timeSheet.mangerId = :mangerId', { teamLeadId: timeSheetRequest.filter.mangerId })
-                        .orWhere('manager.name like (:managerName)', { managerName: '%' + timeSheetRequest.filter.managerName + '%' })
-                })) : selectQuery;
+                timeSheetRequest.filter.mangerId ? selectQuery.andWhere('timeSheet.mangerId = :mangerId', { teamLeadId: timeSheetRequest.filter.mangerId }) : selectQuery;
 
+                timeSheetRequest.filter.projectId ? selectQuery.andWhere('project.id = :projectId', { projectId: timeSheetRequest.filter.projectId }) : selectQuery;
 
-                timeSheetRequest.filter.projectId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('project.id = :projectId', { projectId: timeSheetRequest.filter.projectId })
-                        .orWhere('project.name like (:projectName)', { projectName: '%' + timeSheetRequest.filter.projectName + '%' })
-                })) : selectQuery;
+                timeSheetRequest.filter.salesId ? selectQuery.andWhere('sales.id = :salesId', { salesId: timeSheetRequest.filter.salesId }) : selectQuery;
 
+                timeSheetRequest.filter.companyId ? selectQuery.andWhere('sales.companyId = :companyId', { companyId: timeSheetRequest.filter.companyId }) : selectQuery;
 
-                timeSheetRequest.filter.salesId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('sales.id = :salesId', { salesId: timeSheetRequest.filter.salesId })
-                        .orWhere('sales.name like (:salesName)', { salesName: '%' + timeSheetRequest.filter.salesName + '%' })
-                })) : selectQuery;
-
-
-                timeSheetRequest.filter.companyId ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('sales.companyId = :companyId', { companyId: timeSheetRequest.filter.companyId })
-                })) : selectQuery;
-
-
-                timeSheetRequest.filter.status ? selectQuery.andWhere(new Brackets(obj => {
-                    obj.where('timeSheet.status = :status', { status: timeSheetRequest.filter.status })
-                })) : selectQuery;
+                timeSheetRequest.filter.status ? selectQuery.andWhere('timeSheet.status = :status', { status: timeSheetRequest.filter.status }) : selectQuery;
 
             }
 
@@ -198,8 +175,9 @@ export class TimeSheetService {
         }
 
         const userDetails = await this.userRepo.findOne({ where: { id: timeSheetReq.assignedTo } })
-        const loggedInUser = applyPassportStrategy();
-
+        // const loggedInUser = applyPassportStrategy();
+        const loggedInUser = {} as any;
+        loggedInUser.email = 'bhosaleRaje@gm4ail.com';
         let lastEditedBy: any = userDetails?.name;
         if (!(userDetails?.email === loggedInUser.email)) {
             lastEditedBy = await this.userRepo.findOne({ where: { id: timeSheetReq.assignedTo } })
@@ -261,38 +239,38 @@ export class TimeSheetService {
 
     public async updateStatus(timeSheetReq: Status, @Res() response: any) {
         try {
-            const timeSheetId =  timeSheetReq.id;
-        const existingTimeSheet = await this.timeSheetRepo.findOne({ where: { id: timeSheetId } });
-        if (!existingTimeSheet) {
-            return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-                success: false,
-                message: 'Unable to update time-sheet, as there is no timesheet with provided Id.',
-                error_code: HttpStatus.INTERNAL_SERVER_ERROR,
-                data: {}
+            const timeSheetId = timeSheetReq.id;
+            const existingTimeSheet = await this.timeSheetRepo.findOne({ where: { id: timeSheetId } });
+            if (!existingTimeSheet) {
+                return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+                    success: false,
+                    message: 'Unable to update time-sheet, as there is no timesheet with provided Id.',
+                    error_code: HttpStatus.INTERNAL_SERVER_ERROR,
+                    data: {}
+                });
+            }
+            let userDetails: any;
+            let loggedInUser;
+            if (timeSheetReq && timeSheetReq.userId) {
+                userDetails = await this.userRepo.findOne({ where: { id: timeSheetReq.userId } })
+            } else {
+                loggedInUser = applyPassportStrategy();
+            }
+            let lastEditedBy: any = userDetails?.name;
+            if (!(userDetails?.email === loggedInUser.email)) {
+                lastEditedBy = await this.userRepo.findOne({ where: { id: loggedInUser.email } })
+            }
+            lastEditedBy.name = userDetails?.name;
+            const nameData = userDetails && userDetails.name ? userDetails.name : '';
+            const updatedTimeSheetEntity = await this.timeSheetRepo.save({ id: timeSheetId, status: timeSheetReq.status, name: nameData, note: timeSheetReq.note } as TimeSheetEntity);
+            return response.status(HttpStatus.OK).json({
+                success: true,
+                message: 'Time sheet has been updated successfully',
+                data: updatedTimeSheetEntity,
             });
+        } catch (err) {
+            throw new Error(`error while updating status ${err}`);
         }
-        let userDetails : any;
-        let loggedInUser;
-        if(timeSheetReq && timeSheetReq.userId){
-            userDetails = await this.userRepo.findOne({ where: { id: timeSheetReq.userId } })
-        }else {
-            loggedInUser = applyPassportStrategy();
-        }
-        let lastEditedBy: any = userDetails?.name;
-        if (!(userDetails?.email === loggedInUser.email)) {
-            lastEditedBy = await this.userRepo.findOne({ where: { id: loggedInUser.email } })
-        }
-        lastEditedBy.name = userDetails?.name;
-        const nameData = userDetails && userDetails.name ? userDetails.name : '';
-        const updatedTimeSheetEntity = await this.timeSheetRepo.save({id: timeSheetId, status: timeSheetReq.status , name :nameData , note: timeSheetReq.note} as TimeSheetEntity);
-        return response.status(HttpStatus.OK).json({
-            success: true,
-            message: 'Time sheet has been updated successfully',
-            data: updatedTimeSheetEntity,
-        });
-    } catch(err){
-        throw new Error(`error while updating status ${err}`);
     }
-}
 
 }

@@ -1,7 +1,6 @@
-import { Controller, Get, HttpStatus, Query, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Patch, Query, Res, UseGuards, Post } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Patch } from 'routing-controllers';
-import { GetTimeSheetReq } from './dto/time-sheet-dto';
+import { GetTimeSheetReq, PatchTimeSheetReq } from './dto/time-sheet-dto';
 import { TimeSheetService } from './time-sheet.service';
 
 @Controller('user')
@@ -19,6 +18,35 @@ export class UserController {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         success: false,
         message: 'It seems there is some technical glitch at our end, Unable to fetch Time sheet.',
+        error_code: HttpStatus.INTERNAL_SERVER_ERROR,
+        data: err.message
+      });
+    }
+  }
+
+  @Patch('/:id')
+  async updateTimeSheet(@Body() timeSheetReq: PatchTimeSheetReq, @Res() response: any) {
+    try {
+      await this.timeSheetService.updateTimeSheet(timeSheetReq, response);
+    } catch (err) {
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: 'It seems there is some technical glitch at our end, Unable to create user.',
+        error_code: HttpStatus.INTERNAL_SERVER_ERROR,
+        data: err.message
+      });
+    }
+  }
+
+
+  @Post()
+  async createTimeSheet(@Body() timeSheetReq: PatchTimeSheetReq, @Res() response: any) {
+    try {
+      await this.timeSheetService.createTimeSheet(timeSheetReq, response);
+    } catch (err) {
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: 'It seems there is some technical glitch at our end, Unable to create user.',
         error_code: HttpStatus.INTERNAL_SERVER_ERROR,
         data: err.message
       });

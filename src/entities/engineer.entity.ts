@@ -1,4 +1,4 @@
-import { JoinColumn } from 'typeorm';
+import { JoinColumn, UpdateDateColumn } from 'typeorm';
 import { ManyToOne } from 'typeorm';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
 import { ProfileEntity } from './profile.entity';
@@ -23,8 +23,11 @@ export class EngineerEntity {
     @CreateDateColumn({ name: 'CREATED_AT' })
     public createdAt: Date;
 
-    @CreateDateColumn({ name: 'UPDATED_AT' })
+    @UpdateDateColumn({ name: 'UPDATED_AT' })
     public updatedAt: Date;
+
+    @Column({ name: 'TEAM_LEAD_ID', nullable: true })
+    public teamLeadId: number;
 
     @ManyToOne(() => TeamLeadEntity, { nullable: true })
     @JoinColumn({
@@ -33,7 +36,7 @@ export class EngineerEntity {
     })
     public teamLead: TeamLeadEntity;
 
-    @OneToMany(() => ProfileEntity, profileDetails => profileDetails.engineer , { cascade: true, eager: true, orphanedRowAction: 'delete' })
+    @OneToMany(() => ProfileEntity, profileDetails => profileDetails.engineer, { cascade: true, eager: true, orphanedRowAction: 'delete' })
     public profileDetails: ProfileEntity[];
 
     @OneToMany(() => TimeSheetEntity, timeSheetDetails => timeSheetDetails.engineer, { cascade: true, eager: true, orphanedRowAction: 'delete' })

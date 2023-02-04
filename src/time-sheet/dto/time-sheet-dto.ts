@@ -48,10 +48,7 @@ export class TaskDetailModel {
     public task: string;
 }
 
-export class CreateTimeSheetReq {
-    @IsNumber()
-    @IsOptional()
-    public id: number;
+export class PatchTimeSheetReq {
 
     @ValidateNested()
     @IsOptional()
@@ -64,6 +61,5 @@ export class CreateTimeSheetReq {
     @IsOptional()
     @IsNumber()
     public teamLeadId: number;
-
 
 }

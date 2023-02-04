@@ -35,6 +35,9 @@ export class TimeSheetEntity {
     @OneToOne(() => ProfileEntity, profile => profile.timeSheet)
     public profile: ProfileEntity;
 
+    @Column({ name: 'ENGINEER_ID', nullable: true })
+    public engineerId: number;
+
     @ManyToOne(() => EngineerEntity, { nullable: true })
     @JoinColumn({
         name: 'ENGINEER_ID',

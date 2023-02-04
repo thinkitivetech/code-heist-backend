@@ -73,28 +73,31 @@ export class TimeSheetService {
         try {
 
             this.logger.log(`Got request to fetch time sheet by params ${JSON.stringify(timeSheetRequest)}`)
-            const loggedInUser: any = applyPassportStrategy();
-            let user;
-            if (loggedInUser && loggedInUser.email) {
-                user = await this.userRepo.findOne({ where: { email: loggedInUser.email } });
-            }
-            if (!user) {
-                this.logger.error(`User not found for email ${loggedInUser.email}`);
-                throw new HttpError(404, `No user has been found`);
-            }
-
-            if (user.role === UserRoles.TEAM_LEAD) {
-                timeSheetRequest.filter.teamLeadId = user.id;
-            }
-            if (user.role === UserRoles.MANAGER) {
-                timeSheetRequest.filter.mangerId = user.id;
-            }
-            if (user.role === UserRoles.ENGINEER) {
-                timeSheetRequest.filter.engineerId = user.id;
-            }
-            if (user.role === UserRoles.SALES) {
-                timeSheetRequest.filter.salesId = user.id;
-            }
+//             if(!timeSheetRequest.userId){
+//
+//             }
+//             const loggedInUser:any = applyPassportStrategy();
+//             let user;
+//             if (loggedInUser && loggedInUser.email) {
+//                 user = await this.userRepo.findOne({ where: { email: loggedInUser.email } });
+//             }
+//             if (!user) {
+//                 this.logger.error(`User not found for email ${loggedInUser.email}`);
+//                 throw new Error('No User has been found`');
+//             }
+//
+//             if (user.role === UserRoles.TEAM_LEAD) {
+//                 timeSheetRequest.filter.teamLeadId = user.id;
+//             }
+//             if (user.role === UserRoles.MANAGER) {
+//                 timeSheetRequest.filter.mangerId = user.id;
+//             }
+//             if (user.role === UserRoles.ENGINEER) {
+//                 timeSheetRequest.filter.engineerId = user.id;
+//             }
+//             if (user.role === UserRoles.SALES) {
+//                 timeSheetRequest.filter.salesId = user.id;
+//             }
 
             let selectQuery = this.timeSheetRepo.createQueryBuilder('timeSheet')
                 .leftJoinAndSelect('timeSheet.engineer', 'engineer')
@@ -176,7 +179,7 @@ export class TimeSheetService {
             });
         } catch (err) {
             this.logger.error(`Error while fetching user for id ${timeSheetRequest} Err as ${err}`);
-            throw new HttpError(404, `Error while fetching timeSheet ${err}`);
+            throw new Error(`error while fetching timeSheet ${err}`);
         }
     }
 

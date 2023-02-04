@@ -22,7 +22,6 @@ export enum STATUS {
 
 }
 
-
 export class FilterModel {
 
     @IsNumber()
@@ -106,6 +105,10 @@ export class GetTimeSheetReq {
     @IsNumber()
     @IsOptional()
     public limit: number;
+
+    @IsNumber()
+    @IsOptional()
+    public userId: number;
 
     @IsNumber()
     @IsOptional()

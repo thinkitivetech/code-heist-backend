@@ -73,24 +73,24 @@ export class TimeSheetService {
 
             this.logger.log(`Got request to fetch time sheet by params ${JSON.stringify(timeSheetRequest)}`)
 
-            const userExist = await this.userRepo.findOne({ where: { id: timeSheetRequest.userId } });
-            if (!userExist) {
-                this.logger.error(`User not found for Id ${timeSheetRequest.userId}`);
-                throw new Error('No User has been found`');
-            }
+            // const userExist = await this.userRepo.findOne({ where: { id: timeSheetRequest.userId } });
+            // if (!userExist) {
+            //     this.logger.error(`User not found for Id ${timeSheetRequest.userId}`);
+            //     throw new Error('No User has been found`');
+            // }
 
-            if (userExist.role === UserRoles.TEAM_LEAD) {
-                timeSheetRequest.filter.teamLeadId = userExist.id;
-            }
-            if (userExist.role === UserRoles.MANAGER) {
-                timeSheetRequest.filter.mangerId = userExist.id;
-            }
-            if (userExist.role === UserRoles.ENGINEER) {
-                timeSheetRequest.filter.engineerId = userExist.id;
-            }
-            if (userExist.role === UserRoles.SALES) {
-                timeSheetRequest.filter.salesId = userExist.id;
-            }
+            // if (userExist.role === UserRoles.TEAM_LEAD) {
+            //     timeSheetRequest.filter.teamLeadId = userExist.id;
+            // }
+            // if (userExist.role === UserRoles.MANAGER) {
+            //     timeSheetRequest.filter.mangerId = userExist.id;
+            // }
+            // if (userExist.role === UserRoles.ENGINEER) {
+            //     timeSheetRequest.filter.engineerId = userExist.id;
+            // }
+            // if (userExist.role === UserRoles.SALES) {
+            //     timeSheetRequest.filter.salesId = userExist.id;
+            // }
 
             let selectQuery = this.timeSheetRepo.createQueryBuilder('timeSheet')
                 .leftJoinAndSelect('timeSheet.engineer', 'engineer')
@@ -233,16 +233,8 @@ export class TimeSheetService {
                     data: {}
                 });
             }
-            let lastEditedBy: any;
 
-            let userDetails: any;
-            if (timeSheetReq && timeSheetReq.userId) {
-                lastEditedBy = await this.userRepo.findOne({ where: { id: timeSheetReq.userId } })
-            }
-
-            lastEditedBy.name = userDetails?.name;
-            const nameData = userDetails && userDetails.name ? userDetails.name : '';
-            const updatedTimeSheetEntity = await this.timeSheetRepo.save({ id: timeSheetId, status: timeSheetReq.status, name: nameData, note: timeSheetReq.note } as TimeSheetEntity);
+            const updatedTimeSheetEntity = await this.timeSheetRepo.save({ id: timeSheetId, status: timeSheetReq.status, note: timeSheetReq.note } as TimeSheetEntity);
             return response.status(HttpStatus.OK).json({
                 success: true,
                 message: 'Time sheet has been updated successfully',

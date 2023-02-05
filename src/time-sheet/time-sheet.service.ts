@@ -43,6 +43,8 @@ export class TimeSheetService {
             }
             if (timeSheetRequest.endTime) {
                 selectQuery.andWhere('timeSheet.createdAt <= :createdAt', { createdAt: timeSheetRequest.endTime })
+            } if (timeSheetRequest.timeSheetId) {
+                selectQuery.andWhere('timeSheet.id >= :id', { id: timeSheetRequest.timeSheetId })
             }
             selectQuery.orderBy('timeSheet.createdAt', 'DESC');
             if (timeSheetRequest && timeSheetRequest.limit && timeSheetRequest.page) {

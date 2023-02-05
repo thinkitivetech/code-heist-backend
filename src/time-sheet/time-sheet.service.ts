@@ -32,7 +32,7 @@ export class TimeSheetService {
             this.logger.log(`Got request to fetch time sheet by params ${JSON.stringify(timeSheetRequest)}`)
 
             let selectQuery = this.timeSheetRepo.createQueryBuilder('timeSheet')
-                .leftJoinAndSelect('timeSheet.taskSheet', 'taskDetails');
+                .leftJoinAndSelect('timeSheet.taskDetails', 'taskDetails');
             if (timeSheetRequest) {
                 timeSheetRequest.engineerId ? selectQuery.where('timeSheet.engineer = :engineer', { engineer: timeSheetRequest.engineerId }) : selectQuery;
                 timeSheetRequest.projectId ? selectQuery.where('timeSheet.project = :project', { project: timeSheetRequest.projectId }) : selectQuery;
@@ -206,7 +206,7 @@ export class TimeSheetService {
             timeSheetEntity.taskDetails = taskSheetObject;
             return response.status(HttpStatus.OK).json({
                 success: true,
-                message: 'User has been created successfully',
+                message: 'Time sheet has been created successfully',
                 data: timeSheetEntity,
             });
         } catch (err) {

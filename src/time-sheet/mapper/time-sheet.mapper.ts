@@ -18,6 +18,7 @@ export class TimeSheetMapper {
             .name(timeSheetRequest.name)
             .projectDetail(timeSheetRequest.projectDetail)
             .status(timeSheetRequest.status)
+            .note(timeSheetRequest.note)
             .createdAt(new Date())
             .updatedAt(new Date())
             .build();

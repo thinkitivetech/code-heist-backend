@@ -228,15 +228,18 @@ export class TimeSheetService {
             const timeSheetId = timeSheetReq.id;
             const existingTimeSheet = await this.timeSheetRepo.findOne({ where: { id: timeSheetId } });
             if (!existingTimeSheet) {
-                return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+                return response.status(HttpStatus.BAD_REQUEST).json({
                     success: false,
                     message: 'Unable to update time-sheet, as there is no timesheet with provided Id.',
-                    error_code: HttpStatus.INTERNAL_SERVER_ERROR,
+                    error_code: HttpStatus.BAD_REQUEST,
                     data: {}
                 });
             }
-
-            const updatedTimeSheetEntity = await this.timeSheetRepo.save({ id: timeSheetId, status: timeSheetReq.status, note: timeSheetReq.note } as TimeSheetEntity);
+            const updateTimeSheetStatus = {} as TimeSheetEntity;
+            updateTimeSheetStatus.id = timeSheetId;
+            updateTimeSheetStatus.status = timeSheetReq.status;
+            updateTimeSheetStatus.note = timeSheetReq.note;
+            const updatedTimeSheetEntity = await this.timeSheetRepo.save(updateTimeSheetStatus);
             return response.status(HttpStatus.OK).json({
                 success: true,
                 message: 'Time sheet has been updated successfully',

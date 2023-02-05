@@ -14,6 +14,8 @@ export class TimeSheetMapper {
     public toTimeSheetEntity(timeSheetRequest: PatchTimeSheetReq, assignedTo: any, editedBy: any): TimeSheetEntity {
         return Builder(TimeSheetEntity)
             .engineerId(timeSheetRequest.engineerId)
+            .teamLeadId(timeSheetRequest.teamLeadId)
+            .managerId(timeSheetRequest.managerId)
             .assignedTo(assignedTo ? assignedTo : '')
             .name(timeSheetRequest.name)
             .projectDetail(timeSheetRequest.projectDetail)

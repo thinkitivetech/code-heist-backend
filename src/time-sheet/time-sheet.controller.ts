@@ -8,17 +8,16 @@ export class TimeSheetController {
   constructor(private timeSheetService: TimeSheetService) {
   }
 
-  @Patch('/status/update')
+  @Patch('/status')
   async status(
     @Body() timeSheetReq: TimeSheetStatusReq,
     @Res() response: any) {
     try {
-
       await this.timeSheetService.updateStatus(timeSheetReq, response);
     } catch (err) {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         success: false,
-        message: 'It seems there is some technical glitch at our end, Unable to create user.',
+        message: 'It seems there is some technical glitch at our end, Unable to un',
         error_code: HttpStatus.INTERNAL_SERVER_ERROR,
         data: err.message
       });

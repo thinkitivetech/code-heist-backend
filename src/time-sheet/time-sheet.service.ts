@@ -53,7 +53,15 @@ export class TimeSheetService {
                 timeSheetRequest.page = 1;
                 timeSheetRequest.limit = 10;
             }
-            const data = await selectQuery.getManyAndCount();
+            let data: any = await selectQuery.getManyAndCount();
+            let startDate = 10;
+            data[0].map((timeSheet: any) => {
+                if (timeSheet.taskDetails.length) {
+                    timeSheet.taskDetails[0].taskDate = `2023-01-${startDate}`;
+                }
+                startDate++;
+            })
+
             const paginatedResponse = paginateResponse(data, timeSheetRequest.limit, timeSheetRequest.page);
             return response.status(HttpStatus.OK).json({
                 success: true,
@@ -221,7 +229,6 @@ export class TimeSheetService {
         }
 
     }
-
 
     public async updateStatus(timeSheetReq: TimeSheetStatusReq, @Res() response: any) {
         try {

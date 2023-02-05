@@ -54,44 +54,33 @@ export class ProjectService {
         try {
 
             this.logger.log(`Got request to fetch project details by params`)
+            const userDetail = await this.userRepo.findOne({ where: { id: reqProject.userId } });
 
-//             if (!reqProject.userId) {
-//             }
-//             let user: any;
-//             const loggedInUser = await applyPassportStrategy();
-//             if (loggedInUser && loggedInUser.email || reqProject.userId) {
-//                 if (reqProject.userId !== undefined) {
-//                     user = await this.userRepo.findOne({ where: { id: reqProject.userId } });
-//                 } else if (user) {
-//                     user = await this.userRepo.findOne({ where: { email: loggedInUser.email } });
-//                 }
-//             }
-//
-//             if (user.role === UserRoles.TEAM_LEAD) {
-//                 reqProject.filter.teamLeadId = user.id;
-//             }
-//             if (user.role === UserRoles.MANAGER) {
-//                 reqProject.filter.mangerId = user.id;
-//             }
-//             if (user.role === UserRoles.ENGINEER) {
-//                 reqProject.filter.engineerId = user.id;
-//             }
-//             if (user.role === UserRoles.SALES) {
-//                 reqProject.filter.salesId = user.id;
-//             }
+            if (userDetail?.role === UserRoles.TEAM_LEAD) {
+                reqProject.filter.teamLeadId = userDetail.id;
+            }
+            if (userDetail?.role === UserRoles.MANAGER) {
+                reqProject.filter.mangerId = userDetail.id;
+            }
+            if (userDetail?.role === UserRoles.ENGINEER) {
+                reqProject.filter.engineerId = userDetail.id;
+            }
+            if (userDetail?.role === UserRoles.SALES) {
+                reqProject.filter.salesId = userDetail.id;
+            }
 
             let selectQuery = this.projectRepository.createQueryBuilder('project')
 
             if (reqProject && reqProject.filter) {
-                reqProject.filter.engineerId ? selectQuery.andWhere('project.engineerId = :engineerId', { engineerId: reqProject.filter.engineerId }): selectQuery;
+                reqProject.filter.engineerId ? selectQuery.andWhere('project.engineerId = :engineerId', { engineerId: reqProject.filter.engineerId }) : selectQuery;
 
                 reqProject.filter.teamLeadId ? selectQuery.andWhere('project.teamLeadId = :teamLeadId', { teamLeadId: reqProject.filter.teamLeadId }) : selectQuery;
 
                 reqProject.filter.mangerId ? selectQuery.andWhere('project.mangerId = :mangerId', { teamLeadId: reqProject.filter.mangerId }) : selectQuery;
 
-                reqProject.filter.projectId ? selectQuery.andWhere('project.id = :projectId', { projectId: reqProject.filter.projectId }): selectQuery;
+                reqProject.filter.projectId ? selectQuery.andWhere('project.id = :projectId', { projectId: reqProject.filter.projectId }) : selectQuery;
 
-                reqProject.filter.salesId ? selectQuery.andWhere('project.salesId = :salesId', { salesId: reqProject.filter.salesId }): selectQuery;
+                reqProject.filter.salesId ? selectQuery.andWhere('project.salesId = :salesId', { salesId: reqProject.filter.salesId }) : selectQuery;
 
                 reqProject.filter.companyId ? selectQuery.andWhere('project.companyId = :companyId', { companyId: reqProject.filter.companyId }) : selectQuery;
 
@@ -105,14 +94,14 @@ export class ProjectService {
             if (reqProject.endTime) {
                 selectQuery.andWhere('project.createdAt <= :createdAt', { createdAt: reqProject.endTime })
             }
-            // if (reqProject && reqProject.filter && reqProject.filter.order) {
-            //     if (reqProject.filter.order === 'DESC') {
-            //         selectQuery.orderBy('project.createdAt', 'DESC');
-            //     }
-            //     if (reqProject.filter.order === 'ASC') {
-            //         selectQuery.orderBy('project.createdAt', 'ASC');
-            //     }
-            // }
+            if (reqProject && reqProject.filter && reqProject.filter.order) {
+                if (reqProject.filter.order === 'DESC') {
+                    selectQuery.orderBy('project.createdAt', 'DESC');
+                }
+                if (reqProject.filter.order === 'ASC') {
+                    selectQuery.orderBy('project.createdAt', 'ASC');
+                }
+            }
             if (reqProject && reqProject.limit && reqProject.page) {
                 selectQuery.skip(reqProject.limit * (reqProject.page - 1)).take(reqProject.limit);
             } else {
@@ -132,7 +121,5 @@ export class ProjectService {
             throw new Error(`No Project has been found with ${JSON.stringify(err)}`);
         }
     }
-
-
 
 }

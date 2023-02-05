@@ -69,8 +69,6 @@ export class FilterModel {
 
 }
 export class GetTimeSheetReq {
-
-
     @IsOptional()
     public engineerId: number;
 
@@ -137,6 +135,10 @@ export class PatchTimeSheetReq {
     @IsNumber()
     public teamLeadId: number;
 
+    @IsOptional()
+    @IsNumber()
+    public managerId: number;
+
     @IsString()
     @IsOptional()
     public name: string;
@@ -176,5 +178,5 @@ export class TimeSheetStatusReq {
     public note: string;
 
     @IsOptional()
-    public id: number;
+    public timeSheetId: number;
 }

@@ -225,8 +225,7 @@ export class TimeSheetService {
 
     public async updateStatus(timeSheetReq: TimeSheetStatusReq, @Res() response: any) {
         try {
-            const timeSheetId = timeSheetReq.id;
-            const existingTimeSheet = await this.timeSheetRepo.findOne({ where: { id: timeSheetId } });
+            const existingTimeSheet = await this.timeSheetRepo.findOne({ where: { id: timeSheetReq.timeSheetId } });
             if (!existingTimeSheet) {
                 return response.status(HttpStatus.BAD_REQUEST).json({
                     success: false,
@@ -236,7 +235,7 @@ export class TimeSheetService {
                 });
             }
             const updateTimeSheetStatus = {} as TimeSheetEntity;
-            updateTimeSheetStatus.id = timeSheetId;
+            updateTimeSheetStatus.id = timeSheetReq.timeSheetId;
             updateTimeSheetStatus.status = timeSheetReq.status;
             updateTimeSheetStatus.note = timeSheetReq.note;
             const updatedTimeSheetEntity = await this.timeSheetRepo.save(updateTimeSheetStatus);

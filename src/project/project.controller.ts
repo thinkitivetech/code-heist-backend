@@ -11,14 +11,14 @@ export class ProjectController {
     @UseGuards(AuthGuard('jwt'))
     @Get()
     public async getProject(
-      @Query() req: ReqProject,
+      @Query() reqProject: ReqProject,
       @Res() response: any) {
       try {
-        this.projectService.getAllProject(req, response);
+        await this.projectService.getAllProject(reqProject, response);
       } catch (err) {
         return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
           success: false,
-          message: 'It seems there is some technical glitch at our end, Unable to fetch user list.',
+          message: 'It seems there is some technical glitch at our end, Unable to fetch project list.',
           error_code: HttpStatus.INTERNAL_SERVER_ERROR,
           data: err.message
         });

@@ -17,7 +17,7 @@ export class TimeSheetController {
     } catch (err) {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         success: false,
-        message: 'It seems there is some technical glitch at our end, Unable to update note status',
+        message: 'It seems there is some technical glitch at our end, Unable to un',
         error_code: HttpStatus.INTERNAL_SERVER_ERROR,
         data: err.message
       });

@@ -23,7 +23,7 @@ export class TimeSheetMapper {
             .build();
     }
 
-    public toTaskDetailEntity(taskDetail: TaskDetailModel, editedBy: any, assignedTo: string, timeSheetId: number,): TaskSheetEntity {
+    public toTaskDetailEntity(taskDetail: TaskDetailModel, editedBy: any, assignedTo: any, timeSheetId: number,): TaskSheetEntity {
         return Builder(TaskSheetEntity)
             .minutes(convertHourstoMinute(taskDetail.hourMinute))
             .editedBy(editedBy)

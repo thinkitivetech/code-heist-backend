@@ -191,16 +191,14 @@ export class TimeSheetService {
 
     public async createTimeSheet(timeSheetReq: PatchTimeSheetReq, @Res() response: any) {
         try {
-            const userDetails = await this.userRepo.findOne({ where: { id: timeSheetReq.assignedTo } })
+            const assignedUser = await this.userRepo.findOne({ where: { id: timeSheetReq.assignedTo } })
             const loggedInUser = await this.userRepo.findOne({ where: { id: timeSheetReq.userId } })
-            let lastEditedBy: any = userDetails?.name;
 
-            lastEditedBy.name = loggedInUser?.name;
-            let timeSheetEntity = this.timeSheetMapper.toTimeSheetEntity(timeSheetReq, userDetails?.name, loggedInUser?.name);
+            let timeSheetEntity = this.timeSheetMapper.toTimeSheetEntity(timeSheetReq, assignedUser?.name, loggedInUser?.name);
             const timeSheetDetail = await this.timeSheetRepo.save(timeSheetEntity);
             let taskSheetObject: any[] = []
             await Bluebird.Promise.each(timeSheetReq.taskDetail, async (taskDetail) => {
-                const totaskDetailEntity = this.timeSheetMapper.toTaskDetailEntity(taskDetail, userDetails?.name, lastEditedBy.name, timeSheetDetail.id)
+                const totaskDetailEntity = this.timeSheetMapper.toTaskDetailEntity(taskDetail, loggedInUser?.name, assignedUser?.name, timeSheetDetail.id)
                 const taskSheetEntity = await this.taskSheetRepo.save(totaskDetailEntity);
                 taskSheetObject.push(taskSheetEntity)
             }

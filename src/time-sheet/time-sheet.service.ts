@@ -32,7 +32,7 @@ export class TimeSheetService {
             this.logger.log(`Got request to fetch time sheet by params ${JSON.stringify(timeSheetRequest)}`)
 
             let selectQuery = this.timeSheetRepo.createQueryBuilder('timeSheet')
-                .leftJoinAndSelect('timeSheet.taskSheet', 'taskDetails');
+                .leftJoinAndSelect('timeSheet.taskDetails', 'taskDetails');
             if (timeSheetRequest) {
                 timeSheetRequest.engineerId ? selectQuery.where('timeSheet.engineer = :engineer', { engineer: timeSheetRequest.engineerId }) : selectQuery;
                 timeSheetRequest.projectId ? selectQuery.where('timeSheet.project = :project', { project: timeSheetRequest.projectId }) : selectQuery;
@@ -73,24 +73,24 @@ export class TimeSheetService {
 
             this.logger.log(`Got request to fetch time sheet by params ${JSON.stringify(timeSheetRequest)}`)
 
-            const userExist = await this.userRepo.findOne({ where: { id: timeSheetRequest.userId } });
-            if (!userExist) {
-                this.logger.error(`User not found for Id ${timeSheetRequest.userId}`);
-                throw new Error('No User has been found`');
-            }
+            // const userExist = await this.userRepo.findOne({ where: { id: timeSheetRequest.userId } });
+            // if (!userExist) {
+            //     this.logger.error(`User not found for Id ${timeSheetRequest.userId}`);
+            //     throw new Error('No User has been found`');
+            // }
 
-            if (userExist.role === UserRoles.TEAM_LEAD) {
-                timeSheetRequest.filter.teamLeadId = userExist.id;
-            }
-            if (userExist.role === UserRoles.MANAGER) {
-                timeSheetRequest.filter.mangerId = userExist.id;
-            }
-            if (userExist.role === UserRoles.ENGINEER) {
-                timeSheetRequest.filter.engineerId = userExist.id;
-            }
-            if (userExist.role === UserRoles.SALES) {
-                timeSheetRequest.filter.salesId = userExist.id;
-            }
+            // if (userExist.role === UserRoles.TEAM_LEAD) {
+            //     timeSheetRequest.filter.teamLeadId = userExist.id;
+            // }
+            // if (userExist.role === UserRoles.MANAGER) {
+            //     timeSheetRequest.filter.mangerId = userExist.id;
+            // }
+            // if (userExist.role === UserRoles.ENGINEER) {
+            //     timeSheetRequest.filter.engineerId = userExist.id;
+            // }
+            // if (userExist.role === UserRoles.SALES) {
+            //     timeSheetRequest.filter.salesId = userExist.id;
+            // }
 
             let selectQuery = this.timeSheetRepo.createQueryBuilder('timeSheet')
                 .leftJoinAndSelect('timeSheet.engineer', 'engineer')
@@ -191,16 +191,14 @@ export class TimeSheetService {
 
     public async createTimeSheet(timeSheetReq: PatchTimeSheetReq, @Res() response: any) {
         try {
-            const userDetails = await this.userRepo.findOne({ where: { id: timeSheetReq.assignedTo } })
+            const assignedUser = await this.userRepo.findOne({ where: { id: timeSheetReq.assignedTo } })
             const loggedInUser = await this.userRepo.findOne({ where: { id: timeSheetReq.userId } })
-            let lastEditedBy: any = userDetails?.name;
 
-            lastEditedBy.name = loggedInUser?.name;
-            let timeSheetEntity = this.timeSheetMapper.toTimeSheetEntity(timeSheetReq, userDetails?.name, loggedInUser?.name);
+            let timeSheetEntity = this.timeSheetMapper.toTimeSheetEntity(timeSheetReq, assignedUser?.name, loggedInUser?.name);
             const timeSheetDetail = await this.timeSheetRepo.save(timeSheetEntity);
             let taskSheetObject: any[] = []
             await Bluebird.Promise.each(timeSheetReq.taskDetail, async (taskDetail) => {
-                const totaskDetailEntity = this.timeSheetMapper.toTaskDetailEntity(taskDetail, userDetails?.name, lastEditedBy.name, timeSheetDetail.id)
+                const totaskDetailEntity = this.timeSheetMapper.toTaskDetailEntity(taskDetail, loggedInUser?.name, assignedUser?.name, timeSheetDetail.id)
                 const taskSheetEntity = await this.taskSheetRepo.save(totaskDetailEntity);
                 taskSheetObject.push(taskSheetEntity)
             }
@@ -208,7 +206,7 @@ export class TimeSheetService {
             timeSheetEntity.taskDetails = taskSheetObject;
             return response.status(HttpStatus.OK).json({
                 success: true,
-                message: 'User has been created successfully',
+                message: 'Time sheet has been created successfully',
                 data: timeSheetEntity,
             });
         } catch (err) {
@@ -235,16 +233,8 @@ export class TimeSheetService {
                     data: {}
                 });
             }
-            let lastEditedBy: any;
 
-            let userDetails: any;
-            if (timeSheetReq && timeSheetReq.userId) {
-                lastEditedBy = await this.userRepo.findOne({ where: { id: timeSheetReq.userId } })
-            }
-
-            lastEditedBy.name = userDetails?.name;
-            const nameData = userDetails && userDetails.name ? userDetails.name : '';
-            const updatedTimeSheetEntity = await this.timeSheetRepo.save({ id: timeSheetId, status: timeSheetReq.status, name: nameData, note: timeSheetReq.note } as TimeSheetEntity);
+            const updatedTimeSheetEntity = await this.timeSheetRepo.save({ id: timeSheetId, status: timeSheetReq.status, note: timeSheetReq.note } as TimeSheetEntity);
             return response.status(HttpStatus.OK).json({
                 success: true,
                 message: 'Time sheet has been updated successfully',

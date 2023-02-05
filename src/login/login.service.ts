@@ -22,7 +22,7 @@ export class LoginService {
         if (!match) {
             return '';
         } else {
-            const token = `Bearer ${jwt.sign(loginResponse, jwtSecretKey, { expiresIn: 300 })}`
+            const token = `Bearer ${jwt.sign(loginResponse, jwtSecretKey, { expiresIn: 6000 })}`
             return token
         }
     }

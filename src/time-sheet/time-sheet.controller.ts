@@ -7,6 +7,24 @@ import { TimeSheetService } from './time-sheet.service';
 export class TimeSheetController {
   constructor(private timeSheetService: TimeSheetService) {
   }
+
+  @Patch('/status/update')
+  async status(
+    @Body() timeSheetReq: TimeSheetStatusReq,
+    @Res() response: any) {
+    try {
+
+      await this.timeSheetService.updateStatus(timeSheetReq, response);
+    } catch (err) {
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: 'It seems there is some technical glitch at our end, Unable to create user.',
+        error_code: HttpStatus.INTERNAL_SERVER_ERROR,
+        data: err.message
+      });
+    }
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Get()
   public async getTimeSheet(
@@ -44,8 +62,8 @@ export class TimeSheetController {
   @UseGuards(AuthGuard('jwt'))
   @Patch('/:id')
   async updateTimeSheet(@Body() timeSheetReq: PatchTimeSheetReq,
-  @Param('id') timeSheetId: number,
-  @Res() response: any) {
+    @Param('id') timeSheetId: number,
+    @Res() response: any) {
     try {
       await this.timeSheetService.updateTimeSheet(timeSheetReq, timeSheetId, response);
     } catch (err) {
@@ -63,24 +81,6 @@ export class TimeSheetController {
   async createTimeSheet(@Body() timeSheetReq: PatchTimeSheetReq, @Res() response: any) {
     try {
       await this.timeSheetService.createTimeSheet(timeSheetReq, response);
-    } catch (err) {
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-        success: false,
-        message: 'It seems there is some technical glitch at our end, Unable to create user.',
-        error_code: HttpStatus.INTERNAL_SERVER_ERROR,
-        data: err.message
-      });
-    }
-  }
-
-
-  @Patch('/status')
-  async status(
-  @Body() timeSheetReq: TimeSheetStatusReq,
-  @Res() response: any) {
-    try {
-
-      await this.timeSheetService.updateStatus(timeSheetReq, response);
     } catch (err) {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         success: false,

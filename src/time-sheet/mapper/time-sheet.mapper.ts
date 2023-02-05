@@ -18,12 +18,13 @@ export class TimeSheetMapper {
             .name(timeSheetRequest.name)
             .projectDetail(timeSheetRequest.projectDetail)
             .status(timeSheetRequest.status)
+            .note(timeSheetRequest.note)
             .createdAt(new Date())
             .updatedAt(new Date())
             .build();
     }
 
-    public toTaskDetailEntity(taskDetail: TaskDetailModel, editedBy: any, assignedTo: string, timeSheetId: number,): TaskSheetEntity {
+    public toTaskDetailEntity(taskDetail: TaskDetailModel, editedBy: any, assignedTo: any, timeSheetId: number,): TaskSheetEntity {
         return Builder(TaskSheetEntity)
             .minutes(convertHourstoMinute(taskDetail.hourMinute))
             .editedBy(editedBy)

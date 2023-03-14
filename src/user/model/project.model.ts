@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsOptional } from "class-validator";
 import { EngineeringModel } from "./engineering.model";
 import { ManagerModel } from "./manager.model";
 import { ProfileModel } from "./profile.model";
@@ -52,4 +52,3 @@ export class ProjectModel {
   @IsOptional()
   public profileDetails: ProfileModel[];
 }
-

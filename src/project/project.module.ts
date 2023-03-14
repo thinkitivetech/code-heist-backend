@@ -1,13 +1,12 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { ProjectController } from './project.controller';
+import { TypeOrmModule } from "@nestjs/typeorm";
 import { NestjsWinstonLoggerModule } from 'nestjs-winston-logger';
+import { ProjectEntity } from "src/entities/project.entity";
+import { JWTAuthMiddleware } from "src/security/JWTMiddleware";
+import { UserEntity } from "src/user/entity/user.entity";
 import { format, transports } from 'winston';
-import { ProjectService } from './project.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { JWTAuthMiddleware } from 'src/security/JWTMiddleware';
-import { ProjectEntity } from 'src/entities/project.entity';
-import { UserEntity } from 'src/user/entity/user.entity';
-import { UserModule } from 'src/user/user.module';
+import { ProjectController } from "./project.controller";
+import { ProjectService } from "./project.service";
 @Module({
   controllers: [ProjectController],
   providers: [ProjectService],

@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsOptional } from "class-validator";
 import { TimeSheetModel } from "./timeSheet.model";
 
 export class TaskTimeSheetModel {

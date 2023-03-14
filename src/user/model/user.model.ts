@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsOptional } from "class-validator";
 import { UserRoles } from "../dto/userModel/user-model";
 
 export class UserModel {

@@ -1,5 +1,4 @@
-import { IsNumber, IsOptional, IsString } from "class-validator";
-import { ManagerController } from "src/manager/manager.controller";
+import { IsOptional } from "class-validator";
 import { FilterModel } from "src/time-sheet/dto/time-sheet-dto";
 
 export class CreateProject {
@@ -19,7 +18,6 @@ export class CreateProject {
 }
 
 export class ReqProject {
-
   @IsOptional()
   public projectName: string;
 

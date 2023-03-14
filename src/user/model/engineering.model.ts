@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsOptional } from "class-validator";
 import { ProfileModel } from "./profile.model";
 import { ProjectModel } from "./project.model";
 import { TeamLeadModel } from "./teamLead.model";

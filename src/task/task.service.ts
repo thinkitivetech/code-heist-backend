@@ -20,9 +20,11 @@ export class TaskService {
             this.logger.log(`Got request to fetch user by type`)
 
             let selectQuery = this.taskRepository.createQueryBuilder('task');
-            if (req) {
-                req.id ? selectQuery.andWhere('task.id = (:id)', { id: req.id }) : selectQuery;
-            }
+           
+                req.id
+                  ? selectQuery.andWhere("task.id = (:id)", { id: req.id })
+                  : selectQuery;
+            
             selectQuery.orderBy('task.createdAt', 'DESC');
             if (req && req.limit && req.page) {
                 selectQuery.skip(req.limit * (req.page - 1)).take(req.limit);

@@ -30,7 +30,7 @@ export class TimeSheetController {
     @Query() timeSheetRequest: GetTimeSheetReq,
     @Res() response: any) {
     try {
-      this.timeSheetService.getTimeSheet(timeSheetRequest, response);
+      await this.timeSheetService.getTimeSheet(timeSheetRequest, response);
     } catch (err) {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         success: false,
@@ -47,7 +47,7 @@ export class TimeSheetController {
     @Query() timeSheetRequest: GetTimeSheetReq,
     @Res() response: any) {
     try {
-      this.timeSheetService.getAllTimeSheet(timeSheetRequest, response);
+     await this.timeSheetService.getAllTimeSheet(timeSheetRequest, response);
     } catch (err) {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         success: false,

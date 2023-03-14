@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from "class-validator";
+import { IsOptional } from "class-validator";
 import { EngineeringModel } from "./engineering.model";
 import { ManagerModel } from "./manager.model";
 import { ProjectModel } from "./project.model";

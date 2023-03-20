@@ -84,77 +84,50 @@ export class TimeSheetService {
 
     public async getAllTimeSheet(timeSheetRequest: GetTimeSheetReq, @Res() response: any): Promise<any[]> {
         try {
-
-            this.logger.log(`Got request to fetch time sheet by params ${JSON.stringify(timeSheetRequest)}`)
-
-            let selectQuery = this.timeSheetRepo.createQueryBuilder('timeSheet')
+            this.logger.log(`Got request to fetch time sheet by params ${JSON.stringify(timeSheetRequest)}`);
+    
+            const selectQuery = this.timeSheetRepo.createQueryBuilder('timeSheet')
                 .leftJoinAndSelect('timeSheet.engineer', 'engineer')
                 .leftJoinAndSelect('timeSheet.project', 'project')
                 .leftJoinAndSelect('project.sales', 'sales')
                 .leftJoinAndSelect('timeSheet.profile', 'profile')
                 .leftJoinAndSelect('timeSheet.teamLead', 'teamLead')
                 .leftJoinAndSelect('timeSheet.manager', 'manager')
-
-            if(timeSheetRequest.timeSheetId) { 
-                selectQuery.where('timeSheet.id = :id', { id: timeSheetRequest.timeSheetId });
-            }    
-
-            if (timeSheetRequest && timeSheetRequest.filter) {
-                if(timeSheetRequest.filter.engineerId) {
-                    selectQuery.andWhere('timeSheet.engineerId = :engineerId', { engineerId: timeSheetRequest.filter.engineerId });
-                }
-
-                if(timeSheetRequest.filter.teamLeadId) {
-                    selectQuery.andWhere('timeSheet.teamLeadId = :teamLeadId', { teamLeadId: timeSheetRequest.filter.teamLeadId });
-                }
-
-                if(timeSheetRequest.filter.mangerId) {
-                    selectQuery.andWhere('timeSheet.mangerId = :mangerId', { teamLeadId: timeSheetRequest.filter.mangerId }) 
-                }    
-
-                if(timeSheetRequest.filter.projectId) {
-                    selectQuery.andWhere('project.id = :projectId', { projectId: timeSheetRequest.filter.projectId }) 
-                }
-
-                if(timeSheetRequest.filter.salesId) { 
-                    selectQuery.andWhere('sales.id = :salesId', { salesId: timeSheetRequest.filter.salesId });
-                }    
-
-                if(timeSheetRequest.filter.companyId) { 
-                    selectQuery.andWhere('sales.companyId = :companyId', { companyId: timeSheetRequest.filter.companyId });
-                }    
-
-                if(timeSheetRequest.filter.status) {
-                    selectQuery.andWhere('timeSheet.status = :status', { status: timeSheetRequest.filter.status });
-                }    
-
+                .where(timeSheetRequest.timeSheetId ? { id: timeSheetRequest.timeSheetId } : {});
+    
+            if (timeSheetRequest.filter) {
+                const filter = timeSheetRequest.filter;
+    
+                if (filter.engineerId) selectQuery.andWhere('timeSheet.engineerId = :engineerId', { engineerId: filter.engineerId });
+                if (filter.teamLeadId) selectQuery.andWhere('timeSheet.teamLeadId = :teamLeadId', { teamLeadId: filter.teamLeadId });
+                if (filter.mangerId) selectQuery.andWhere('timeSheet.mangerId = :mangerId', { teamLeadId: filter.mangerId });
+                if (filter.projectId) selectQuery.andWhere('project.id = :projectId', { projectId: filter.projectId });
+                if (filter.salesId) selectQuery.andWhere('sales.id = :salesId', { salesId: filter.salesId });
+                if (filter.companyId) selectQuery.andWhere('sales.companyId = :companyId', { companyId: filter.companyId });
+                if (filter.status) selectQuery.andWhere('timeSheet.status = :status', { status: filter.status });
             }
-
-            if (timeSheetRequest.startTime) {
-                selectQuery.andWhere('timeSheet.createdAt >= :createdAt', { createdAt: timeSheetRequest.startTime })
-            }
-            if (timeSheetRequest.endTime) {
-                selectQuery.andWhere('timeSheet.createdAt <= :createdAt', { createdAt: timeSheetRequest.endTime })
-            }
-            if (timeSheetRequest && timeSheetRequest.limit && timeSheetRequest.page) {
-                selectQuery.skip(timeSheetRequest.limit * (timeSheetRequest.page - 1)).take(timeSheetRequest.limit);
-            } else {
-                timeSheetRequest.page = 1;
-                timeSheetRequest.limit = 10;
-            }
-
-            const data = await selectQuery.getManyAndCount();
-            const paginatedResponse = paginateResponse(data, timeSheetRequest.limit, timeSheetRequest.page);
+    
+            if (timeSheetRequest.startTime) selectQuery.andWhere('timeSheet.createdAt >= :createdAt', { createdAt: timeSheetRequest.startTime });
+            if (timeSheetRequest.endTime) selectQuery.andWhere('timeSheet.createdAt <= :createdAt', { createdAt: timeSheetRequest.endTime });
+    
+            const { page = 1, limit = 10 } = timeSheetRequest;
+            selectQuery.skip(limit * (page - 1)).take(limit);
+    
+            const [timeSheets, totalCount] = await selectQuery.getManyAndCount();
+            const paginatedResponse = paginateResponse(timeSheets, limit, page);
+    
             return response.status(HttpStatus.OK).json({
                 success: true,
-                message: 'User has been created successfully',
+                message: 'Time sheets fetched successfully',
                 data: paginatedResponse,
+                totalCount
             });
         } catch (err) {
-            this.logger.error(`Error while fetching user for id ${timeSheetRequest} Err as ${err}`);
-            throw new Error(`error while fetching timeSheet ${err}`);
+            this.logger.error(`Error while fetching time sheet for request ${JSON.stringify(timeSheetRequest)} Err as ${err}`);
+            throw new Error(`Error while fetching time sheet ${err}`);
         }
     }
+    
 
 
 

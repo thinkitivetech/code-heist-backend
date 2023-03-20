@@ -1,17 +1,14 @@
-import { HttpStatus, Inject, Injectable, Res } from '@nestjs/common';
+import { HttpStatus, Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as Bluebird from 'bluebird';
 import { InjectLogger, NestjsWinstonLoggerService } from 'nestjs-winston-logger';
-import { response } from 'passport-strategy/node_modules/@types/express';
-import { HttpCode, HttpError } from 'routing-controllers';
+import { TaskSheetEntity } from 'src/entities/taskTimeSheet.entity';
 import { TimeSheetEntity } from 'src/entities/timesheet.entity';
-import { UserRoles } from 'src/user/dto/userModel/user-model';
 import { UserEntity } from 'src/user/entity/user.entity';
 import { paginateResponse } from 'src/utils/common';
-import { Brackets, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { GetTimeSheetReq, PatchTimeSheetReq, TimeSheetStatusReq } from './dto/time-sheet-dto';
 import { TimeSheetMapper } from './mapper/time-sheet.mapper';
-import * as Bluebird from 'bluebird';
-import { TaskSheetEntity } from 'src/entities/taskTimeSheet.entity';
 @Injectable()
 export class TimeSheetService {
 
@@ -49,7 +46,8 @@ export class TimeSheetService {
             }
             if (timeSheetRequest.endTime) {
                 selectQuery.andWhere('timeSheet.createdAt <= :createdAt', { createdAt: timeSheetRequest.endTime })
-            } if (timeSheetRequest.timeSheetId) {
+            } 
+            if (timeSheetRequest.timeSheetId) {
                 selectQuery.andWhere('timeSheet.id >= :id', { id: timeSheetRequest.timeSheetId })
             }
             selectQuery.orderBy('timeSheet.createdAt', 'DESC');

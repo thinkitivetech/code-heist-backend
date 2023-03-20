@@ -7,7 +7,6 @@ import { PatchTimeSheetReq, TaskDetailModel } from "../dto/time-sheet-dto";
 
 @Injectable()
 export class TimeSheetMapper {
-  constructor() {}
   public toTimeSheetEntity(
     timeSheetRequest: PatchTimeSheetReq,
     assignedTo: any,

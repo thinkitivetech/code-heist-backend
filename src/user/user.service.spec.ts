@@ -1,11 +1,8 @@
-import { HttpStatus, NotFoundException } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { HttpError } from 'routing-controllers';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entity/user.entity';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/userModel/create-user.dto';
 
 describe('UserService', () => {
   let service: UserService;

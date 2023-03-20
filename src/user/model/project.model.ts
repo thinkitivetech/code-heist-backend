@@ -4,7 +4,7 @@ import { ManagerModel } from "./manager.model";
 import { ProfileModel } from "./profile.model";
 import { TeamLeadModel } from "./teamLead.model";
 import { TimeSheetModel } from "./timeSheet.model";
-export class assignedTo {
+export class AssignedTo {
   @IsOptional()
   manger: string;
 
@@ -26,7 +26,7 @@ export class ProjectModel {
   public status: string;
 
   @IsOptional()
-  public assignedToDetails: assignedTo;
+  public assignedToDetails: AssignedTo;
 
   @IsOptional()
   public clientName: string;

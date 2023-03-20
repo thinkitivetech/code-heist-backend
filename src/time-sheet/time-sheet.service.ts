@@ -97,7 +97,9 @@ export class TimeSheetService {
                 .leftJoinAndSelect('timeSheet.teamLead', 'teamLead')
                 .leftJoinAndSelect('timeSheet.manager', 'manager')
 
-            timeSheetRequest.timeSheetId ? selectQuery.where('timeSheet.id = :id', { id: timeSheetRequest.timeSheetId }) : selectQuery;
+            if(timeSheetRequest.timeSheetId) { 
+                selectQuery.where('timeSheet.id = :id', { id: timeSheetRequest.timeSheetId });
+            }    
 
             if (timeSheetRequest && timeSheetRequest.filter) {
                 if(timeSheetRequest.filter.engineerId) {

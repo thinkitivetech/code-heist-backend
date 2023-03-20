@@ -21,9 +21,9 @@ export class TaskService {
 
             let selectQuery = this.taskRepository.createQueryBuilder('task');
            
-                req.id
-                  ? selectQuery.andWhere("task.id = (:id)", { id: req.id })
-                  : selectQuery;
+                if(req.id) {
+                    selectQuery.andWhere("task.id = (:id)", { id: req.id });
+                }
             
             selectQuery.orderBy('task.createdAt', 'DESC');
             if (req && req.limit && req.page) {

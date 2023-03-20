@@ -22,7 +22,7 @@ export class ProjectService {
       this.logger.log(`Got request to fetch project details`);
 
       let selectQuery = this.projectRepository.createQueryBuilder("project");
-      req.id
+      let tempQuery = req.id
         ? selectQuery.andWhere("project.id = (:id)", { id: req.id })
         : selectQuery;
       if (req && req.limit && req.page) {
@@ -73,43 +73,43 @@ export class ProjectService {
       let selectQuery = this.projectRepository.createQueryBuilder("project");
 
       if (reqProject && reqProject.filter) {
-        reqProject.filter.engineerId
+        let tempProject = reqProject.filter.engineerId
           ? selectQuery.andWhere("project.engineerId = :engineerId", {
               engineerId: reqProject.filter.engineerId,
             })
           : selectQuery;
 
-        reqProject.filter.teamLeadId
+        let tempQuery = reqProject.filter.teamLeadId
           ? selectQuery.andWhere("project.teamLeadId = :teamLeadId", {
               teamLeadId: reqProject.filter.teamLeadId,
             })
           : selectQuery;
 
-        reqProject.filter.mangerId
+        let tempProj = reqProject.filter.mangerId
           ? selectQuery.andWhere("project.mangerId = :mangerId", {
               teamLeadId: reqProject.filter.mangerId,
             })
           : selectQuery;
 
-        reqProject.filter.projectId
+        let tempQue = reqProject.filter.projectId
           ? selectQuery.andWhere("project.id = :projectId", {
               projectId: reqProject.filter.projectId,
             })
           : selectQuery;
 
-        reqProject.filter.salesId
+        let newProj = reqProject.filter.salesId
           ? selectQuery.andWhere("project.salesId = :salesId", {
               salesId: reqProject.filter.salesId,
             })
           : selectQuery;
 
-        reqProject.filter.companyId
+        let newSelect = reqProject.filter.companyId
           ? selectQuery.andWhere("project.companyId = :companyId", {
               companyId: reqProject.filter.companyId,
             })
           : selectQuery;
 
-        reqProject.filter.status
+        let reqProj = reqProject.filter.status
           ? selectQuery.andWhere("project.status = :status", {
               status: reqProject.filter.status,
             })

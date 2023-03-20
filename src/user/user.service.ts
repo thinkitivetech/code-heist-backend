@@ -21,16 +21,16 @@ export class UserService {
 
       let selectQuery = this.userRepository.createQueryBuilder("user");
       if (req) {
-          let reqP = req.name
-          ? selectQuery.andWhere("user.name like (:name)", {
+          if(req.name) {
+            selectQuery.andWhere("user.name like (:name)", {
               name: req.name,
-            })
-          : selectQuery;
-          let reqMobileNo =req.mobileNo
-          ? selectQuery.andWhere("user.mobileNo like (:mobileNo)", {
+            });
+          }
+          if(req.mobileNo) {
+            selectQuery.andWhere("user.mobileNo like (:mobileNo)", {
               name: req.mobileNo,
-            })
-          : selectQuery;
+            });
+          }
         if(req.email) {
           selectQuery.andWhere("user.email like (:email)", {
             name: req.email,

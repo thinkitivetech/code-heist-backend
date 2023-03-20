@@ -31,13 +31,13 @@ export class UserService {
               name: req.mobileNo,
             })
           : selectQuery;
-        req.email
+        let reqEmail = req.email
           ? selectQuery.andWhere("user.email like (:email)", {
               name: req.email,
             })
           : selectQuery;
       }
-      selectQuery.orderBy("user.createdAt", "DESC");
+      let createQuery = selectQuery.orderBy("user.createdAt", "DESC");
       if (req && req.limit && req.page) {
         selectQuery.skip(req.limit * (req.page - 1)).take(req.limit);
       } else {

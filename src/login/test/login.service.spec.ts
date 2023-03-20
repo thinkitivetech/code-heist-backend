@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserRoles } from '../../users/schema/users.schema';
+import { UserRoles } from 'src/user/dto/userModel/user-model';
 import { LoginController } from '../login.controller';
 import { LoginService } from '../login.service';
 
 const loginInput = {
-    "emailId": "email@domain.com",
-    "password": "password",
-    "userRole": UserRoles.ADMIN
+    "emailId": "",
+    "password": "",
+    "userRole": UserRoles.ACCOUNT
 };
 
 const loginResponse = {

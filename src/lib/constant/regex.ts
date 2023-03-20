@@ -1,1 +1,1 @@
-export const passwordRegex = /(?=.*[A-Z]).*$/
+export const passwordRegex = /(?=.*[A-Z]).*+/

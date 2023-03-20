@@ -34,9 +34,15 @@ export class TimeSheetService {
             let selectQuery = this.timeSheetRepo.createQueryBuilder('timeSheet')
                 .leftJoinAndSelect('timeSheet.taskDetails', 'taskDetails');
             if (timeSheetRequest) {
-                timeSheetRequest.engineerId ? selectQuery.where('timeSheet.engineer = :engineer', { engineer: timeSheetRequest.engineerId }) : selectQuery;
-                timeSheetRequest.projectId ? selectQuery.where('timeSheet.project = :project', { project: timeSheetRequest.projectId }) : selectQuery;
-                timeSheetRequest.timeSheetId ? selectQuery.where('timeSheet.id = :id', { id: timeSheetRequest.timeSheetId }) : selectQuery;
+                if(timeSheetRequest.engineerId) {
+                    selectQuery.where('timeSheet.engineer = :engineer', { engineer: timeSheetRequest.engineerId });
+                }
+                if(timeSheetRequest.projectId) {
+                    selectQuery.where('timeSheet.project = :project', { project: timeSheetRequest.projectId });
+                }
+                if(timeSheetRequest.timeSheetId) {
+                    selectQuery.where('timeSheet.id = :id', { id: timeSheetRequest.timeSheetId })
+                }
             }
             if (timeSheetRequest.startTime) {
                 selectQuery.andWhere('timeSheet.createdAt >= :createdAt', { createdAt: timeSheetRequest.startTime })
@@ -83,25 +89,6 @@ export class TimeSheetService {
 
             this.logger.log(`Got request to fetch time sheet by params ${JSON.stringify(timeSheetRequest)}`)
 
-            // const userExist = await this.userRepo.findOne({ where: { id: timeSheetRequest.userId } });
-            // if (!userExist) {
-            //     this.logger.error(`User not found for Id ${timeSheetRequest.userId}`);
-            //     throw new Error('No User has been found`');
-            // }
-
-            // if (userExist.role === UserRoles.TEAM_LEAD) {
-            //     timeSheetRequest.filter.teamLeadId = userExist.id;
-            // }
-            // if (userExist.role === UserRoles.MANAGER) {
-            //     timeSheetRequest.filter.mangerId = userExist.id;
-            // }
-            // if (userExist.role === UserRoles.ENGINEER) {
-            //     timeSheetRequest.filter.engineerId = userExist.id;
-            // }
-            // if (userExist.role === UserRoles.SALES) {
-            //     timeSheetRequest.filter.salesId = userExist.id;
-            // }
-
             let selectQuery = this.timeSheetRepo.createQueryBuilder('timeSheet')
                 .leftJoinAndSelect('timeSheet.engineer', 'engineer')
                 .leftJoinAndSelect('timeSheet.project', 'project')
@@ -113,19 +100,33 @@ export class TimeSheetService {
             timeSheetRequest.timeSheetId ? selectQuery.where('timeSheet.id = :id', { id: timeSheetRequest.timeSheetId }) : selectQuery;
 
             if (timeSheetRequest && timeSheetRequest.filter) {
-                timeSheetRequest.filter.engineerId ? selectQuery.andWhere('timeSheet.engineerId = :engineerId', { engineerId: timeSheetRequest.filter.engineerId }) : selectQuery;
+                if(timeSheetRequest.filter.engineerId) {
+                    selectQuery.andWhere('timeSheet.engineerId = :engineerId', { engineerId: timeSheetRequest.filter.engineerId });
+                }
 
-                timeSheetRequest.filter.teamLeadId ? selectQuery.andWhere('timeSheet.teamLeadId = :teamLeadId', { teamLeadId: timeSheetRequest.filter.teamLeadId }) : selectQuery;
+                if(timeSheetRequest.filter.teamLeadId) {
+                    selectQuery.andWhere('timeSheet.teamLeadId = :teamLeadId', { teamLeadId: timeSheetRequest.filter.teamLeadId });
+                }
 
-                timeSheetRequest.filter.mangerId ? selectQuery.andWhere('timeSheet.mangerId = :mangerId', { teamLeadId: timeSheetRequest.filter.mangerId }) : selectQuery;
+                if(timeSheetRequest.filter.mangerId) {
+                    selectQuery.andWhere('timeSheet.mangerId = :mangerId', { teamLeadId: timeSheetRequest.filter.mangerId }) 
+                }    
 
-                timeSheetRequest.filter.projectId ? selectQuery.andWhere('project.id = :projectId', { projectId: timeSheetRequest.filter.projectId }) : selectQuery;
+                if(timeSheetRequest.filter.projectId) {
+                    selectQuery.andWhere('project.id = :projectId', { projectId: timeSheetRequest.filter.projectId }) 
+                }
 
-                timeSheetRequest.filter.salesId ? selectQuery.andWhere('sales.id = :salesId', { salesId: timeSheetRequest.filter.salesId }) : selectQuery;
+                if(timeSheetRequest.filter.salesId) { 
+                    selectQuery.andWhere('sales.id = :salesId', { salesId: timeSheetRequest.filter.salesId });
+                }    
 
-                timeSheetRequest.filter.companyId ? selectQuery.andWhere('sales.companyId = :companyId', { companyId: timeSheetRequest.filter.companyId }) : selectQuery;
+                if(timeSheetRequest.filter.companyId) { 
+                    selectQuery.andWhere('sales.companyId = :companyId', { companyId: timeSheetRequest.filter.companyId });
+                }    
 
-                timeSheetRequest.filter.status ? selectQuery.andWhere('timeSheet.status = :status', { status: timeSheetRequest.filter.status }) : selectQuery;
+                if(timeSheetRequest.filter.status) {
+                    selectQuery.andWhere('timeSheet.status = :status', { status: timeSheetRequest.filter.status });
+                }    
 
             }
 
@@ -135,14 +136,6 @@ export class TimeSheetService {
             if (timeSheetRequest.endTime) {
                 selectQuery.andWhere('timeSheet.createdAt <= :createdAt', { createdAt: timeSheetRequest.endTime })
             }
-            // if (timeSheetRequest && timeSheetRequest.filter.order) {
-            //     if (timeSheetRequest.filter.order === 'DESC') {
-            //         selectQuery.orderBy('timeSheet.createdAt', 'DESC');
-            //     }
-            //     if (timeSheetRequest.filter.order === 'ASC') {
-            //         selectQuery.orderBy('timeSheet.createdAt', 'ASC');
-            //     }
-            // }
             if (timeSheetRequest && timeSheetRequest.limit && timeSheetRequest.page) {
                 selectQuery.skip(timeSheetRequest.limit * (timeSheetRequest.page - 1)).take(timeSheetRequest.limit);
             } else {

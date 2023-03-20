@@ -22,9 +22,7 @@ export class ProjectService {
       this.logger.log(`Got request to fetch project details`);
 
       let selectQuery = this.projectRepository.createQueryBuilder("project");
-      req.id
-        ? selectQuery.andWhere("project.id = (:id)", { id: req.id })
-        : selectQuery;
+      if(req.id) selectQuery.andWhere("project.id = (:id)", { id: req.id })
       if (req && req.limit && req.page) {
         selectQuery.skip(req.limit * (req.page - 1)).take(req.limit);
       } else {
@@ -73,47 +71,47 @@ export class ProjectService {
       let selectQuery = this.projectRepository.createQueryBuilder("project");
 
       if (reqProject && reqProject.filter) {
-        let tempProject = reqProject.filter.engineerId
-          ? selectQuery.andWhere("project.engineerId = :engineerId", {
-              engineerId: reqProject.filter.engineerId,
-            })
-          : selectQuery;
+        if(reqProject.filter.engineerId) {
+          selectQuery.andWhere("project.engineerId = :engineerId", {
+            engineerId: reqProject.filter.engineerId,
+          })
+        }
 
-        let tempQuery = reqProject.filter.teamLeadId
-          ? selectQuery.andWhere("project.teamLeadId = :teamLeadId", {
-              teamLeadId: reqProject.filter.teamLeadId,
-            })
-          : selectQuery;
+        if(reqProject.filter.teamLeadId) {
+          selectQuery.andWhere("project.teamLeadId = :teamLeadId", {
+            teamLeadId: reqProject.filter.teamLeadId,
+          })
+        }
 
-        let tempProj = reqProject.filter.mangerId
-          ? selectQuery.andWhere("project.mangerId = :mangerId", {
-              teamLeadId: reqProject.filter.mangerId,
-            })
-          : selectQuery;
+        if(reqProject.filter.mangerId) {
+          selectQuery.andWhere("project.mangerId = :mangerId", {
+            teamLeadId: reqProject.filter.mangerId,
+          })
+        }
 
-        let tempQue = reqProject.filter.projectId
-          ? selectQuery.andWhere("project.id = :projectId", {
-              projectId: reqProject.filter.projectId,
-            })
-          : selectQuery;
+        if(reqProject.filter.projectId) {
+          selectQuery.andWhere("project.id = :projectId", {
+            projectId: reqProject.filter.projectId,
+          })
+        }
 
-        let newProj = reqProject.filter.salesId
-          ? selectQuery.andWhere("project.salesId = :salesId", {
-              salesId: reqProject.filter.salesId,
-            })
-          : selectQuery;
+        if(reqProject.filter.salesId) {
+          selectQuery.andWhere("project.salesId = :salesId", {
+            salesId: reqProject.filter.salesId,
+          })
+        }
 
-        let newSelect = reqProject.filter.companyId
-          ? selectQuery.andWhere("project.companyId = :companyId", {
-              companyId: reqProject.filter.companyId,
-            })
-          : selectQuery;
+        if(reqProject.filter.companyId) {
+          selectQuery.andWhere("project.companyId = :companyId", {
+            companyId: reqProject.filter.companyId,
+          })
+        }
 
-        let reqProj = reqProject.filter.status
-          ? selectQuery.andWhere("project.status = :status", {
-              status: reqProject.filter.status,
-            })
-          : selectQuery;
+        if(reqProject.filter.status) {
+          selectQuery.andWhere("project.status = :status", {
+            status: reqProject.filter.status,
+          })
+        }
       }
 
       if (reqProject.startTime) {

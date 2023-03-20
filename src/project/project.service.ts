@@ -6,7 +6,6 @@ import { UserRoles } from "src/user/dto/userModel/user-model";
 import { UserEntity } from "src/user/entity/user.entity";
 import { paginateResponse } from "src/utils/common";
 import { Repository } from "typeorm";
-import { ReqProject } from "./dto/project.dto";
 
 export class ProjectService {
   constructor(

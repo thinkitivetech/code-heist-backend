@@ -9,24 +9,19 @@ RUN groupadd -g 1000 myuser && \
 WORKDIR /app
 
 # Copy the package.json and yarn.lock files to the container
-COPY package*.json ./
-COPY yarn.lock ./
-COPY .env ./
+COPY package*.json yarn.lock .env /app/
 
 # Install dependencies
-RUN npm install -g @nestjs/cli
-RUN yarn install
-
+RUN npm install -g @nestjs/cli && yarn install
 
 # Copy the rest of the application code to the container
-COPY . /
+COPY . /app/
 
 # Change the owner of the application code to the new user
 RUN chown -R myuser:myuser /app
 
 # Switch to the new user
 USER myuser
-
 
 # Expose the port that the application will listen on
 EXPOSE 3000

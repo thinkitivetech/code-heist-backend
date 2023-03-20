@@ -21,7 +21,7 @@ COPY . /app/
 RUN chown -R myuser:myuser /app
 
 # Switch to the new user
-USER myuser
+USER myuser 
 
 # Expose the port that the application will listen on
 EXPOSE 3000

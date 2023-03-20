@@ -22,7 +22,7 @@ export class ProjectService {
       this.logger.log(`Got request to fetch project details`);
 
       let selectQuery = this.projectRepository.createQueryBuilder("project");
-      let tempQuery = req.id
+      req.id
         ? selectQuery.andWhere("project.id = (:id)", { id: req.id })
         : selectQuery;
       if (req && req.limit && req.page) {

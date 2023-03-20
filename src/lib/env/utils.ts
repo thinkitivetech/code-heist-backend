@@ -59,8 +59,3 @@ export function getMapOfArrayObject(
   return mapObject;
 }
 
-export function convertTime(time: string): string {
-  if (time.includes("AM") || time.includes("PM")) {
-  }
-  return time;
-}

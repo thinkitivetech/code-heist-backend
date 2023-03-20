@@ -18,4 +18,6 @@ Refer the api documentation to use the apis
 
 Build the Docker Image and run the docker image on AWS EC2 instance
 
+## Artifact link
+[click here](https://drive.google.com/drive/folders/1GJNUwUMlysowdfqMzIMDqAbsw8u3cKTe?usp=sharing_eip_m&ts=63df2a39)
 

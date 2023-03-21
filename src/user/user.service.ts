@@ -2,7 +2,7 @@ import { HttpStatus, Injectable, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InjectLogger, NestjsWinstonLoggerService } from 'nestjs-winston-logger';
 import { HttpError } from 'routing-controllers';
-import { paginateResponse } from 'src/utils/common';
+import { paginateResponse } from '../utils/common';
 import { Repository } from "typeorm";
 import { CreateUserDto } from "./dto/userModel/create-user.dto";
 import { UserEntity } from "./entity/user.entity";

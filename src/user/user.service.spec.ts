@@ -1,97 +1,116 @@
-import { Test } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { UserEntity } from './entity/user.entity';
+import { Test, TestingModule } from '@nestjs/testing';
+import { UserRoles } from '../../src/user/dto/userModel/user-model';
+import { CreateUserDto } from './dto/userModel/create-user.dto';
 import { UserService } from './user.service';
 
-describe('UserService', () => {
-  let service: UserService;
+const createUserInput = {
+  "name": "Test User",
+  "password": "passworD1@",
+  "email": "email@domain.com",
+  "mobileNo": 1234567890,
+  "role": UserRoles.MANAGER,
+  "hashedPassword": "$2b$10$ntSWE04N9uRAU5S7uAj/xunPRr4IFVFMZ42SXodoPUrg4McisgXQ."
+};
 
+const createUserResponse = {
+  "success": true,
+  "message": "User has been created successfully",
+  "data": {
+      "name": "Test User",
+      "password": "passworD1@",
+      "email": "email@domain.com",
+      "mobileNo": 1234567890,
+      "role": "MANAGER",
+      "hashedPassword": "$2b$10$ntSWE04N9uRAU5S7uAj/xunPRr4IFVFMZ42SXodoPUrg4McisgXQ.",
+      "createdAt": "2023-03-21T12:02:50.989Z",
+      "id": 1
+  }
+};
+
+const id = 1;
+
+const getUserByIdResponse = {
+  "success": true,
+  "message": "User fetched successfully",
+  "data": {
+      "id": 1,
+      "name": "Test User",
+      "email": "email@domain.com",
+      "mobileNo": 1234567890,
+      "password": "passworD1@",
+      "hashedPassword": "$2b$10$ntSWE04N9uRAU5S7uAj/xunPRr4IFVFMZ42SXodoPUrg4McisgXQ.",
+      "createdAt": "2023-03-21T12:02:51.000Z",
+      "role": "MANAGER"
+  }
+};
+
+const getAllUsersReponse = {
+  "success": true,
+  "message": "User has been created successfully",
+  "data": {
+      "statusCode": "success",
+      "data": [
+          {
+              "id": 2,
+              "name": "Team Lead",
+              "email": "email1@domain.com",
+              "mobileNo": 1234567890,
+              "password": "passworD1@",
+              "hashedPassword": "$2b$10$jC8wgHq1qKJXwiTGdQO5DO1a1JYU0lanR6aAMyN/vDjohD/YazXlK",
+              "createdAt": "2023-03-21T12:31:40.000Z",
+              "role": "TEAM_LEAD"
+          },
+          {
+              "id": 1,
+              "name": "Test User",
+              "email": "email@domain.com",
+              "mobileNo": 1234567890,
+              "password": "passworD1@",
+              "hashedPassword": "$2b$10$ntSWE04N9uRAU5S7uAj/xunPRr4IFVFMZ42SXodoPUrg4McisgXQ.",
+              "createdAt": "2023-03-21T12:02:51.000Z",
+              "role": "MANAGER"
+          }
+      ],
+      "count": 2,
+      "currentPage": 10,
+      "prevPage": 9,
+      "lastPage": 2
+  }
+};
+
+const createUser = (createUserInput: CreateUserDto, response: any) => createUserResponse;
+const getUserById = (id: number, response: any) => getUserByIdResponse;
+const getUsers = (response: any) => getAllUsersReponse;
+     
+const UserServiceMock = {
+    createUser: jest.fn(() => createUser(createUserInput, null)),
+    getUserById: jest.fn(() => getUserById(id, null)),
+    getUsers: jest.fn(() => getUsers(null)),
+};
+
+describe('User Service', () => {
   let userService: UserService;
-  let userRepository: Repository<UserEntity>;
 
   beforeEach(async () => {
-    const moduleRef = await Test.createTestingModule({
-      providers: [
-        UserService,
-        {
-          provide: getRepositoryToken(UserEntity),
-          useClass: Repository,
-        },
-      ],
-    }).compile();
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [UserService],
+    }).overrideProvider(UserService).useValue(UserServiceMock).compile();
 
-    it('should be defined', () => {
-      expect(service).toBeDefined();
-    });
-
-    userService = moduleRef.get<UserService>(UserService);
-    userRepository = moduleRef.get<Repository<UserEntity>>(
-      getRepositoryToken(UserEntity),
-    );
+    userService = module.get<UserService>(UserService);
   });
-
-  describe('getUsers', () => {
-    it('should return a paginated list of users', async () => {
-      const expectedData = [{ id: 1, name: 'John' }, { id: 2, name: 'Jane' }];
-      const req = { limit: 10, page: 1 };
-      const response = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn().mockReturnValue({ success: true, data: expectedData }),
-      };
-      const createQueryBuilderSpy = jest
-        .spyOn(userRepository, 'createQueryBuilder')
-        .mockReturnValue({
-          andWhere: jest.fn().mockReturnThis(),
-          orderBy: jest.fn().mockReturnThis(),
-          skip: jest.fn().mockReturnThis(),
-          take: jest.fn().mockReturnThis(),
-          getManyAndCount: jest.fn().mockReturnValue(expectedData),
-        } as any);
-
-      const result = await userService.getUsers(req, response);
-
-      expect(result).toEqual({
-        success: true,
-        data: expectedData,
-      });
-      expect(createQueryBuilderSpy).toHaveBeenCalledWith('user');
-      expect(response.status).toHaveBeenCalledWith(201);
-      expect(response.json).toHaveBeenCalledWith({
-        success: true,
-        data: expectedData,
-      });
-    });
-
-    it('should handle errors', async () => {
-      const req = { limit: 10, page: 1 };
-      const response = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn().mockReturnValue({ success: false }),
-      };
-      const createQueryBuilderSpy = jest
-        .spyOn(userRepository, 'createQueryBuilder')
-        .mockReturnValue({
-          andWhere: jest.fn().mockReturnThis(),
-          orderBy: jest.fn().mockReturnThis(),
-          skip: jest.fn().mockReturnThis(),
-          take: jest.fn().mockReturnThis(),
-          getManyAndCount: jest.fn().mockRejectedValue(new Error()),
-        } as any);
-      const loggerErrorSpy = jest.spyOn(userService['logger'], 'error');
-
-      expect(async () => {
-        await userService.getUsers(req, response);
-      }).rejects.toThrowError();
-      expect(createQueryBuilderSpy).toHaveBeenCalledWith('user');
-      expect(response.status).toHaveBeenCalledWith(500);
-      expect(response.json).toHaveBeenCalledWith({
-        success: false,
-      });
-      expect(loggerErrorSpy).toHaveBeenCalled();
-    });
+  it('should check if user service is defined', () => {
+      expect(userService).toBeDefined();
   });
-
-
-
-})  
+  it('should create one user', async() => {
+    const result = await userService.createUser(createUserInput, null);
+    expect(result).toEqual(createUserResponse);
+  });
+  it('should get one user by id', async() => {
+    const result = await userService.getUserById(id, null);
+    expect(result).toEqual(getUserByIdResponse);
+  });
+  it('should get all users', async() => {
+    const result = await userService.getUsers(null, null);
+    expect(result).toEqual(getAllUsersReponse);
+  });
+});

@@ -46,7 +46,7 @@ describe('SignUpInterceptor', () => {
     }),
     } as any;
 
-    const result = await interceptor.intercept(context, next);
+    await interceptor.intercept(context, next);
 
     expect(createUserDto.hashedPassword).toBeDefined();
   });

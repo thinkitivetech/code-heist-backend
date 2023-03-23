@@ -49,7 +49,7 @@ describe('SignUpInterceptor', () => {
       } as any;
 
       // Act
-      const result = await interceptor.intercept(context, next);
+      await interceptor.intercept(context, next);
 
       // Assert
       expect(createUserDto.hashedPassword).toBeDefined();

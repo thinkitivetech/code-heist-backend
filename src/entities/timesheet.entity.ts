@@ -1,4 +1,4 @@
-import { EngineerEntity } from 'src/entities/engineer.entity';
+import { EngineerEntity } from '../entities/engineer.entity';
 import {
   Column,
   CreateDateColumn,

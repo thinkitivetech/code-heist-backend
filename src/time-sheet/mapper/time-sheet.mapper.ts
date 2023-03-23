@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { Builder } from "builder-pattern";
-import { TaskSheetEntity } from "src/entities/taskTimeSheet.entity";
-import { TimeSheetEntity } from "src/entities/timesheet.entity";
-import { convertHourstoMinute } from "src/utils/common";
+import { TaskSheetEntity } from "../../entities/taskTimeSheet.entity";
+import { TimeSheetEntity } from "../../entities/timesheet.entity";
+import { convertHourstoMinute } from "../../utils/common";
 import { PatchTimeSheetReq, TaskDetailModel } from "../dto/time-sheet-dto";
 
 @Injectable()

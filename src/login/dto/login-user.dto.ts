@@ -1,8 +1,8 @@
 import { IsEnum, IsNumber, IsOptional, IsString } from "@nestjs/class-validator";
 import { IsEmail, IsNotEmpty, Matches, MaxLength, MinLength } from "class-validator";
-import userMessages from "src/lib/constant/messages/userMessages";
-import { passwordRegex } from "src/lib/constant/regex";
-import { UserRoles } from "src/user/dto/userModel/user-model";
+import userMessages from "../../lib/constant/messages/userMessages";
+import { passwordRegex } from "../../lib/constant/regex";
+import { UserRoles } from "../../user/dto/userModel/user-model";
 
 export class LoginDetails {
     @IsEmail({}, { message: userMessages.invalidEmail })

@@ -31,32 +31,31 @@ export class TimeSheetService {
             let selectQuery = this.timeSheetRepo.createQueryBuilder('timeSheet')
                 .leftJoinAndSelect('timeSheet.taskDetails', 'taskDetails');
             if (timeSheetRequest) {
-                if(timeSheetRequest.engineerId) {
+                timeSheetRequest.limit = timeSheetRequest.limit ? timeSheetRequest.limit : 10;
+                timeSheetRequest.page = timeSheetRequest.page ? timeSheetRequest.page : 1;
+                if (timeSheetRequest.engineerId) {
                     selectQuery.where('timeSheet.engineer = :engineer', { engineer: timeSheetRequest.engineerId });
                 }
-                if(timeSheetRequest.projectId) {
+                if (timeSheetRequest.projectId) {
                     selectQuery.where('timeSheet.project = :project', { project: timeSheetRequest.projectId });
                 }
-                if(timeSheetRequest.timeSheetId) {
+                if (timeSheetRequest.timeSheetId) {
                     selectQuery.where('timeSheet.id = :id', { id: timeSheetRequest.timeSheetId })
                 }
+                if (timeSheetRequest.startTime) {
+                    selectQuery.andWhere('timeSheet.createdAt >= :createdAt', { createdAt: timeSheetRequest.startTime })
+                }
+                if (timeSheetRequest.endTime) {
+                    selectQuery.andWhere('timeSheet.createdAt <= :createdAt', { createdAt: timeSheetRequest.endTime })
+                }
+                if (timeSheetRequest.timeSheetId) {
+                    selectQuery.andWhere('timeSheet.id >= :id', { id: timeSheetRequest.timeSheetId })
+                }
             }
-            if (timeSheetRequest.startTime) {
-                selectQuery.andWhere('timeSheet.createdAt >= :createdAt', { createdAt: timeSheetRequest.startTime })
-            }
-            if (timeSheetRequest.endTime) {
-                selectQuery.andWhere('timeSheet.createdAt <= :createdAt', { createdAt: timeSheetRequest.endTime })
-            } 
-            if (timeSheetRequest.timeSheetId) {
-                selectQuery.andWhere('timeSheet.id >= :id', { id: timeSheetRequest.timeSheetId })
-            }
+            selectQuery.skip(timeSheetRequest.limit * (timeSheetRequest.page - 1)).take(timeSheetRequest.limit);
+
             selectQuery.orderBy('timeSheet.createdAt', 'DESC');
-            if (timeSheetRequest && timeSheetRequest.limit && timeSheetRequest.page) {
-                selectQuery.skip(timeSheetRequest.limit * (timeSheetRequest.page - 1)).take(timeSheetRequest.limit);
-            } else {
-                timeSheetRequest.page = 1;
-                timeSheetRequest.limit = 10;
-            }
+
             let data: any = await selectQuery.getManyAndCount();
             let startDate = 10;
             data[0].map((timeSheet: any) => {
@@ -85,7 +84,7 @@ export class TimeSheetService {
     public async getAllTimeSheet(timeSheetRequest: GetTimeSheetReq, @Res() response: any): Promise<any[]> {
         try {
             this.logger.log(`Got request to fetch time sheet by params ${JSON.stringify(timeSheetRequest)}`);
-    
+
             const selectQuery = this.timeSheetRepo.createQueryBuilder('timeSheet')
                 .leftJoinAndSelect('timeSheet.engineer', 'engineer')
                 .leftJoinAndSelect('timeSheet.project', 'project')
@@ -93,11 +92,12 @@ export class TimeSheetService {
                 .leftJoinAndSelect('timeSheet.profile', 'profile')
                 .leftJoinAndSelect('timeSheet.teamLead', 'teamLead')
                 .leftJoinAndSelect('timeSheet.manager', 'manager')
-                .where(timeSheetRequest.timeSheetId ? { id: timeSheetRequest.timeSheetId } : {});
-    
+            if (timeSheetRequest.timeSheetId) {
+                selectQuery.where('timeSheet.id = :id', { id: timeSheetRequest.timeSheetId })
+            }
             if (timeSheetRequest.filter) {
                 const filter = timeSheetRequest.filter;
-    
+
                 if (filter.engineerId) selectQuery.andWhere('timeSheet.engineerId = :engineerId', { engineerId: filter.engineerId });
                 if (filter.teamLeadId) selectQuery.andWhere('timeSheet.teamLeadId = :teamLeadId', { teamLeadId: filter.teamLeadId });
                 if (filter.mangerId) selectQuery.andWhere('timeSheet.mangerId = :mangerId', { teamLeadId: filter.mangerId });
@@ -106,16 +106,20 @@ export class TimeSheetService {
                 if (filter.companyId) selectQuery.andWhere('sales.companyId = :companyId', { companyId: filter.companyId });
                 if (filter.status) selectQuery.andWhere('timeSheet.status = :status', { status: filter.status });
             }
-    
-            if (timeSheetRequest.startTime) selectQuery.andWhere('timeSheet.createdAt >= :createdAt', { createdAt: timeSheetRequest.startTime });
-            if (timeSheetRequest.endTime) selectQuery.andWhere('timeSheet.createdAt <= :createdAt', { createdAt: timeSheetRequest.endTime });
-    
+
+            if (timeSheetRequest.startTime) {
+                selectQuery.andWhere('timeSheet.createdAt >= :createdAt', { createdAt: timeSheetRequest.startTime });
+            }
+            if (timeSheetRequest.endTime) {
+                selectQuery.andWhere('timeSheet.createdAt <= :createdAt', { createdAt: timeSheetRequest.endTime });
+
+            }
             const { page = 1, limit = 10 } = timeSheetRequest;
             selectQuery.skip(limit * (page - 1)).take(limit);
-    
+
             const [timeSheets, totalCount] = await selectQuery.getManyAndCount();
             const paginatedResponse = paginateResponse(timeSheets, limit, page);
-    
+
             return response.status(HttpStatus.OK).json({
                 success: true,
                 message: 'Time sheets fetched successfully',
@@ -127,7 +131,7 @@ export class TimeSheetService {
             throw new Error(`Error while fetching time sheet ${err}`);
         }
     }
-    
+
 
 
 

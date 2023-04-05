@@ -1,7 +1,14 @@
-import { EngineerEntity } from 'src/entities/engineer.entity';
-import { JoinColumn, OneToOne } from 'typeorm';
-import { ManyToOne } from 'typeorm';
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
+import { EngineerEntity } from '../entities/engineer.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { ManagerEntity } from './manager.entity';
 import { ProfileEntity } from './profile.entity';
 import { ProjectEntity } from './project.entity';

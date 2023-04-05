@@ -1,8 +1,8 @@
 import { Body, Controller, Get, HttpStatus, Param, Post, Query, Res, UseGuards, UseInterceptors } from '@nestjs/common';
-import { SignUpInterceptor } from 'src/security/SignUpInterceptor';
-import { CreateUserDto, UserRequestDto } from './dto/userModel/create-user.dto';
-import { UserService } from './user.service';
-import { AuthGuard } from '@nestjs/passport';
+import { AuthGuard } from "@nestjs/passport";
+import { SignUpInterceptor } from "src/security/SignUpInterceptor";
+import { CreateUserDto, UserRequestDto } from "./dto/userModel/create-user.dto";
+import { UserService } from "./user.service";
 
 @Controller('/api/user')
 export class UserController {
@@ -14,7 +14,7 @@ export class UserController {
     @Query() req: UserRequestDto,
     @Res() response: any) {
     try {
-      this.userService.getUsers(req, response);
+      await this.userService.getUsers(req, response);
     } catch (err) {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         success: false,
@@ -32,7 +32,7 @@ export class UserController {
     @Res() response: any
   ) {
     try {
-      this.userService.getUserById(id, response);
+      await this.userService.getUserById(id, response);
     } catch (err) {
       return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
         success: false,
